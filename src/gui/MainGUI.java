@@ -32,6 +32,15 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import com.toedter.calendar.JDateChooser;
 
+import actions.KreirajCertActionListener;
+import model.Certifikat;
+import model.CertifikatDomen;
+import model.CertifikatOprema;
+import model.CertifikatOrganizacija;
+import model.CertifikatOsoba;
+import model.CertifikatRoot;
+import model.TipCertifikata;
+
 public class MainGUI {
 
 	private JFrame frmAdminCertificateManagement;
@@ -57,6 +66,12 @@ public class MainGUI {
 	private JTextField txtNadcertifikat;
 	private JTextField txtKeystore;
 	private JTextField txtCertifikat;
+	private JTextField txtOrganizacijaRoot;
+	private JComboBox<TipCertifikata> cbTipCertifikata;
+	private JDateChooser dateStart;
+	private JDateChooser dateEnd;
+	private JTextField txtIdopreme;
+
 
 	/**
 	 * Launch the application.
@@ -80,7 +95,7 @@ public class MainGUI {
 	public MainGUI() {
 		initialize();
 	}
-
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -101,23 +116,23 @@ public class MainGUI {
 		tabbedPane.setEnabledAt(0, true);
 		GridBagLayout gbl_kreirajPanel = new GridBagLayout();
 		gbl_kreirajPanel.columnWidths = new int[] {140, 160, 0};
-		gbl_kreirajPanel.rowHeights = new int[] {256, 256, 0};
-		gbl_kreirajPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_kreirajPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_kreirajPanel.rowHeights = new int[] {270, 200, 40, 30};
+		gbl_kreirajPanel.columnWeights = new double[]{0.0, 1.0};
+		gbl_kreirajPanel.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0};
 		kreirajPanel.setLayout(gbl_kreirajPanel);
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.anchor = GridBagConstraints.SOUTH;
 		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel.insets = new Insets(0, 0, 5, 0);
+		gbc_panel.insets = new Insets(0, 0, 5, 5);
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
 		kreirajPanel.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {140, 160, 0};
-		gbl_panel.rowHeights = new int[] {0, 30, 30, 30, 30, 30, 30, 30};
-		gbl_panel.columnWeights = new double[]{1.0, 1.0, 0.0};
+		gbl_panel.columnWidths = new int[] {140, 190};
+		gbl_panel.rowHeights = new int[] {0, 30, 30, 30, 30, 30, 30, 25};
+		gbl_panel.columnWeights = new double[]{1.0, 1.0};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 		
@@ -135,15 +150,15 @@ public class MainGUI {
 		gbc_lblTip.gridy = 2;
 		panel.add(lblTip, gbc_lblTip);
 		
-		JComboBox comboBox = new JComboBox();
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.gridx = 1;
-		gbc_comboBox.gridy = 2;
-		panel.add(comboBox, gbc_comboBox);
-		comboBox.setToolTipText("Izaberite domen");
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Domen", "Oprema", "Organizacija", "Osoba"}));
+		cbTipCertifikata = new JComboBox();
+		GridBagConstraints gbc_cbTipCertifikata = new GridBagConstraints();
+		gbc_cbTipCertifikata.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cbTipCertifikata.insets = new Insets(0, 0, 5, 5);
+		gbc_cbTipCertifikata.gridx = 1;
+		gbc_cbTipCertifikata.gridy = 2;
+		panel.add(cbTipCertifikata, gbc_cbTipCertifikata);
+		cbTipCertifikata.setToolTipText("Izaberite domen");
+		cbTipCertifikata.setModel(new DefaultComboBoxModel(TipCertifikata.values()));
 			
 		JPanel povuciPanel = new JPanel();
 		tabbedPane.addTab("Povuci certifikat", null, povuciPanel, null);
@@ -157,6 +172,7 @@ public class MainGUI {
 	    
 	    JPanel cardPanel = new JPanel();
 	    GridBagConstraints gbc_cardPanel = new GridBagConstraints();
+	    gbc_cardPanel.insets = new Insets(0, 0, 5, 5);
 	    gbc_cardPanel.fill = GridBagConstraints.HORIZONTAL;
 	    gbc_cardPanel.anchor = GridBagConstraints.NORTH;
 	    gbc_cardPanel.gridx = 0;
@@ -165,22 +181,22 @@ public class MainGUI {
 	    cardPanel.setLayout(new CardLayout(0, 0));
 	    
 	    JPanel panelOprema = new JPanel();
-	    cardPanel.add(panelOprema, "Oprema");
+	    cardPanel.add(panelOprema, TipCertifikata.OPREMA.toString());
 	    GridBagLayout gbl_panelOprema = new GridBagLayout();
 	    gbl_panelOprema.columnWidths = new int[] {140, 160, 0};
-	    gbl_panelOprema.rowHeights = new int[] {30, 30, 30, 30, 30, 0};
+	    gbl_panelOprema.rowHeights = new int[] {30, 30, 30, 30, 30, 25, 0};
 	    gbl_panelOprema.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-	    gbl_panelOprema.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+	    gbl_panelOprema.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 	    panelOprema.setLayout(gbl_panelOprema);
 	    
-	    JLabel lblSerijskiBroj = new JLabel("Serijski broj");
-	    lblSerijskiBroj.setHorizontalAlignment(SwingConstants.CENTER);
-	    GridBagConstraints gbc_lblSerijskiBroj = new GridBagConstraints();
-	    gbc_lblSerijskiBroj.fill = GridBagConstraints.VERTICAL;
-	    gbc_lblSerijskiBroj.insets = new Insets(0, 0, 5, 5);
-	    gbc_lblSerijskiBroj.gridx = 0;
-	    gbc_lblSerijskiBroj.gridy = 0;
-	    panelOprema.add(lblSerijskiBroj, gbc_lblSerijskiBroj);
+	    JLabel lblMAC = new JLabel("MAC opreme");
+	    lblMAC.setHorizontalAlignment(SwingConstants.CENTER);
+	    GridBagConstraints gbc_lblMAC = new GridBagConstraints();
+	    gbc_lblMAC.fill = GridBagConstraints.VERTICAL;
+	    gbc_lblMAC.insets = new Insets(0, 0, 5, 5);
+	    gbc_lblMAC.gridx = 0;
+	    gbc_lblMAC.gridy = 0;
+	    panelOprema.add(lblMAC, gbc_lblMAC);
 	    
 	    txtSerijskibroj = new JTextField();
 	    txtSerijskibroj.setToolTipText("");
@@ -250,24 +266,42 @@ public class MainGUI {
 	    lblSuborganizacija_1.setHorizontalAlignment(SwingConstants.CENTER);
 	    GridBagConstraints gbc_lblSuborganizacija_1 = new GridBagConstraints();
 	    gbc_lblSuborganizacija_1.fill = GridBagConstraints.BOTH;
-	    gbc_lblSuborganizacija_1.insets = new Insets(0, 0, 0, 5);
+	    gbc_lblSuborganizacija_1.insets = new Insets(0, 0, 5, 5);
 	    gbc_lblSuborganizacija_1.gridx = 0;
 	    gbc_lblSuborganizacija_1.gridy = 4;
 	    panelOprema.add(lblSuborganizacija_1, gbc_lblSuborganizacija_1);
 	    
 	    txtSuborganizacijaopreme = new JTextField();
 	    GridBagConstraints gbc_txtSuborganizacijaopreme = new GridBagConstraints();
+	    gbc_txtSuborganizacijaopreme.insets = new Insets(0, 0, 5, 0);
 	    gbc_txtSuborganizacijaopreme.fill = GridBagConstraints.BOTH;
 	    gbc_txtSuborganizacijaopreme.gridx = 1;
 	    gbc_txtSuborganizacijaopreme.gridy = 4;
 	    panelOprema.add(txtSuborganizacijaopreme, gbc_txtSuborganizacijaopreme);
 	    txtSuborganizacijaopreme.setColumns(10);
 	    
+	    JLabel lblIdOpreme = new JLabel("ID opreme");
+	    lblIdOpreme.setHorizontalAlignment(SwingConstants.CENTER);
+	    GridBagConstraints gbc_lblIdOpreme = new GridBagConstraints();
+	    gbc_lblIdOpreme.fill = GridBagConstraints.BOTH;
+	    gbc_lblIdOpreme.insets = new Insets(0, 0, 0, 5);
+	    gbc_lblIdOpreme.gridx = 0;
+	    gbc_lblIdOpreme.gridy = 5;
+	    panelOprema.add(lblIdOpreme, gbc_lblIdOpreme);
+	    
+	    txtIdopreme = new JTextField();
+	    GridBagConstraints gbc_txtIdopreme = new GridBagConstraints();
+	    gbc_txtIdopreme.fill = GridBagConstraints.BOTH;
+	    gbc_txtIdopreme.gridx = 1;
+	    gbc_txtIdopreme.gridy = 5;
+	    panelOprema.add(txtIdopreme, gbc_txtIdopreme);
+	    txtIdopreme.setColumns(10);
+	    
 	    JPanel panelOrganizacija = new JPanel();
-	    cardPanel.add(panelOrganizacija, "Organizacija");
+	    cardPanel.add(panelOrganizacija, TipCertifikata.ORGANIZACIJA.toString());
 	    GridBagLayout gbl_panelOrganizacija = new GridBagLayout();
 	    gbl_panelOrganizacija.columnWidths = new int[] {140, 160, 0};
-	    gbl_panelOrganizacija.rowHeights = new int[]{30, 30, 30, 30, 30, 30, 0};
+	    gbl_panelOrganizacija.rowHeights = new int[] {30, 30, 30, 30, 30, 25, 0};
 	    gbl_panelOrganizacija.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 	    gbl_panelOrganizacija.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 	    panelOrganizacija.setLayout(gbl_panelOrganizacija);
@@ -380,10 +414,10 @@ public class MainGUI {
 	    txtUlica.setColumns(10);
 	    
 	    JPanel panelOsoba = new JPanel();
-	    cardPanel.add(panelOsoba, "Osoba");
+	    cardPanel.add(panelOsoba, TipCertifikata.OSOBA.toString());
 	    GridBagLayout gbl_panelOsoba = new GridBagLayout();
 	    gbl_panelOsoba.columnWidths = new int[] {140, 160, 0};
-	    gbl_panelOsoba.rowHeights = new int[]{30, 30, 30, 30, 30, 30, 0};
+	    gbl_panelOsoba.rowHeights = new int[] {30, 30, 30, 30, 30, 25, 0};
 	    gbl_panelOsoba.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 	    gbl_panelOsoba.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 	    panelOsoba.setLayout(gbl_panelOsoba);
@@ -496,10 +530,10 @@ public class MainGUI {
 	    txtZaposleniid.setColumns(10);
 	    
 	    JPanel panelDomen = new JPanel();
-	    cardPanel.add(panelDomen, "Domen");
+	    cardPanel.add(panelDomen, TipCertifikata.DOMEN.toString());
 	    GridBagLayout gbl_panelDomen = new GridBagLayout();
 	    gbl_panelDomen.columnWidths = new int[] {140, 160, 0};
-	    gbl_panelDomen.rowHeights = new int[] {30, 30, 0};
+	    gbl_panelDomen.rowHeights = new int[] {30, 25, 0};
 	    gbl_panelDomen.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 	    gbl_panelDomen.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 	    panelDomen.setLayout(gbl_panelDomen);
@@ -542,16 +576,55 @@ public class MainGUI {
 	    txtDomen.setColumns(10);
 	    
 	    CardLayout cl = (CardLayout)(cardPanel.getLayout());
-	    cl.show(cardPanel, "Domen");
+	    cl.show(cardPanel, TipCertifikata.DOMEN.toString());
+	    
+	    JPanel panelRoot = new JPanel();
+	    cardPanel.add(panelRoot, TipCertifikata.ROOT.toString());
+	    GridBagLayout gbl_panelRoot = new GridBagLayout();
+	    gbl_panelRoot.columnWidths = new int[] {140, 160, 0};
+	    gbl_panelRoot.rowHeights = new int[] {25, 30, 30};
+	    gbl_panelRoot.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+	    gbl_panelRoot.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+	    panelRoot.setLayout(gbl_panelRoot);
+	    
+	    JLabel lblOrganizacija_3 = new JLabel("Organizacija");
+	    lblOrganizacija_3.setHorizontalAlignment(SwingConstants.CENTER);
+	    GridBagConstraints gbc_lblOrganizacija_3 = new GridBagConstraints();
+	    gbc_lblOrganizacija_3.insets = new Insets(0, 0, 0, 5);
+	    gbc_lblOrganizacija_3.fill = GridBagConstraints.BOTH;
+	    gbc_lblOrganizacija_3.gridx = 0;
+	    gbc_lblOrganizacija_3.gridy = 0;
+	    panelRoot.add(lblOrganizacija_3, gbc_lblOrganizacija_3);
+	    
+	    txtOrganizacijaRoot = new JTextField();
+	    GridBagConstraints gbc_txtOrganizacijaRoot = new GridBagConstraints();
+	    gbc_txtOrganizacijaRoot.fill = GridBagConstraints.BOTH;
+	    gbc_txtOrganizacijaRoot.gridx = 1;
+	    gbc_txtOrganizacijaRoot.gridy = 0;
+	    panelRoot.add(txtOrganizacijaRoot, gbc_txtOrganizacijaRoot);
+	    txtOrganizacijaRoot.setColumns(10);
 		
-	    comboBox.setAction(new Action() {
+	    JButton btnNadcertifikat = new JButton("...");
+	    JLabel lblNadcertifikat = new JLabel("Nadcertifikat");
+	    
+	    cbTipCertifikata.setAction(new Action() {
 	    	
 	    	@Override
 	    	public void actionPerformed(ActionEvent e) {
-	    		String selected = (String) comboBox.getSelectedItem();
-	    		System.out.println(selected);	//"Domen", "Oprema", "Organizacija", "Osoba"
+	    		TipCertifikata selected = (TipCertifikata) cbTipCertifikata.getSelectedItem();
+	    		System.out.println(selected);
 	    		CardLayout cl = (CardLayout)(cardPanel.getLayout());
-	    	    cl.show(cardPanel, selected);
+	    	    cl.show(cardPanel, selected.toString());
+	    	    
+	    	    if (selected==TipCertifikata.ROOT) {
+	    	    	btnNadcertifikat.setVisible(false);
+	    	    	lblNadcertifikat.setVisible(false);
+	    	    	txtNadcertifikat.setVisible(false);
+	    	    } else {
+	    	    	btnNadcertifikat.setVisible(true);
+	    	    	lblNadcertifikat.setVisible(true);
+	    	    	txtNadcertifikat.setVisible(true);
+	    	    }
 	    	}
 	    	
 	    	@Override
@@ -594,7 +667,7 @@ public class MainGUI {
 	    gbc_lblPoetak.gridy = 3;
 	    panel.add(lblPoetak, gbc_lblPoetak);
 	    
-	    JDateChooser dateStart = new JDateChooser();
+	    dateStart = new JDateChooser();
 	    dateStart.setMinSelectableDate(new Date());	    
 	    GridBagConstraints gbc_dateStart = new GridBagConstraints();
 	    gbc_dateStart.fill = GridBagConstraints.BOTH;
@@ -610,7 +683,7 @@ public class MainGUI {
 	    gbc_lblKraj.gridy = 4;
 	    panel.add(lblKraj, gbc_lblKraj);
 	    
-	    JDateChooser dateEnd = new JDateChooser();
+	    dateEnd = new JDateChooser();
 	    dateEnd.setMinSelectableDate(new Date());
 	    GridBagConstraints gbc_dateEnd = new GridBagConstraints();
 	    gbc_dateEnd.insets = new Insets(0, 0, 5, 5);
@@ -618,8 +691,7 @@ public class MainGUI {
 	    gbc_dateEnd.gridx = 1;
 	    gbc_dateEnd.gridy = 4;
 	    panel.add(dateEnd, gbc_dateEnd);
-	    
-	    JLabel lblNadcertifikat = new JLabel("Nadcertifikat");
+	    	    
 	    GridBagConstraints gbc_lblNadcertifikat = new GridBagConstraints();
 	    gbc_lblNadcertifikat.insets = new Insets(0, 0, 5, 5);
 	    gbc_lblNadcertifikat.gridx = 0;
@@ -641,7 +713,6 @@ public class MainGUI {
 	    panelNadcertifikat.add(txtNadcertifikat);
 	    txtNadcertifikat.setColumns(12);
 	    
-	    JButton btnNadcertifikat = new JButton("...");
 	    btnNadcertifikat.setToolTipText("Prona\u0111i nadcertifikat");
 	    btnNadcertifikat.setAlignmentY(0.4f);
 	    btnNadcertifikat.setAlignmentX(0.4f);
@@ -759,6 +830,60 @@ public class MainGUI {
 			}
 		});
 	    panelCertifikat.add(btnCertifikat);
-	    panel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPodaciOCertifikatu, lblTip, comboBox, lblPoetak, lblKraj, lblNadcertifikat, panelNadcertifikat, txtNadcertifikat, btnNadcertifikat, lblKeystore, panelKeyStore, txtKeystore, btnKeyStore, lblCertifikat, panelCertifikat, txtCertifikat, btnCertifikat, dateStart.getCalendarButton(), dateStart, dateEnd.getCalendarButton(), dateEnd}));
+	    panel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPodaciOCertifikatu, lblTip, cbTipCertifikata, lblPoetak, lblKraj, lblNadcertifikat, panelNadcertifikat, txtNadcertifikat, btnNadcertifikat, lblKeystore, panelKeyStore, txtKeystore, btnKeyStore, lblCertifikat, panelCertifikat, txtCertifikat, btnCertifikat, dateStart.getCalendarButton(), dateStart, dateEnd.getCalendarButton(), dateEnd}));
+	    
+	    JPanel panel_2 = new JPanel();
+	    GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+	    gbc_panel_2.insets = new Insets(0, 0, 5, 5);
+	    gbc_panel_2.fill = GridBagConstraints.BOTH;
+	    gbc_panel_2.gridx = 0;
+	    gbc_panel_2.gridy = 2;
+	    kreirajPanel.add(panel_2, gbc_panel_2);
+	    
+	    JButton btnKreiraj = new JButton("Kreiraj certifikat");
+	    btnKreiraj.addActionListener(new KreirajCertActionListener(frmAdminCertificateManagement,this));
+	    panel_2.add(btnKreiraj);
 	}
+	
+	public Certifikat getCertifikatData() {
+		switch ((TipCertifikata)cbTipCertifikata.getSelectedItem()) {
+		case DOMEN:
+			return getDomenCertifikat();
+		case OPREMA:
+			return getOpremaCertifikat();
+		case ORGANIZACIJA:
+			return getDOrganizacijaCertifikat();
+		case OSOBA:
+			return getOsobaCertifikat();
+		default:
+			return getRootCertifikat();
+		}
+	}
+
+	private CertifikatRoot getRootCertifikat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private CertifikatOsoba getOsobaCertifikat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private CertifikatOrganizacija getDOrganizacijaCertifikat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private CertifikatOprema getOpremaCertifikat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private CertifikatDomen getDomenCertifikat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }
