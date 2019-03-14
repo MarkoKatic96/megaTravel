@@ -1,0 +1,2 @@
+# ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+insert into db_certificates.admin_model (aktiviran_nalog, email, ime, lozinka, prezime) values (b'1', 'borisbibic1996@gmail.com', 'boris', 'root', 'bibic');
