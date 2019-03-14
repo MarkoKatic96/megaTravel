@@ -1,4 +1,4 @@
-package megatravel.bezbednost.token;
+package megatravel.bezbednost.security;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,6 +21,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import megatravel.bezbednost.security.AdminDetails;
 import megatravel.bezbednost.validation.CustomException;
 import megatravel.bezbednost.validation.StaticData;
 
