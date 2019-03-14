@@ -17,7 +17,7 @@ import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EmailValidation {
 	
-	String message() default "Potrebno je uneti validnu e-mail adresu";
+	String message() default "Potrebno je uneti validnu email adresu";
 	
 	Class<?>[] groups() default {};
 	
