@@ -1,11 +1,15 @@
 package megatravel.bezbednost.model;
 
+import java.math.BigInteger;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -16,25 +20,46 @@ public class CertificateModel {
 	@GeneratedValue (strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Lob
 	@NotNull
-	private X509Certificate certifikat;
+	private byte[] certifikat;
 	
 	@NotNull
-	private String datumPocetka;
+	private Date datumPocetka;
 	
 	@NotNull
-	private String datumKraja;
+	private Date datumKraja;
+	
+	@NotNull
+	private BigInteger serijskiBroj;
+	
+	@NotNull
+	private TipCertifikata tipCertifikata;
+	
+	@NotNull
+	private BigInteger nadcertifikat;
+	
+	@NotNull
+	private StatusCertifikata statusCertifikata;
 
 	public CertificateModel() {
 		
 	}
 	
-	public CertificateModel(Long id, X509Certificate certifikat, String datumPocetka, String datumKraja) {
+	public CertificateModel(Long id, X509Certificate certifikat, TipCertifikata tipCertifikata, BigInteger nadcertifikat) throws CertificateEncodingException {
 		super();
 		this.id = id;
-		this.certifikat = certifikat;
-		this.datumPocetka = datumPocetka;
-		this.datumKraja = datumKraja;
+		this.certifikat = certifikat.getEncoded();
+		this.datumPocetka = certifikat.getNotBefore();
+		this.datumKraja = certifikat.getNotAfter();
+		this.serijskiBroj = certifikat.getSerialNumber();
+		this.tipCertifikata = tipCertifikata;
+		if (tipCertifikata == TipCertifikata.ROOT) {
+			this.nadcertifikat = certifikat.getSerialNumber();
+		} else {
+			this.nadcertifikat = nadcertifikat;
+		}
+		this.statusCertifikata = StatusCertifikata.VALIDAN;
 	}
 
 	public Long getId() {
@@ -45,28 +70,60 @@ public class CertificateModel {
 		this.id = id;
 	}
 
-	public X509Certificate getCertifikat() {
+	public byte[] getCertifikat() {
 		return certifikat;
 	}
 
-	public void setCertifikat(X509Certificate certifikat) {
-		this.certifikat = certifikat;
+	public void setCertifikat(X509Certificate certifikat) throws CertificateEncodingException {
+		this.certifikat = certifikat.getEncoded();
 	}
 
-	public String getDatumPocetka() {
+	public Date getDatumPocetka() {
 		return datumPocetka;
 	}
 
-	public void setDatumPocetka(String datumPocetka) {
+	public void setDatumPocetka(Date datumPocetka) {
 		this.datumPocetka = datumPocetka;
 	}
 
-	public String getDatumKraja() {
+	public Date getDatumKraja() {
 		return datumKraja;
 	}
 
-	public void setDatumKraja(String datumKraja) {
+	public void setDatumKraja(Date datumKraja) {
 		this.datumKraja = datumKraja;
+	}
+
+	public BigInteger getSerijskiBroj() {
+		return serijskiBroj;
+	}
+
+	public void setSerijskiBroj(BigInteger serijskiBroj) {
+		this.serijskiBroj = serijskiBroj;
+	}
+
+	public TipCertifikata getTipCertifikata() {
+		return tipCertifikata;
+	}
+
+	public void setTipCertifikata(TipCertifikata tipCertifikata) {
+		this.tipCertifikata = tipCertifikata;
+	}
+
+	public BigInteger getNadcertifikat() {
+		return nadcertifikat;
+	}
+
+	public void setNadcertifikat(BigInteger nadcertifikat) {
+		this.nadcertifikat = nadcertifikat;
+	}
+
+	public StatusCertifikata getStatusCertifikata() {
+		return statusCertifikata;
+	}
+
+	public void setStatusCertifikata(StatusCertifikata statusCertifikata) {
+		this.statusCertifikata = statusCertifikata;
 	}
 
 	@Override
@@ -78,7 +135,7 @@ public class CertificateModel {
 		if (getClass() != obj.getClass())
 			return false;
 		CertificateModel other = (CertificateModel) obj;
-		return id == other.id;
+		return (id == other.id && serijskiBroj == other.serijskiBroj);
 	}
 
 	@Override

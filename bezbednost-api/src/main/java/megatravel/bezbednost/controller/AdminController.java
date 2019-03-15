@@ -15,7 +15,6 @@ import megatravel.bezbednost.dto.AdminDTO;
 import megatravel.bezbednost.dto.AdminPrijavaDTO;
 import megatravel.bezbednost.model.AdminModel;
 import megatravel.bezbednost.service.AdminService;
-import megatravel.bezbednost.token.JwtTokenUtils;
 
 @RestController
 public class AdminController {
@@ -23,11 +22,13 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
-	@Autowired
-	JwtTokenUtils jwtTokenUtils;
+	//@Autowired
+	//JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "api/adminCert/id/{id}", method = RequestMethod.GET)
 	public ResponseEntity<AdminDTO> getAdmin(@PathVariable Long id) {
+		System.out.println("getAdmin()");
+		
 		AdminModel korisnik = adminService.findOne(id);
 		if (korisnik == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -40,6 +41,9 @@ public class AdminController {
 	
 	@RequestMapping(value = "api/adminCert/email/{email}", method = RequestMethod.GET)
 	public ResponseEntity<AdminDTO> getAdminByEmail(@PathVariable String email) {
+		email = email + ".com";
+		System.out.println("getAdminByEmail(" + email + ")");
+		
 		AdminModel korisnik = adminService.findByEmail(email);
 		if (korisnik == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
