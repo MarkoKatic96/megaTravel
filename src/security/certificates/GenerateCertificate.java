@@ -22,6 +22,7 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import model.Certifikat;
+import model.CertifikatAplikacija;
 import model.CertifikatDomen;
 import model.CertifikatOprema;
 import model.CertifikatOrganizacija;
@@ -65,6 +66,10 @@ public class GenerateCertificate {
 	public X509Certificate generateCertificate(Certifikat certifikat) {
 		SubjectData subjectData = null;
 		switch (certifikat.getTipCertifikata()) {
+			case APLIKACIJA:
+				subjectData = generateAppData((CertifikatAplikacija) certifikat);
+				break;
+			
 			case DOMEN:
 				subjectData = generateDomenData((CertifikatDomen) certifikat);
 				break;
@@ -106,6 +111,38 @@ public class GenerateCertificate {
 		return null;
 	}
 
+	public SubjectData generateAppData(CertifikatAplikacija certifikat) {
+		try {
+			KeyPair keyPairSubject = generateKeyPair();
+			
+			//Datumi od kad do kad vazi sertifikat
+			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
+			Date startDate = iso8601Formater.parse(certifikat.getPocetak().toString());
+			Date endDate = iso8601Formater.parse(certifikat.getKraj().toString());
+			if (startDate.compareTo(endDate)>=0) {
+				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
+			}
+			
+			//Serijski broj sertifikata
+			String sn = UUID.randomUUID().toString();
+			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
+			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
+			builder.addRDN(BCStyle.CN, certifikat.getNazivAplikacije());
+			builder.addRDN(BCStyle.O, certifikat.getOrganizacija());
+		    builder.addRDN(BCStyle.UID, certifikat.getVerzija());
+		    
+		    //Kreiraju se podaci za sertifikat, sto ukljucuje:
+		    // - javni kljuc koji se vezuje za sertifikat
+		    // - podatke o vlasniku
+		    // - serijski broj sertifikata
+		    // - od kada do kada vazi sertifikat
+		    return new SubjectData(keyPairSubject.getPublic(), builder.build(), sn, startDate, endDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
 	public SubjectData generateRootData(CertifikatRoot certifikat) {
 		try {

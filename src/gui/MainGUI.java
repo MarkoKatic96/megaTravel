@@ -23,7 +23,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -71,6 +73,11 @@ public class MainGUI {
 	private JDateChooser dateStart;
 	private JDateChooser dateEnd;
 	private JTextField txtIdopreme;
+	private JTextField txtNazivAplikacije;
+	private JTextField txtOrganizacijaAplikacije;
+	private JTextField txtVerzija;
+	private JTable table;
+	private JTextField txtUid;
 
 
 	/**
@@ -162,13 +169,121 @@ public class MainGUI {
 			
 		JPanel povuciPanel = new JPanel();
 		tabbedPane.addTab("Povuci certifikat", null, povuciPanel, null);
+		GridBagLayout gbl_povuciPanel = new GridBagLayout();
+		gbl_povuciPanel.columnWidths = new int[] {140, 160, 30};
+		gbl_povuciPanel.rowHeights = new int[] {0, 0, 0, 0, 0};
+		gbl_povuciPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_povuciPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0};
+		povuciPanel.setLayout(gbl_povuciPanel);
+		
+		JPanel panel_1 = new JPanel();
+		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.gridwidth = 2;
+		gbc_panel_1.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_1.gridx = 0;
+		gbc_panel_1.gridy = 0;
+		povuciPanel.add(panel_1, gbc_panel_1);
+		GridBagLayout gbl_panel_1 = new GridBagLayout();
+		gbl_panel_1.columnWidths = new int[] {250, 250, 0, 20, 0};
+		gbl_panel_1.rowHeights = new int[] {30, 30, 0, 20, 0};
+		gbl_panel_1.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_1.setLayout(gbl_panel_1);
+		
+		JLabel lblOdaberiteCertifikatKoji = new JLabel("Odaberite certifikat koji zelite da povucete. OPREZ: povlacenje certifikata je nepovratna operacija! Svi certifikati potpisani ovim certifikatom mogu postati NEVALIDNI!");
+		lblOdaberiteCertifikatKoji.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblOdaberiteCertifikatKoji = new GridBagConstraints();
+		gbc_lblOdaberiteCertifikatKoji.gridheight = 2;
+		gbc_lblOdaberiteCertifikatKoji.gridwidth = 5;
+		gbc_lblOdaberiteCertifikatKoji.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_lblOdaberiteCertifikatKoji.insets = new Insets(0, 0, 5, 5);
+		gbc_lblOdaberiteCertifikatKoji.gridx = 0;
+		gbc_lblOdaberiteCertifikatKoji.gridy = 0;
+		panel_1.add(lblOdaberiteCertifikatKoji, gbc_lblOdaberiteCertifikatKoji);
+		
+		JPanel panel_2 = new JPanel();
+		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.gridwidth = 2;
+		gbc_panel_2.anchor = GridBagConstraints.NORTHWEST;
+		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_2.gridx = 0;
+		gbc_panel_2.gridy = 1;
+		povuciPanel.add(panel_2, gbc_panel_2);
+		GridBagLayout gbl_panel_2 = new GridBagLayout();
+		gbl_panel_2.columnWidths = new int[]{75, 190, 75, 86, 75, 109, 0};
+		gbl_panel_2.rowHeights = new int[]{23, 0};
+		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		panel_2.setLayout(gbl_panel_2);
+		
+		JLabel lblUnesiteUidCertifikata = new JLabel("Unesite UID certifikata kog zelite povuci");
+		GridBagConstraints gbc_lblUnesiteUidCertifikata = new GridBagConstraints();
+		gbc_lblUnesiteUidCertifikata.anchor = GridBagConstraints.WEST;
+		gbc_lblUnesiteUidCertifikata.insets = new Insets(0, 0, 0, 5);
+		gbc_lblUnesiteUidCertifikata.gridx = 1;
+		gbc_lblUnesiteUidCertifikata.gridy = 0;
+		panel_2.add(lblUnesiteUidCertifikata, gbc_lblUnesiteUidCertifikata);
+		lblUnesiteUidCertifikata.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		txtUid = new JTextField();
+		GridBagConstraints gbc_txtUid = new GridBagConstraints();
+		gbc_txtUid.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtUid.gridwidth = 3;
+		gbc_txtUid.insets = new Insets(0, 0, 0, 5);
+		gbc_txtUid.gridx = 2;
+		gbc_txtUid.gridy = 0;
+		panel_2.add(txtUid, gbc_txtUid);
+		txtUid.setToolTipText("UID Certifikata");
+		txtUid.setColumns(10);
+		
+		JButton btnPovuci = new JButton("Povuci certifikat");
+		GridBagConstraints gbc_btnPovuci = new GridBagConstraints();
+		gbc_btnPovuci.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnPovuci.gridx = 5;
+		gbc_btnPovuci.gridy = 0;
+		panel_2.add(btnPovuci, gbc_btnPovuci);
+		
+		JPanel panel_3 = new JPanel();
+		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
+		gbc_panel_3.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_3.fill = GridBagConstraints.BOTH;
+		gbc_panel_3.gridx = 0;
+		gbc_panel_3.gridy = 2;
+		povuciPanel.add(panel_3, gbc_panel_3);
+		
+		JPanel panel_4 = new JPanel();
+		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
+		gbc_panel_4.fill = GridBagConstraints.BOTH;
+		gbc_panel_4.gridx = 0;
+		gbc_panel_4.gridy = 3;
+		povuciPanel.add(panel_4, gbc_panel_4);
 		tabbedPane.setEnabledAt(1, true);
 		
-		JPanel postojeciCert = new JPanel();
-		tabbedPane.addTab("Postoje\u0107i certifikat", null, postojeciCert, null);
+		JPanel postojeciPanel = new JPanel();
+		tabbedPane.addTab("Postojeći certifikati", null, postojeciPanel, null);
+		GridBagLayout gbl_postojeciPanel = new GridBagLayout();
+		gbl_postojeciPanel.columnWidths = new int[]{400, 179, 0};
+		gbl_postojeciPanel.rowHeights = new int[]{25, 0, 0};
+		gbl_postojeciPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_postojeciPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		postojeciPanel.setLayout(gbl_postojeciPanel);
 		
-		JPanel aplikacijaPanel = new JPanel();
-		tabbedPane.addTab("Aplikacije", null, aplikacijaPanel, null);
+		JTree tree = new JTree();
+		GridBagConstraints gbc_tree = new GridBagConstraints();
+		gbc_tree.gridheight = 2;
+		gbc_tree.insets = new Insets(0, 0, 0, 5);
+		gbc_tree.fill = GridBagConstraints.BOTH;
+		gbc_tree.gridx = 0;
+		gbc_tree.gridy = 0;
+		postojeciPanel.add(tree, gbc_tree);
+		
+		table = new JTable();
+		GridBagConstraints gbc_table = new GridBagConstraints();
+		gbc_table.gridheight = 2;
+		gbc_table.fill = GridBagConstraints.BOTH;
+		gbc_table.gridx = 1;
+		gbc_table.gridy = 0;
+		postojeciPanel.add(table, gbc_table);
 	    
 	    JPanel cardPanel = new JPanel();
 	    GridBagConstraints gbc_cardPanel = new GridBagConstraints();
@@ -603,6 +718,68 @@ public class MainGUI {
 	    gbc_txtOrganizacijaRoot.gridy = 0;
 	    panelRoot.add(txtOrganizacijaRoot, gbc_txtOrganizacijaRoot);
 	    txtOrganizacijaRoot.setColumns(10);
+	    
+	    JPanel panelAplikacija = new JPanel();
+	    cardPanel.add(panelAplikacija, TipCertifikata.APLIKACIJA.toString());
+	    GridBagLayout gbl_panelAplikacija = new GridBagLayout();
+	    gbl_panelAplikacija.columnWidths = new int[] {140, 160, 0};
+	    gbl_panelAplikacija.rowHeights = new int[] {30, 30, 25, 0};
+	    gbl_panelAplikacija.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+	    gbl_panelAplikacija.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+	    panelAplikacija.setLayout(gbl_panelAplikacija);
+	    
+	    JLabel lblNazivAplikacije = new JLabel("Naziv aplikacije");
+	    lblNazivAplikacije.setHorizontalAlignment(SwingConstants.CENTER);
+	    GridBagConstraints gbc_lblNazivAplikacije = new GridBagConstraints();
+	    gbc_lblNazivAplikacije.fill = GridBagConstraints.BOTH;
+	    gbc_lblNazivAplikacije.insets = new Insets(0, 0, 5, 5);
+	    gbc_lblNazivAplikacije.gridx = 0;
+	    gbc_lblNazivAplikacije.gridy = 0;
+	    panelAplikacija.add(lblNazivAplikacije, gbc_lblNazivAplikacije);
+	    
+	    txtNazivAplikacije = new JTextField();
+	    GridBagConstraints gbc_txtNazivAplikacije = new GridBagConstraints();
+	    gbc_txtNazivAplikacije.insets = new Insets(0, 0, 5, 0);
+	    gbc_txtNazivAplikacije.fill = GridBagConstraints.BOTH;
+	    gbc_txtNazivAplikacije.gridx = 1;
+	    gbc_txtNazivAplikacije.gridy = 0;
+	    panelAplikacija.add(txtNazivAplikacije, gbc_txtNazivAplikacije);
+	    txtNazivAplikacije.setColumns(10);
+	    
+	    JLabel lblOrganizacija_4 = new JLabel("Organizacija");
+	    lblOrganizacija_4.setHorizontalAlignment(SwingConstants.CENTER);
+	    GridBagConstraints gbc_lblOrganizacija_4 = new GridBagConstraints();
+	    gbc_lblOrganizacija_4.fill = GridBagConstraints.BOTH;
+	    gbc_lblOrganizacija_4.insets = new Insets(0, 0, 5, 5);
+	    gbc_lblOrganizacija_4.gridx = 0;
+	    gbc_lblOrganizacija_4.gridy = 1;
+	    panelAplikacija.add(lblOrganizacija_4, gbc_lblOrganizacija_4);
+	    
+	    txtOrganizacijaAplikacije = new JTextField();
+	    GridBagConstraints gbc_txtOrganizacijaAplikacije = new GridBagConstraints();
+	    gbc_txtOrganizacijaAplikacije.insets = new Insets(0, 0, 5, 0);
+	    gbc_txtOrganizacijaAplikacije.fill = GridBagConstraints.BOTH;
+	    gbc_txtOrganizacijaAplikacije.gridx = 1;
+	    gbc_txtOrganizacijaAplikacije.gridy = 1;
+	    panelAplikacija.add(txtOrganizacijaAplikacije, gbc_txtOrganizacijaAplikacije);
+	    txtOrganizacijaAplikacije.setColumns(10);
+	    
+	    JLabel lblVerzijaAplikacije = new JLabel("Verzija aplikacije");
+	    lblVerzijaAplikacije.setHorizontalAlignment(SwingConstants.CENTER);
+	    GridBagConstraints gbc_lblVerzijaAplikacije = new GridBagConstraints();
+	    gbc_lblVerzijaAplikacije.fill = GridBagConstraints.BOTH;
+	    gbc_lblVerzijaAplikacije.insets = new Insets(0, 0, 0, 5);
+	    gbc_lblVerzijaAplikacije.gridx = 0;
+	    gbc_lblVerzijaAplikacije.gridy = 2;
+	    panelAplikacija.add(lblVerzijaAplikacije, gbc_lblVerzijaAplikacije);
+	    
+	    txtVerzija = new JTextField();
+	    GridBagConstraints gbc_txtVerzija = new GridBagConstraints();
+	    gbc_txtVerzija.fill = GridBagConstraints.BOTH;
+	    gbc_txtVerzija.gridx = 1;
+	    gbc_txtVerzija.gridy = 2;
+	    panelAplikacija.add(txtVerzija, gbc_txtVerzija);
+	    txtVerzija.setColumns(10);
 		
 	    JButton btnNadcertifikat = new JButton("...");
 	    JLabel lblNadcertifikat = new JLabel("Nadcertifikat");
@@ -760,7 +937,7 @@ public class MainGUI {
 	    txtKeystore.setColumns(12);
 	    
 	    JButton btnKeyStore = new JButton("...");
-	    btnKeyStore.setToolTipText("Prona\u0111i KeyStore");
+	    btnKeyStore.setToolTipText("Lokacija za čuvanje novog privatnog ključa");
 	    btnKeyStore.setAlignmentX(0.4f);
 	    btnKeyStore.setAlignmentY(0.4f);
 	    btnKeyStore.addActionListener(new ActionListener() {
@@ -832,32 +1009,44 @@ public class MainGUI {
 	    panelCertifikat.add(btnCertifikat);
 	    panel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPodaciOCertifikatu, lblTip, cbTipCertifikata, lblPoetak, lblKraj, lblNadcertifikat, panelNadcertifikat, txtNadcertifikat, btnNadcertifikat, lblKeystore, panelKeyStore, txtKeystore, btnKeyStore, lblCertifikat, panelCertifikat, txtCertifikat, btnCertifikat, dateStart.getCalendarButton(), dateStart, dateEnd.getCalendarButton(), dateEnd}));
 	    
-	    JPanel panel_2 = new JPanel();
-	    GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-	    gbc_panel_2.insets = new Insets(0, 0, 5, 5);
-	    gbc_panel_2.fill = GridBagConstraints.BOTH;
-	    gbc_panel_2.gridx = 0;
-	    gbc_panel_2.gridy = 2;
-	    kreirajPanel.add(panel_2, gbc_panel_2);
+	    JPanel panelBtn = new JPanel();
+	    GridBagConstraints gbc_panelBtn = new GridBagConstraints();
+	    gbc_panelBtn.insets = new Insets(0, 0, 5, 5);
+	    gbc_panelBtn.fill = GridBagConstraints.BOTH;
+	    gbc_panelBtn.gridx = 0;
+	    gbc_panelBtn.gridy = 2;
+	    kreirajPanel.add(panelBtn, gbc_panelBtn);
 	    
 	    JButton btnKreiraj = new JButton("Kreiraj certifikat");
 	    btnKreiraj.addActionListener(new KreirajCertActionListener(frmAdminCertificateManagement,this));
-	    panel_2.add(btnKreiraj);
+	    panelBtn.add(btnKreiraj);
+	    
+	    
+	    //setovanje pocetnog layouta
+	    ((CardLayout) cardPanel.getLayout()).show(cardPanel, TipCertifikata.APLIKACIJA.toString());
+	    
 	}
 	
 	public Certifikat getCertifikatData() {
 		switch ((TipCertifikata)cbTipCertifikata.getSelectedItem()) {
-		case DOMEN:
-			return getDomenCertifikat();
-		case OPREMA:
-			return getOpremaCertifikat();
-		case ORGANIZACIJA:
-			return getDOrganizacijaCertifikat();
-		case OSOBA:
-			return getOsobaCertifikat();
-		default:
-			return getRootCertifikat();
+			case APLIKACIJA:
+				return getAppCertifikat();
+			case DOMEN:
+				return getDomenCertifikat();
+			case OPREMA:
+				return getOpremaCertifikat();
+			case ORGANIZACIJA:
+				return getDOrganizacijaCertifikat();
+			case OSOBA:
+				return getOsobaCertifikat();
+			default:
+				return getRootCertifikat();
 		}
+	}
+
+	private Certifikat getAppCertifikat() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private CertifikatRoot getRootCertifikat() {
