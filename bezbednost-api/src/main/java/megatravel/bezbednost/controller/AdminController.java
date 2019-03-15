@@ -52,10 +52,11 @@ public class AdminController {
 	
 	@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> login(@RequestBody AdminPrijavaDTO adminPrijavaDTO) {
-
+		System.out.println("login()");
+		
 		AdminModel korisnik = adminService.findByEmail(adminPrijavaDTO.getEmail());
 		if(korisnik == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
 		if (!korisnik.isAktiviranNalog()) {

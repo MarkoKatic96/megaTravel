@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		
 		// If a user try to access a resource without having enough permissions
-		http.exceptionHandling().accessDeniedPage("/api/login");
+		http.exceptionHandling().accessDeniedPage("/api/adminCert/*");
 
 		// Apply JWT
 		http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
