@@ -39,8 +39,10 @@ public class CertificateModel {
 	@NotNull
 	private BigInteger nadcertifikat;
 	
-	@NotNull
-	private StatusCertifikata statusCertifikata;
+	/*@NotNull
+	private StatusCertifikata statusCertifikata;*/
+	//Mislim da je ovo bolje da stavimo u posebnu tabelu sa atributima serijski broj i status, jer se po nekoj praksi serijski 
+	// broj sertifikata mora menjati svaki put kad se on edita.
 
 	public CertificateModel() {
 		
@@ -59,7 +61,7 @@ public class CertificateModel {
 		} else {
 			this.nadcertifikat = nadcertifikat;
 		}
-		this.statusCertifikata = StatusCertifikata.VALIDAN;
+		//this.statusCertifikata = StatusCertifikata.VALIDAN;
 	}
 
 	public Long getId() {
@@ -118,13 +120,13 @@ public class CertificateModel {
 		this.nadcertifikat = nadcertifikat;
 	}
 
-	public StatusCertifikata getStatusCertifikata() {
+	/*public StatusCertifikata getStatusCertifikata() {
 		return statusCertifikata;
 	}
 
 	public void setStatusCertifikata(StatusCertifikata statusCertifikata) {
 		this.statusCertifikata = statusCertifikata;
-	}
+	}*/
 
 	@Override
 	public boolean equals(Object obj) {
