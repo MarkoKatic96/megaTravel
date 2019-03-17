@@ -56,8 +56,9 @@ public class CertificateController {
 		CertificateModel cert = certificateService.findOne(id);
 		
 		if (cert==null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
 		}
+		
 		return new ResponseEntity<>(cert, HttpStatus.OK);
 	}
 	
@@ -75,7 +76,7 @@ public class CertificateController {
 		
 		CertificateModel cert = certificateService.findOne(id);
 		if (cert==null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		
 		X509Certificate certificate;
@@ -132,7 +133,7 @@ public class CertificateController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
 	@RequestMapping(value = "api/certificate/sn/{id}", method = RequestMethod.DELETE)
@@ -153,7 +154,7 @@ public class CertificateController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
 	@RequestMapping(value = "api/certificate/exists/{id}", method = RequestMethod.GET)
@@ -172,7 +173,7 @@ public class CertificateController {
 		if (exists) {
 			return new ResponseEntity<>(HttpStatus.FOUND);
 		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	

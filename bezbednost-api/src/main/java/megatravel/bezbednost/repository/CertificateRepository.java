@@ -17,6 +17,6 @@ public interface CertificateRepository extends JpaRepository<CertificateModel, L
 	public boolean existsBySerijskiBroj(BigInteger serijskiBroj);
 	
 	@Query(value= "SELECT DISTINCT cert FROM CertificateModel cert WHERE cert.nadcertifikat = ?1 ORDER BY cert.id ASC")
-	public Page<CertificateModel> findSubCertifikates(BigInteger idCertifikata, Pageable pageable);
+	public Page<CertificateModel> findSubCertifikates(BigInteger serijskiBroj, Pageable pageable);
 	
 }

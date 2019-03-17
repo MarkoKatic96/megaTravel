@@ -6,13 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 //Tabela sa dva atributa koji su serijski brojevi sertifikata koji mogu medjusobno da komuniciraju.
 
 @Entity
-@Table(name="dozvola_komunikacije")
+//@Table(name="dozvola_komunikacije") //imam problema sa Querijem u CertificateCommunicationRepository jer ne prepoznaje entitet sa ovim nazivom
 public class CertificateCommunicationModel {
 	
 	@Id
@@ -24,6 +23,22 @@ public class CertificateCommunicationModel {
 	
 	@NotNull
 	private BigInteger serijskiBroj2;
+	
+	public CertificateCommunicationModel() {
+		super();
+	}
+
+	/**
+	 * @param serijskiBroj1
+	 * @param serijskiBroj2
+	 */
+	public CertificateCommunicationModel(BigInteger serijskiBroj1, BigInteger serijskiBroj2) {
+		super();
+		this.serijskiBroj1 = serijskiBroj1;
+		this.serijskiBroj2 = serijskiBroj2;
+	}
+
+
 
 	public Long getId() {
 		return id;
