@@ -10,17 +10,23 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import model.backend.CertificateCommunicationDTO;
+
 public class GetRequest {
 	
 	public GetRequest() {}
 	
-	public String execute() throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+	public String execute(String token) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 		// Load CAs from an InputStream
 		// (could be from a resource or ByteArrayInputStream or ...)
 		
@@ -57,8 +63,9 @@ public class GetRequest {
 		context.init(null, tmf.getTrustManagers(), null);
 
 		// Tell the URLConnection to use a SocketFactory from our SSLContext
-		URL url = new URL("https://google.com");
+		URL url = new URL("https://localhost:8443/api/communication/all");
 		HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+		urlConnection.setRequestProperty("Authorization", token);
 		urlConnection.setSSLSocketFactory(context.getSocketFactory());
 		InputStream in = urlConnection.getInputStream();
 		
@@ -66,8 +73,12 @@ public class GetRequest {
 		Scanner s = new Scanner(in).useDelimiter("\\A");
 		String result = s.hasNext() ? s.next() : "";
 		System.out.println(result);
-		
+
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayList<CertificateCommunicationDTO> lista = new ArrayList<>();
+		lista = mapper.readValue(result, new TypeReference<ArrayList<CertificateCommunicationDTO>>(){});
+
+		// return lista
 		return result;
-		
 	}
 }

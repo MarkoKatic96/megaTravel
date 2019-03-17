@@ -22,7 +22,7 @@ public class CertificateTabelModel extends AbstractTableModel {
 	public CertificateTabelModel() {
 		// TODO Get certificates from App A
 		try {
-			new GetRequest().execute();
+			new GetRequest().execute("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Jpc2JpYmljMTk5NkBnbWFpbC5jb20iLCJhdXRoIjpbeyJhdXRob3JpdHkiOiJhZG1pbmlzdHJhdG9yQ2VydGlmaWthdGEifV0sImlhdCI6MTU1MjgyNzI2NywiZXhwIjoxNTUyOTEzNjY3fQ.Um1K8E8KHeWIRLH_imnQ6Ph2RpttJrREo1PcCr43yb4");
 		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
 				| IOException e) {
 			// TODO Auto-generated catch block
