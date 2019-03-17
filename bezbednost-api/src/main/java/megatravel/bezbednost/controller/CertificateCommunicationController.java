@@ -136,7 +136,7 @@ public class CertificateCommunicationController {
 	}
 	
 	@RequestMapping(value = "api/communication/all", method = RequestMethod.GET, produces = {	MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<List<CertificateCommunicationModel>> getAllCommunications(Pageable page, HttpServletRequest req) {
+	public ResponseEntity<List<CertificateCommunicationDTO>> getAllCommunications(Pageable page, HttpServletRequest req) {
 		System.out.println("getAllCommunications()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
@@ -153,9 +153,9 @@ public class CertificateCommunicationController {
 		long certTotal = comm.getTotalElements();
 		headers.add("X-Total-Count", String.valueOf(certTotal));
 
-		List<CertificateCommunicationModel> lista = new ArrayList<>();
+		List<CertificateCommunicationDTO> lista = new ArrayList<>();
 		for (CertificateCommunicationModel c : comm) {
-			lista.add(c);
+			lista.add(new CertificateCommunicationDTO(c.getId(), c.getSerijskiBroj1(), c.getSerijskiBroj2()));
 		}
 		
 		return new ResponseEntity<>(lista, headers, HttpStatus.OK);
