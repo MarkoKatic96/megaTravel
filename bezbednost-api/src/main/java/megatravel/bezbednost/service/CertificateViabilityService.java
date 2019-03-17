@@ -16,6 +16,11 @@ public class CertificateViabilityService {
 	@Autowired
 	CertificateViabilityRepository certificateViabilityRepository;
 	
+	public List<CertificateViabilityModel> findAll(){
+		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
+		return lista;
+	}
+	
 	public String getStatus(BigInteger serijskiBroj) {
 		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
 		StatusCertifikata status = null;
@@ -33,5 +38,27 @@ public class CertificateViabilityService {
 		}else {
 			return "Doslo je do problema";
 		}
+	}
+	
+	public CertificateViabilityModel newStatus(CertificateViabilityModel certificateViabilityModel) {
+		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
+		for (CertificateViabilityModel cvm : lista) {
+			if(cvm.getSerijskiBroj() == certificateViabilityModel.getSerijskiBroj()) {
+				return null;
+			}
+		}
+		return certificateViabilityRepository.save(certificateViabilityModel);
+	}
+	
+	public CertificateViabilityModel editStatus(BigInteger sn, StatusCertifikata status) {
+		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
+		for (CertificateViabilityModel cvm : lista) {
+			if(cvm.getSerijskiBroj() == sn) {
+				cvm.setStatus(status);
+				certificateViabilityRepository.save(cvm);
+				return cvm;
+			}
+		}
+		return new CertificateViabilityModel();
 	}
 }

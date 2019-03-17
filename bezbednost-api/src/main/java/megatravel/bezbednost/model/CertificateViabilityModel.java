@@ -23,6 +23,18 @@ public class CertificateViabilityModel {
 	
 	@NotNull
 	private StatusCertifikata status;
+	
+	
+
+	public CertificateViabilityModel(BigInteger serijskiBroj, StatusCertifikata status) {
+		super();
+		this.serijskiBroj = serijskiBroj;
+		this.status = status;
+	}
+
+	public CertificateViabilityModel() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getId() {
 		return id;
