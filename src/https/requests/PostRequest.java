@@ -18,13 +18,13 @@ import javax.net.ssl.TrustManagerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class GetRequest {
-
+public class PostRequest {
+	
 	@SuppressWarnings("unchecked")
-	public static <T> T execute(String path, String token, T cls) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException {
+	public static <T> T execute(String path, String token, Object postData, T cls) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException {
 		// Load CAs from an InputStream
-		InputStream certIs=new FileInputStream("resources/cert-chain.p12");
-		KeyStore ks=KeyStore.getInstance("PKCS12");
+		InputStream certIs = new FileInputStream("resources/cert-chain.p12");
+		KeyStore ks = KeyStore.getInstance("PKCS12");
 		ks.load(certIs,"secretpassword".toCharArray());
 		Certificate ca = ks.getCertificate("1");
 		
@@ -46,25 +46,28 @@ public class GetRequest {
 		// Tell the URLConnection to use a SocketFactory from our SSLContext
 		URL url = new URL(path);
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
-		connection.setRequestMethod("GET");
+		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
 		connection.setRequestProperty("Accept-Charset", "UTF-8");
-		
 		if (!token.equals("")) {
 			connection.setRequestProperty("Authorization", token);
 		}
 		connection.setSSLSocketFactory(context.getSocketFactory());
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
-
+		
+		// Get object to byte[] using ObjectMapper and write it to OutputStream
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.writeValue(connection.getOutputStream(), postData);
+		
+		// Read data received from Server - InputStream
 		InputStream in = connection.getInputStream();
 		
 		@SuppressWarnings("resource")
 		Scanner s = new Scanner(in).useDelimiter("\\A");
 		String result = s.hasNext() ? s.next() : "";
-
+		
 		Object obj = cls.getClass().newInstance();
-		ObjectMapper mapper = new ObjectMapper();
 		obj = mapper.readValue(result, cls.getClass());
 		
 		return (T) obj;

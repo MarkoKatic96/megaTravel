@@ -16,12 +16,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-public class GetRequest {
-
-	@SuppressWarnings("unchecked")
-	public static <T> T execute(String path, String token, T cls) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException {
+public class DeleteRequest {
+	
+	public static <T> boolean execute(String path, String token) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException {
 		// Load CAs from an InputStream
 		InputStream certIs=new FileInputStream("resources/cert-chain.p12");
 		KeyStore ks=KeyStore.getInstance("PKCS12");
@@ -46,10 +43,10 @@ public class GetRequest {
 		// Tell the URLConnection to use a SocketFactory from our SSLContext
 		URL url = new URL(path);
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
-		connection.setRequestMethod("GET");
+		connection.setRequestMethod("DELETE");
 		connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
 		connection.setRequestProperty("Accept-Charset", "UTF-8");
-		
+
 		if (!token.equals("")) {
 			connection.setRequestProperty("Authorization", token);
 		}
@@ -62,11 +59,8 @@ public class GetRequest {
 		@SuppressWarnings("resource")
 		Scanner s = new Scanner(in).useDelimiter("\\A");
 		String result = s.hasNext() ? s.next() : "";
+		System.out.println("Rezultat DELETE Requesta: '" + result + "'");	
 
-		Object obj = cls.getClass().newInstance();
-		ObjectMapper mapper = new ObjectMapper();
-		obj = mapper.readValue(result, cls.getClass());
-		
-		return (T) obj;
+		return true;
 	}
 }
