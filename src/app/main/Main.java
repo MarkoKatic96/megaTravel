@@ -30,10 +30,16 @@ public class Main {
 					
 					try {
 						// PRIMER POZIVA GET, DELETE I POST REQUEST-a
+						
+						//POST
 						String token = PostRequest.execute("https://localhost:8443/api/login","", new AdminPrijavaDTO("borisbibic1996@gmail.com", "stefan"), new String());
 						token = "Bearer " + token;
+						
+						//GET
 						List<CertificateCommunicationDTO> cco = GetRequest.execute("https://localhost:8443/api/communication/all",token, new ArrayList<CertificateCommunicationDTO>());
 						System.out.println(cco);
+						
+						//DELETE
 						boolean b = DeleteRequest.execute("https://localhost:8443/api/certificate/id/1", token);
 						System.out.println(b);
 						
