@@ -6,6 +6,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import javax.swing.JOptionPane;
+
 import https.model.AdminDTO;
 import https.model.AdminPrijavaDTO;
 import https.requests.GetRequest;
@@ -13,7 +15,7 @@ import https.requests.PostRequest;
 
 public class AdminController
 {
-	private String token; 
+	private String token = null; 
 	
 	public AdminController()
 	{
@@ -25,7 +27,12 @@ public class AdminController
 		AdminDTO adm = null;
 		try
 		{
+			
 			adm = GetRequest.execute("https://localhost:8443/api/adminCert/id/" + id, this.getToken(), new AdminDTO());
+			if(this.getToken().isEmpty())
+			{
+				JOptionPane.showMessageDialog(null, "Nepostojeci admin", "Greska", JOptionPane.OK_OPTION);
+			}
 			
 		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
 				| InstantiationException | IllegalAccessException | IOException e) {
@@ -42,6 +49,10 @@ public class AdminController
 		try
 		{
 			adm = GetRequest.execute("https://localhost:8443/api/adminCert/email/" + email, this.getToken(), new AdminDTO());
+			if(this.getToken().isEmpty())
+			{
+				JOptionPane.showMessageDialog(null, "Nepostojeca email adresa", "Greska", JOptionPane.OK_OPTION);
+			}
 			
 		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
 				| InstantiationException | IllegalAccessException | IOException e) {
