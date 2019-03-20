@@ -51,7 +51,7 @@ public class CertificateViabilityController {
 	}
 	
 	@RequestMapping(value = "/api/certificate/viability/all", method = RequestMethod.GET)
-public ResponseEntity<List<CertificateViabilityModel>> getAllStatus(HttpServletRequest req){
+	public ResponseEntity<List<CertificateViabilityModel>> getAllStatus(HttpServletRequest req){
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -62,6 +62,22 @@ public ResponseEntity<List<CertificateViabilityModel>> getAllStatus(HttpServletR
 		}
 		
 		List<CertificateViabilityModel> statusi = certificateViabilityService.findAll();
+		return new ResponseEntity<List<CertificateViabilityModel>>(statusi, HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/api/certificate/viability/allViable", method = RequestMethod.GET)
+	public ResponseEntity<List<CertificateViabilityModel>> getAllViable(HttpServletRequest req){
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		AdminModel korisnik = adminService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<CertificateViabilityModel> statusi = certificateViabilityService.getValidCertificates();
 		return new ResponseEntity<List<CertificateViabilityModel>>(statusi, HttpStatus.OK);
 		
 	}

@@ -1,6 +1,7 @@
 package megatravel.bezbednost.service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,22 @@ public class CertificateViabilityService {
 		return lista;
 	}
 	
+	public List<CertificateViabilityModel> getValidCertificates(){
+		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
+		List<CertificateViabilityModel> listaValidnih = new ArrayList<CertificateViabilityModel>();
+		for (CertificateViabilityModel cvm : lista) {
+			if(cvm.getStatus()==StatusCertifikata.VALIDAN) {
+				listaValidnih.add(cvm);
+			}
+		}
+		return listaValidnih;
+	}
+	
 	public String getStatus(BigInteger serijskiBroj) {
 		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
 		StatusCertifikata status = null;
 		for (CertificateViabilityModel cvm : lista) {
-			if(cvm.getSerijskiBroj() == serijskiBroj) {
+			if(cvm.getSerijskiBroj().equals(serijskiBroj)) {
 				status = cvm.getStatus();
 			}
 		}
@@ -36,14 +48,14 @@ public class CertificateViabilityService {
 		}else if(status == StatusCertifikata.VALIDAN) {
 			return "Sertifikat je validan";
 		}else {
-			return "Doslo je do problema";
+			return "Trazeni sertifikat ne postoji";
 		}
 	}
 	
 	public CertificateViabilityModel newStatus(CertificateViabilityModel certificateViabilityModel) {
 		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
 		for (CertificateViabilityModel cvm : lista) {
-			if(cvm.getSerijskiBroj() == certificateViabilityModel.getSerijskiBroj()) {
+			if(cvm.getSerijskiBroj().equals(certificateViabilityModel.getSerijskiBroj())) {
 				return null;
 			}
 		}
@@ -53,7 +65,7 @@ public class CertificateViabilityService {
 	public CertificateViabilityModel editStatus(BigInteger sn, StatusCertifikata status) {
 		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
 		for (CertificateViabilityModel cvm : lista) {
-			if(cvm.getSerijskiBroj() == sn) {
+			if(cvm.getSerijskiBroj().equals(sn)) {
 				cvm.setStatus(status);
 				certificateViabilityRepository.save(cvm);
 				return cvm;
