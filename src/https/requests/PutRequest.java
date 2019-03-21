@@ -3,6 +3,7 @@ package https.requests;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PutRequest
 {
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> execute(String path, String token, Object postData, Class<T> cls, boolean isList) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException, ServerNotActiveException, CredentialException {
+	public static <T> List<T> execute(String path, String token, Object postData, Class<T> cls, boolean isList) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException, ServerNotActiveException, CredentialException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 		// Load CAs from an InputStream
 		InputStream certIs = new FileInputStream("resources/cert-chain.p12");
 		KeyStore ks = KeyStore.getInstance("PKCS12");
@@ -81,8 +82,14 @@ public class PutRequest
 		String result = s.hasNext() ? s.next() : "";
 		
 		if (!isList) {
-			Object obj = cls.getClass().newInstance();
-			obj = mapper.readValue(result, cls.getClass());
+			Object obj = null;
+			try{
+				obj = cls.getClass().newInstance();
+			} catch (Exception e) {
+				 obj = Class.forName(cls.getName()).getConstructor().newInstance();
+			}
+			//Object obj = Class.forName(cls.getName()).getConstructor().newInstance();
+			obj = mapper.readValue(result, cls);
 			
 			List<T> list = new ArrayList<>();
 			list.add((T) obj);

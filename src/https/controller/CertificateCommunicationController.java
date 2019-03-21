@@ -84,7 +84,7 @@ public class CertificateCommunicationController
 		return certs;
 	}
 	
-	public CertificateCommunicationDTO setCommunication(BigInteger sn1, BigInteger sn2) throws KeyManagementException, CredentialException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException {
+	public CertificateCommunicationDTO setCommunication(BigInteger sn1, BigInteger sn2) throws KeyManagementException, CredentialException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 		List<CertificateCommunicationDTO> certs = null;
 
 		if(!getToken().equals("")) {

@@ -11,6 +11,7 @@ public class CertificateViabilityDTO {
 	private StatusCertifikata status;
 	
 	public CertificateViabilityDTO() {
+		// TODO Auto-generated constructor stub
 	}
 	
 	public CertificateViabilityDTO(Long id, BigInteger serijskiBroj, StatusCertifikata status) {

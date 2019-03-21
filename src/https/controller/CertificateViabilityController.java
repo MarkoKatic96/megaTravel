@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import app.main.Singleton;
 import https.model.CertificateViabilityDTO;
 import https.requests.GetRequest;
-import https.requests.PostRequest;
 import https.requests.PutRequest;
 
 public class CertificateViabilityController 
@@ -52,14 +51,14 @@ public class CertificateViabilityController
 	public CertificateViabilityDTO newStatus(CertificateViabilityDTO certif) throws KeyManagementException, CredentialException, KeyStoreException, NoSuchAlgorithmException, CertificateException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException
 	{
 		List<CertificateViabilityDTO> cert = null;
-		cert = PostRequest.execute("https://localhost:8443/api/viability", getToken(), certif, CertificateViabilityDTO.class, false);
+		cert = PutRequest.execute("https://localhost:8443/api/certificate/viability", getToken(), certif, CertificateViabilityDTO.class, false);
 		System.out.println(cert);
 		
 		return cert.get(0);
 	}
 	
 	
-	public CertificateViabilityDTO editStatus(CertificateViabilityDTO certif) throws KeyManagementException, CredentialException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException
+	public CertificateViabilityDTO editStatus(CertificateViabilityDTO certif) throws KeyManagementException, CredentialException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException
 	{
 		List<CertificateViabilityDTO> cert = null;
 		cert = PutRequest.execute("https://localhost:8443/api/viability", getToken(), certif, CertificateViabilityDTO.class, false);

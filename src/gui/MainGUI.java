@@ -58,6 +58,7 @@ import https.controller.CertificateCommunicationController;
 import https.controller.CertificateViabilityController;
 import https.model.CertificateCommunicationDTO;
 import https.model.CertificateViabilityDTO;
+import https.model.CertifikatDTO;
 import model.Certifikat;
 import model.CertifikatDomen;
 import model.CertifikatOprema;
@@ -353,7 +354,7 @@ public class MainGUI {
 							try {
 								newCC = ccc.setCommunication(new BigInteger(id2), new BigInteger(id1));
 							} catch (KeyManagementException | CertificateException | KeyStoreException
-									| NoSuchAlgorithmException | InstantiationException | IOException e1) {
+									| NoSuchAlgorithmException | InstantiationException | IOException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
@@ -501,6 +502,11 @@ public class MainGUI {
 					CertificateViabilityDTO cv = cvc.newStatus(new CertificateViabilityDTO(null, new BigInteger(sn), StatusCertifikata.POVUCEN));
 					if (cv!=null) {
 						JOptionPane.showMessageDialog(getMainFrame(), "Certifikat je uspesno povucen!", "Povlacenje", JOptionPane.INFORMATION_MESSAGE);
+						for (CertifikatDTO cert : Singleton.getInstance().getListaCertifikata()) {
+							if (cert.getSerijskiBroj().equals(sn)) {
+								Singleton.getInstance().getListaCertifikata().remove(cert);
+							}
+						}
 					} else {
 						throw new Exception();
 					}
