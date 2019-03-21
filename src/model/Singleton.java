@@ -1,4 +1,4 @@
-package app.main;
+package model;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

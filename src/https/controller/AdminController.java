@@ -12,11 +12,11 @@ import java.util.List;
 import javax.security.auth.login.CredentialException;
 import javax.security.sasl.AuthenticationException;
 
-import app.main.Singleton;
 import https.model.AdminDTO;
 import https.model.AdminPrijavaDTO;
 import https.requests.GetRequest;
 import https.requests.PostRequest;
+import model.Singleton;
 
 public class AdminController
 {

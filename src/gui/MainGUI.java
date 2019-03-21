@@ -53,7 +53,6 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import com.toedter.calendar.JDateChooser;
 
 import actions.KreirajCertActionListener;
-import app.main.Singleton;
 import https.controller.CertificateCommunicationController;
 import https.controller.CertificateViabilityController;
 import https.model.CertificateCommunicationDTO;
@@ -65,6 +64,7 @@ import model.CertifikatOprema;
 import model.CertifikatOrganizacija;
 import model.CertifikatOsoba;
 import model.CertifikatRoot;
+import model.Singleton;
 import model.StatusCertifikata;
 import model.TipCertifikata;
 import model.tabela.CertificateTabelModel;
