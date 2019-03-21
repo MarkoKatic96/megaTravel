@@ -2,11 +2,14 @@ package actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.KeyPair;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import app.main.Singleton;
 import gui.MainGUI;
+import https.model.CertifikatDTO;
 import model.Certifikat;
 import model.CertifikatAplikacija;
 import model.CertifikatCA;
@@ -14,7 +17,10 @@ import model.CertifikatDomen;
 import model.CertifikatOprema;
 import model.CertifikatOrganizacija;
 import model.CertifikatOsoba;
+import model.DataSum;
 import model.TipCertifikata;
+import security.certificates.GenerateCertificate;
+import security.data.SubjectData;
 
 public class KreirajCertActionListener implements ActionListener {
 
@@ -48,10 +54,6 @@ public class KreirajCertActionListener implements ActionListener {
 		}
 		if(cert.getPocetak().compareTo(cert.getKraj()) >= 0) {
 			JOptionPane.showMessageDialog(frame, "Zavrsetak trajanja certifikata ne moze biti pre pocetka!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		if(cert.getNaziv().equals("")) {
-			JOptionPane.showMessageDialog(frame, "Nije popunjen naziv certifikata!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -168,6 +170,24 @@ public class KreirajCertActionListener implements ActionListener {
 			}
 		}
 		
+		GenerateCertificate gen = new GenerateCertificate();
+		KeyPair pair = gen.generateKeyPair();
+		SubjectData subData = gen.generateCertificate(cert);
+		
+		boolean found = false;
+		if(cert.getSeriskiBrojNadSert() != null) {
+			for (CertifikatDTO certDto : Singleton.getInstance().getListaCertifikata()) {
+				if(certDto.getSerijskiBroj() == cert.getSeriskiBrojNadSert()) {
+					found = true;
+					break;
+				}
+			}
+		}
+		if(!found) {
+			JOptionPane.showMessageDialog(frame, "Nije pronadjen uneti sertifikat!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+
+		}
+		DataSum sum = new DataSum(subData, pair, cert.getSeriskiBrojNadSert());
 		// TODO Auto-generated method stub
 		// Step 1: ucitaj nadcertifikat ako je tip != root
 		// Step 2: kreiraj certifikat

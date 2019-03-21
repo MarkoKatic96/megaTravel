@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigInteger;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -8,6 +9,7 @@ import sun.security.x509.X500Name;
 
 public abstract class Certifikat {
 	private X509Certificate nadcertifikat;
+	private BigInteger seriskiBrojNadSert;
 	private Date pocetak;
 	private Date kraj;
 	private X500Name naziv;
@@ -25,9 +27,10 @@ public abstract class Certifikat {
 	 * @param publicKey
 	 * @param tipCertifikata
 	 */
-	public Certifikat(X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata) {
+	public Certifikat(X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata, BigInteger seriskiBroj) {
 		super();
 		this.nadcertifikat = nadcertifikat;
+		this.seriskiBrojNadSert = seriskiBroj;
 		this.pocetak = pocetak;
 		this.kraj = kraj;
 		this.naziv = naziv;
@@ -37,6 +40,10 @@ public abstract class Certifikat {
 
 	public X509Certificate getNadcertifikat() {
 		return nadcertifikat;
+	}
+
+	public BigInteger getSeriskiBrojNadSert() {
+		return seriskiBrojNadSert;
 	}
 
 	public Date getPocetak() {
