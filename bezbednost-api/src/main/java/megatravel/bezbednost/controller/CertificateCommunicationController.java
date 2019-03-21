@@ -7,8 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import megatravel.bezbednost.dto.CertificateCommunicationDTO;
@@ -86,8 +83,8 @@ public class CertificateCommunicationController {
 		return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
-	@RequestMapping(value = "api/communication", method = RequestMethod.GET, params = {"sn1","sn2"})
-	public ResponseEntity<Boolean> isCommunicationApproved(@RequestParam("sn1") BigInteger sn1, @RequestParam("sn2") BigInteger sn2, HttpServletRequest req) {
+	@RequestMapping(value = "api/communication", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> isCommunicationApproved(@RequestBody CertificateCommunicationDTO commDTO, HttpServletRequest req) {
 		System.out.println("isCommunicationApproved()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
@@ -98,13 +95,13 @@ public class CertificateCommunicationController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		boolean app = communicationService.communicationApproved(sn1, sn2);
+		Boolean app = communicationService.communicationApproved(commDTO.getSerijskiBroj1(), commDTO.getSerijskiBroj2());
 		
-		return new ResponseEntity<>(app, HttpStatus.OK);
+		return new ResponseEntity<>(app.toString(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "api/communication", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CertificateCommunicationModel> setCommunication(@RequestBody CertificateCommunicationDTO commDTO, HttpServletRequest req) {
+	public ResponseEntity<CertificateCommunicationDTO> setCommunication(@RequestBody CertificateCommunicationDTO commDTO, HttpServletRequest req) {
 		System.out.println("setCommunication()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
@@ -121,7 +118,7 @@ public class CertificateCommunicationController {
 		boolean app = communicationService.communicationApproved(sn1, sn2);
 		if (app) {
 			CertificateCommunicationModel comm = communicationService.findBySerialNumbers(sn1, sn2).get(0);
-			return new ResponseEntity<>(comm, HttpStatus.OK);
+			return new ResponseEntity<>(new CertificateCommunicationDTO(comm), HttpStatus.OK);
 		}
 		
 		CertificateModel c1 = certificateService.findBySerijskiBroj(sn1);
@@ -132,11 +129,11 @@ public class CertificateCommunicationController {
 
 		CertificateCommunicationModel comm = communicationService.save(new CertificateCommunicationModel(sn1,sn2));
 		
-		return new ResponseEntity<>(comm, HttpStatus.OK);
+		return new ResponseEntity<>(new CertificateCommunicationDTO(comm), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "api/communication/all", method = RequestMethod.GET, produces = {	MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<List<CertificateCommunicationDTO>> getAllCommunications(Pageable page, HttpServletRequest req) {
+	public ResponseEntity<List<CertificateCommunicationDTO>> getAllCommunications(HttpServletRequest req) {
 		System.out.println("getAllCommunications()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
@@ -147,10 +144,10 @@ public class CertificateCommunicationController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		final Page<CertificateCommunicationModel> comm = communicationService.findAll(page);
+		final List<CertificateCommunicationModel> comm = communicationService.findAll();
 		
 		HttpHeaders headers = new HttpHeaders();
-		long certTotal = comm.getTotalElements();
+		long certTotal = comm.size();
 		headers.add("X-Total-Count", String.valueOf(certTotal));
 
 		List<CertificateCommunicationDTO> lista = new ArrayList<>();

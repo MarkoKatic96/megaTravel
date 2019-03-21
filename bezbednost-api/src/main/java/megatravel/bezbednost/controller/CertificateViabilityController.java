@@ -45,8 +45,11 @@ public class CertificateViabilityController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		String status = certificateViabilityService.getStatus(serijskiBroj);
-		return new ResponseEntity<String>(status, HttpStatus.OK);
+		StatusCertifikata status = certificateViabilityService.getStatus(serijskiBroj);
+		if (status==null) {
+			return new ResponseEntity<String>("", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(status.toString(), HttpStatus.OK);
 		
 	}
 	
@@ -83,7 +86,7 @@ public class CertificateViabilityController {
 	}
 	
 	@RequestMapping(value = "/api/certificate/viability", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CertificateViabilityModel> newStatus(@RequestBody CertificateViabilityDTO commDTO, HttpServletRequest req){
+	public ResponseEntity<CertificateViabilityDTO> newStatus(@RequestBody CertificateViabilityDTO commDTO, HttpServletRequest req){
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -96,12 +99,12 @@ public class CertificateViabilityController {
 		BigInteger sn = commDTO.getSerijskiBroj();
 		StatusCertifikata sc = commDTO.getStatus();
 		CertificateViabilityModel noviStatus = certificateViabilityService.newStatus(new CertificateViabilityModel(sn, sc));
-		return new ResponseEntity<CertificateViabilityModel>(noviStatus, HttpStatus.OK);
+		return new ResponseEntity<CertificateViabilityDTO>(new CertificateViabilityDTO(noviStatus.getId(),noviStatus.getSerijskiBroj(),noviStatus.getStatus()), HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(value = "/api/certificate/viability", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CertificateViabilityModel> editStatus(@RequestBody CertificateViabilityDTO commDTO, HttpServletRequest req){
+	public ResponseEntity<CertificateViabilityDTO> editStatus(@RequestBody CertificateViabilityDTO commDTO, HttpServletRequest req){
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -113,8 +116,8 @@ public class CertificateViabilityController {
 		
 		BigInteger sn = commDTO.getSerijskiBroj();
 		StatusCertifikata sc = commDTO.getStatus();
-		CertificateViabilityModel promenjenStatus = certificateViabilityService.editStatus(sn, sc);
-		return new ResponseEntity<CertificateViabilityModel>(promenjenStatus, HttpStatus.OK);
+		CertificateViabilityModel noviStatus = certificateViabilityService.editStatus(sn, sc);
+		return new ResponseEntity<CertificateViabilityDTO>(new CertificateViabilityDTO(noviStatus.getId(),noviStatus.getSerijskiBroj(),noviStatus.getStatus()), HttpStatus.OK);
 		
 	}
 	

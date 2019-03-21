@@ -18,12 +18,11 @@ public class CertificateViabilityService {
 	CertificateViabilityRepository certificateViabilityRepository;
 	
 	public List<CertificateViabilityModel> findAll(){
-		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
-		return lista;
+		return certificateViabilityRepository.findAll();
 	}
 	
 	public List<CertificateViabilityModel> getValidCertificates(){
-		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
+		List<CertificateViabilityModel> lista = certificateViabilityRepository.findAll();
 		List<CertificateViabilityModel> listaValidnih = new ArrayList<CertificateViabilityModel>();
 		for (CertificateViabilityModel cvm : lista) {
 			if(cvm.getStatus()==StatusCertifikata.VALIDAN) {
@@ -33,15 +32,16 @@ public class CertificateViabilityService {
 		return listaValidnih;
 	}
 	
-	public String getStatus(BigInteger serijskiBroj) {
+	public StatusCertifikata getStatus(BigInteger serijskiBroj) {
 		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
 		StatusCertifikata status = null;
 		for (CertificateViabilityModel cvm : lista) {
 			if(cvm.getSerijskiBroj().equals(serijskiBroj)) {
 				status = cvm.getStatus();
+				break;
 			}
 		}
-		if(status == StatusCertifikata.ISTEKAO) {
+		/*if(status == StatusCertifikata.ISTEKAO) {
 			return "Sertifikat je istekao";
 		}else if(status == StatusCertifikata.POVUCEN){
 			return "Sertifikat je povucen";
@@ -49,7 +49,8 @@ public class CertificateViabilityService {
 			return "Sertifikat je validan";
 		}else {
 			return "Trazeni sertifikat ne postoji";
-		}
+		}*/
+		return status;
 	}
 	
 	public CertificateViabilityModel newStatus(CertificateViabilityModel certificateViabilityModel) {

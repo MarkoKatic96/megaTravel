@@ -6,14 +6,11 @@ import java.math.BigInteger;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -178,7 +175,7 @@ public class CertificateController {
 	}
 	
 	@RequestMapping(value = "api/certificate/subcert/{id}", method = RequestMethod.GET, produces = {	MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<List<CertificateModel>> getSubCertificates(Pageable page, @PathVariable BigInteger id, HttpServletRequest req) {
+	public ResponseEntity<List<CertificateModel>> getSubCertificates(@PathVariable BigInteger id, HttpServletRequest req) {
 		System.out.println("getSubCertificates()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
@@ -189,18 +186,33 @@ public class CertificateController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		final Page<CertificateModel> certifikati = certificateService.findSubCertifikates(id, page);
+		final List<CertificateModel> certifikati = certificateService.findSubCertifikates(id);
 		
 		HttpHeaders headers = new HttpHeaders();
-		long certTotal = certifikati.getTotalElements();
+		long certTotal = certifikati.size();
 		headers.add("X-Total-Count", String.valueOf(certTotal));
-
-		List<CertificateModel> lista = new ArrayList<>();
-		for (CertificateModel c : certifikati) {
-			lista.add(c);
-		}
 		
-		return new ResponseEntity<>(lista, headers, HttpStatus.OK);
+		return new ResponseEntity<>(certifikati, headers, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "api/certificate/all", method = RequestMethod.GET, produces = {	MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<List<CertificateModel>> getAllCertificates(HttpServletRequest req) {
+		System.out.println("getAllCertificates()");
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		AdminModel korisnik = adminService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		 
+		final List<CertificateModel> comm = certificateService.findAll();
+		
+		HttpHeaders headers = new HttpHeaders();
+		long certTotal = comm.size();
+		headers.add("X-Total-Count", String.valueOf(certTotal));
+		
+		return new ResponseEntity<>(comm, headers, HttpStatus.OK);
+	}
 }

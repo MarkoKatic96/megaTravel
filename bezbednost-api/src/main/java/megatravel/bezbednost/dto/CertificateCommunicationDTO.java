@@ -2,6 +2,8 @@ package megatravel.bezbednost.dto;
 
 import java.math.BigInteger;
 
+import megatravel.bezbednost.model.CertificateCommunicationModel;
+
 public class CertificateCommunicationDTO {
 	
 	private Long id;
@@ -17,6 +19,13 @@ public class CertificateCommunicationDTO {
 		this.id = id;
 		this.serijskiBroj1 = serijskiBroj1;
 		this.serijskiBroj2 = serijskiBroj2;
+	}
+
+	public CertificateCommunicationDTO(CertificateCommunicationModel comm) {
+		super();
+		this.id = comm.getId();
+		this.serijskiBroj1 = comm.getSerijskiBroj1();
+		this.serijskiBroj2 = comm.getSerijskiBroj2();
 	}
 
 	public Long getId() {

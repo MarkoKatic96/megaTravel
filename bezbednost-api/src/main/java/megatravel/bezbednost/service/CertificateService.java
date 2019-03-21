@@ -1,10 +1,9 @@
 package megatravel.bezbednost.service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import megatravel.bezbednost.model.CertificateModel;
@@ -20,8 +19,8 @@ public class CertificateService {
 		return certificateRepository.findBySerijskiBroj(serijskiBroj);
 	}
 	
-	public Page<CertificateModel> findAll(Pageable page) {
-		return certificateRepository.findAll(page);
+	public List<CertificateModel> findAll() {
+		return certificateRepository.findAll();
 	}
 
 	public CertificateModel findOne(Long id) {
@@ -40,7 +39,7 @@ public class CertificateService {
 		return certificateRepository.existsBySerijskiBroj(serijskiBroj);
 	}
 	
-	public Page<CertificateModel> findSubCertifikates(BigInteger idCertifikata, Pageable pageable){
-		return certificateRepository.findSubCertifikates(idCertifikata, pageable);
+	public List<CertificateModel> findSubCertifikates(BigInteger idCertifikata){
+		return certificateRepository.findSubCertifikates(idCertifikata);
 	}
 }
