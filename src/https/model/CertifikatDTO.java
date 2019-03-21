@@ -1,63 +1,90 @@
 package https.model;
 
-import java.security.PublicKey;
-import java.security.cert.X509Certificate;
+import java.math.BigInteger;
 import java.util.Date;
 
 import model.TipCertifikata;
-import sun.security.x509.X500Name;
 
 public class CertifikatDTO
 {
-	private X509Certificate nadcertifikat;
-	private Date pocetak;
-	private Date kraj;
-	private X500Name naziv;
-	private PublicKey publicKey;
-	TipCertifikata tipCertifikata;
+	private Long id;
+	private byte[] certifikat;
+	private Date datumPocetka;
+	private Date datumKraja;
+	private BigInteger serijskiBroj;
+	private TipCertifikata tipCertifikata;
+	private BigInteger nadcertifikat;
 	
 	public CertifikatDTO() {
 	}
 
-	/**
-	 * @param nadcertifikat
-	 * @param pocetak
-	 * @param kraj
-	 * @param naziv
-	 * @param publicKey
-	 * @param tipCertifikata
-	 */
-	public CertifikatDTO(X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata) {
+	public CertifikatDTO(Long id, byte[] certifikat, Date datumPocetka, Date datumKraja, BigInteger serijskiBroj,
+			TipCertifikata tipCertifikata, BigInteger nadcertifikat) {
 		super();
-		this.nadcertifikat = nadcertifikat;
-		this.pocetak = pocetak;
-		this.kraj = kraj;
-		this.naziv = naziv;
-		this.publicKey = publicKey;
+		this.id = id;
+		this.certifikat = certifikat;
+		this.datumPocetka = datumPocetka;
+		this.datumKraja = datumKraja;
+		this.serijskiBroj = serijskiBroj;
 		this.tipCertifikata = tipCertifikata;
+		this.nadcertifikat = nadcertifikat;
 	}
 
-	public X509Certificate getNadcertifikat() {
-		return nadcertifikat;
+	public Long getId() {
+		return id;
 	}
 
-	public Date getPocetak() {
-		return pocetak;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Date getKraj() {
-		return kraj;
+	public byte[] getCertifikat() {
+		return certifikat;
 	}
 
-	public X500Name getNaziv() {
-		return naziv;
+	public void setCertifikat(byte[] certifikat) {
+		this.certifikat = certifikat;
 	}
 
-	public PublicKey getPublicKey() {
-		return publicKey;
+	public Date getDatumPocetka() {
+		return datumPocetka;
+	}
+
+	public void setDatumPocetka(Date datumPocetka) {
+		this.datumPocetka = datumPocetka;
+	}
+
+	public Date getDatumKraja() {
+		return datumKraja;
+	}
+
+	public void setDatumKraja(Date datumKraja) {
+		this.datumKraja = datumKraja;
+	}
+
+	public BigInteger getSerijskiBroj() {
+		return serijskiBroj;
+	}
+
+	public void setSerijskiBroj(BigInteger serijskiBroj) {
+		this.serijskiBroj = serijskiBroj;
 	}
 
 	public TipCertifikata getTipCertifikata() {
 		return tipCertifikata;
 	}
+
+	public void setTipCertifikata(TipCertifikata tipCertifikata) {
+		this.tipCertifikata = tipCertifikata;
+	}
+
+	public BigInteger getNadcertifikat() {
+		return nadcertifikat;
+	}
+
+	public void setNadcertifikat(BigInteger nadcertifikat) {
+		this.nadcertifikat = nadcertifikat;
+	}
+
+	
 }

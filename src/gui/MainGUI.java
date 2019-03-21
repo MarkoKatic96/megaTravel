@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -11,8 +12,19 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
+import java.rmi.server.ServerNotActiveException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.List;
 
+import javax.security.auth.login.CredentialException;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -21,14 +33,18 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -37,12 +53,18 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import com.toedter.calendar.JDateChooser;
 
 import actions.KreirajCertActionListener;
+import app.main.Singleton;
+import https.controller.CertificateCommunicationController;
+import https.controller.CertificateViabilityController;
+import https.model.CertificateCommunicationDTO;
+import https.model.CertificateViabilityDTO;
 import model.Certifikat;
 import model.CertifikatDomen;
 import model.CertifikatOprema;
 import model.CertifikatOrganizacija;
 import model.CertifikatOsoba;
 import model.CertifikatRoot;
+import model.StatusCertifikata;
 import model.TipCertifikata;
 import model.tabela.CertificateTabelModel;
 
@@ -80,13 +102,14 @@ public class MainGUI {
 	private JTextField txtOrganizacijaAplikacije;
 	private JTextField txtVerzija;
 	private JTable table;
-	private JTextField txtUid;
-	private JTextField txtIzdavac;
-	private JTextField txtSubjekat;
-	private JTextField textField;
-	private JTextField textField_1;
 	private JTable table_1;
 	private JTable table_2;
+	private JTextPane txtIzdavac1;
+	private JTextPane txtIzdavac2;
+	private JTextPane txtSubjekat1;
+	private JTextPane txtSubjekat2;
+	private JTable table_3;
+	
 
 	/**
 	 * Create the application frame.
@@ -107,7 +130,7 @@ public class MainGUI {
 		frmAdminCertificateManagement = new JFrame();
 		frmAdminCertificateManagement.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Boris\\eclipse-workspace\\Admin Certificate Management\\data\\images\\certificate.png"));
 		frmAdminCertificateManagement.setTitle("Admin Certificate Management");
-		frmAdminCertificateManagement.setBounds(100, 100, 1080, 580);
+		frmAdminCertificateManagement.setBounds(100, 100, 1080, 650);
 		frmAdminCertificateManagement.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAdminCertificateManagement.getContentPane().setLayout(new BoxLayout(frmAdminCertificateManagement.getContentPane(), BoxLayout.X_AXIS));
 		
@@ -168,8 +191,8 @@ public class MainGUI {
 		GridBagLayout gbl_komunikacijaPanel = new GridBagLayout();
 		gbl_komunikacijaPanel.columnWidths = new int[] {90, 700, 0, 0};
 		gbl_komunikacijaPanel.rowHeights = new int[] {30, 150, 40, 150};
-		gbl_komunikacijaPanel.columnWeights = new double[]{1.0, 1.0, 1.0};
-		gbl_komunikacijaPanel.rowWeights = new double[]{1.0, 1.0, 0.0, 1.0, 0.0, 0.0};
+		gbl_komunikacijaPanel.columnWeights = new double[]{0.0, 1.0, 1.0};
+		gbl_komunikacijaPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 0.0};
 		komunikacijaPanel.setLayout(gbl_komunikacijaPanel);
 		
 		JPanel panel_5 = new JPanel();
@@ -189,6 +212,32 @@ public class MainGUI {
 		table_2 = new JTable(model_2);
 		table_1.setAutoCreateRowSorter(true);
 		table_2.setAutoCreateRowSorter(true);
+		table_1.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+
+	        	String id = table_1.getValueAt(table_1.getSelectedRow(), 0).toString();
+	            System.out.println("tbl1: " + id);
+	            byte[] certBytes = Singleton.getInstance().getListaCertifikata().get(table_1.getSelectedRow()).getCertifikat();
+	            X509Certificate cert = Singleton.getInstance().getX509Certificate(certBytes);
+	            txtIzdavac1.setText(cert.getIssuerX500Principal().toString());
+	            txtSubjekat1.setText(cert.getSubjectX500Principal().toString());
+	            
+	            System.out.println(cert.getIssuerX500Principal().toString());
+	            System.out.println(cert.getSubjectX500Principal().toString());
+	        }
+	    });
+		table_2.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+
+	        	String id = table_2.getValueAt(table_2.getSelectedRow(), 0).toString();
+	            System.out.println("tbl2: " + id);
+	            byte[] certBytes = Singleton.getInstance().getListaCertifikata().get(table_2.getSelectedRow()).getCertifikat();
+	            X509Certificate cert = Singleton.getInstance().getX509Certificate(certBytes);
+	            txtIzdavac2.setText(cert.getIssuerX500Principal().toString());
+	            txtSubjekat2.setText(cert.getSubjectX500Principal().toString());
+	            
+	        }
+	    });
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,new JScrollPane(table_1),new JScrollPane(table_2));
 		splitPane.setEnabled(false);
@@ -205,6 +254,7 @@ public class MainGUI {
 		
 		JPanel cert1_infoPanel = new JPanel();
 		GridBagConstraints gbc_cert1_infoPanel = new GridBagConstraints();
+		gbc_cert1_infoPanel.gridheight = 2;
 		gbc_cert1_infoPanel.insets = new Insets(0, 0, 5, 5);
 		gbc_cert1_infoPanel.fill = GridBagConstraints.BOTH;
 		gbc_cert1_infoPanel.gridx = 0;
@@ -215,21 +265,24 @@ public class MainGUI {
 		JLabel lblPodaciOIzdavau = new JLabel("  Podaci o Izdavaču Certifikata 1:");
 		cert1_infoPanel.add(lblPodaciOIzdavau);
 		
-		txtIzdavac = new JTextField();
-		txtIzdavac.setEditable(false);
-		cert1_infoPanel.add(txtIzdavac);
-		txtIzdavac.setColumns(10);
+		txtIzdavac1 = new JTextPane();
+		txtIzdavac1.setEditable(false);
+		txtIzdavac1.setEnabled(false);
+		JScrollPane jspIzdavac1 = new JScrollPane(txtIzdavac1);
+		cert1_infoPanel.add(jspIzdavac1);
 		
 		JLabel lblPodaciOSubjektu = new JLabel("  Podaci o Subjektu Cerifikata 1:");
 		cert1_infoPanel.add(lblPodaciOSubjektu);
 		
-		txtSubjekat = new JTextField();
-		txtSubjekat.setEditable(false);
-		cert1_infoPanel.add(txtSubjekat);
-		txtSubjekat.setColumns(10);
+		txtSubjekat1 = new JTextPane();
+		txtSubjekat1.setEnabled(false);
+		txtSubjekat1.setEditable(false);
+		JScrollPane jspSubject1 = new JScrollPane(txtSubjekat1);
+		cert1_infoPanel.add(jspSubject1);
 		
 		JPanel cert2_infoPanel = new JPanel();
 		GridBagConstraints gbc_cert2_infoPanel = new GridBagConstraints();
+		gbc_cert2_infoPanel.gridheight = 2;
 		gbc_cert2_infoPanel.insets = new Insets(0, 0, 5, 5);
 		gbc_cert2_infoPanel.fill = GridBagConstraints.BOTH;
 		gbc_cert2_infoPanel.gridx = 0;
@@ -240,53 +293,145 @@ public class MainGUI {
 		JLabel lblPodaciOIzdavau_1 = new JLabel("  Podaci o Izdavaču Certifikata 2:");
 		cert2_infoPanel.add(lblPodaciOIzdavau_1);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		cert2_infoPanel.add(textField);
+		txtIzdavac2 = new JTextPane();
+		txtIzdavac2.setEnabled(false);
+		txtIzdavac2.setEditable(false);
+		JScrollPane jspIzdavac2 = new JScrollPane(txtIzdavac2);
+		cert2_infoPanel.add(jspIzdavac2);
 		
 		JLabel lblPodaciOSubjektu_1 = new JLabel("  Podaci o Subjektu Cerifikata 2:");
 		cert2_infoPanel.add(lblPodaciOSubjektu_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		cert2_infoPanel.add(textField_1);
+		txtSubjekat2 = new JTextPane();
+		txtSubjekat2.setEnabled(false);
+		txtSubjekat2.setEditable(false);
+		JScrollPane jspSubject2 = new JScrollPane(txtSubjekat2);
+		cert2_infoPanel.add(jspSubject2);
 		
 		JPanel panel_8 = new JPanel();
 		GridBagConstraints gbc_panel_8 = new GridBagConstraints();
+		gbc_panel_8.gridheight = 2;
 		gbc_panel_8.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_8.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_8.gridx = 0;
 		gbc_panel_8.gridy = 5;
 		komunikacijaPanel.add(panel_8, gbc_panel_8);
-		panel_8.setLayout(new BoxLayout(panel_8, BoxLayout.X_AXIS));
+		panel_8.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnPoveiCertifikate = new JButton("Poveži certifikate");
-		GridBagConstraints gbc_btnPoveiCertifikate = new GridBagConstraints();
-		gbc_btnPoveiCertifikate.insets = new Insets(0, 0, 5, 5);
-		gbc_btnPoveiCertifikate.gridx = 0;
-		gbc_btnPoveiCertifikate.gridy = 6;
-		komunikacijaPanel.add(btnPoveiCertifikate, gbc_btnPoveiCertifikate);
+		JButton btnPoveziCertifikate = new JButton("Poveži certifikate");
+		btnPoveziCertifikate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (table_1.getSelectedRow()!=-1 && table_2.getSelectedRow()!=-1) {
+					String id1 = table_1.getValueAt(table_1.getSelectedRow(), 4).toString();
+					String id2 = table_2.getValueAt(table_2.getSelectedRow(), 4).toString();
+					
+					CertificateCommunicationController ccc = new CertificateCommunicationController();
+					List<CertificateCommunicationDTO> list;
+					try {
+						list = ccc.getAllCommunications();
+						for (CertificateCommunicationDTO cc : list) {
+							if (cc.getSerijskiBroj1().toString().equals(id1) && cc.getSerijskiBroj2().toString().equals(id2)) {
+								JOptionPane.showMessageDialog(getMainFrame(), "Certifikati su vec povezani!", "Login", JOptionPane.INFORMATION_MESSAGE);
+								return;
+							}
+							if (cc.getSerijskiBroj2().toString().equals(id1) && cc.getSerijskiBroj1().toString().equals(id2)) {
+								JOptionPane.showMessageDialog(getMainFrame(), "Certifikati su vec povezani!", "Login", JOptionPane.INFORMATION_MESSAGE);
+								return;
+							}
+						}
+					} catch (KeyManagementException | CertificateException | KeyStoreException
+							| NoSuchAlgorithmException | InstantiationException
+							| IOException | IllegalAccessException e1) {
+						JOptionPane.showMessageDialog(getMainFrame(), "Nije moguce kontaktirati server.\nProverite da li imate internet konekciju. Ako imate internet \nkonekciju pozovite administratora sistema ili pokusajte \nmalo kasnije!", "Login", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+						//nije do sada povezan
+						try {
+							CertificateCommunicationDTO newCC = null;
+							try {
+								newCC = ccc.setCommunication(new BigInteger(id2), new BigInteger(id1));
+							} catch (KeyManagementException | CertificateException | KeyStoreException
+									| NoSuchAlgorithmException | InstantiationException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							if (newCC!=null) {
+								JOptionPane.showMessageDialog(getMainFrame(), "Certifikati su uspesno povezani!", "Login", JOptionPane.INFORMATION_MESSAGE);
+								return;
+							} else {
+								JOptionPane.showMessageDialog(getMainFrame(), "Certifikate nije moguce povezati!", "Login", JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						} catch (CredentialException | ServerNotActiveException e1) {
+							JOptionPane.showMessageDialog(getMainFrame(), "Certifikate nije moguce povezati!", "Login", JOptionPane.ERROR_MESSAGE);
+							return;
+						} catch (IllegalAccessException e1) {
+							try {
+								String b1 = null;
+								try {
+									b1 = ccc.isCommunicationApproved(new BigInteger(id2), new BigInteger(id1));
+								} catch (KeyManagementException | CertificateException | KeyStoreException
+										| NoSuchAlgorithmException | InstantiationException | IllegalAccessException
+										| IOException e2) {
+									// TODO Auto-generated catch block
+									e2.printStackTrace();
+								}
+								if (b1.equals("true")) {
+									JOptionPane.showMessageDialog(getMainFrame(), "Certifikati su uspesno povezani!", "Login", JOptionPane.INFORMATION_MESSAGE);
+									
+									return;
+								}else {
+									JOptionPane.showMessageDialog(getMainFrame(), "Certifikate nije moguce povezati!", "Login", JOptionPane.ERROR_MESSAGE);
+									return;
+								}
+							} catch (CredentialException | IllegalArgumentException | InvocationTargetException
+									| NoSuchMethodException | SecurityException | ClassNotFoundException
+									| ServerNotActiveException e2) {
+								// TODO Auto-generated catch block
+								System.out.println("Faaaaaaaaaaaa");
+								e2.printStackTrace();
+							}
+							
+						}
+						
+					
+				}
+				
+			}
+		});
+		panel_8.add(btnPoveziCertifikate);
+		
+		JButton btnRazveziCertifikate = new JButton("Razveži certifikate");
+		btnRazveziCertifikate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		panel_8.add(btnRazveziCertifikate);
 			
 		JPanel povuciPanel = new JPanel();
 		tabbedPane.addTab("Povuci certifikat", null, povuciPanel, null);
 		GridBagLayout gbl_povuciPanel = new GridBagLayout();
-		gbl_povuciPanel.columnWidths = new int[] {140, 160, 30};
-		gbl_povuciPanel.rowHeights = new int[] {0, 0, 0, 0, 0};
+		gbl_povuciPanel.columnWidths = new int[] {20, 80, 160, 30};
+		gbl_povuciPanel.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0};
 		gbl_povuciPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_povuciPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0};
+		gbl_povuciPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, 1.0, 0.0};
 		povuciPanel.setLayout(gbl_povuciPanel);
 		
 		JPanel panel_1 = new JPanel();
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 		gbc_panel_1.gridwidth = 2;
-		gbc_panel_1.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_1.gridx = 0;
 		gbc_panel_1.gridy = 0;
 		povuciPanel.add(panel_1, gbc_panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[] {250, 250, 0, 20, 0};
+		gbl_panel_1.columnWidths = new int[] {50, 250, 0, 30};
 		gbl_panel_1.rowHeights = new int[] {30, 30, 0, 20, 0};
 		gbl_panel_1.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -303,62 +448,78 @@ public class MainGUI {
 		gbc_lblOdaberiteCertifikatKoji.gridy = 0;
 		panel_1.add(lblOdaberiteCertifikatKoji, gbc_lblOdaberiteCertifikatKoji);
 		
-		JPanel panel_2 = new JPanel();
-		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		gbc_panel_2.gridwidth = 2;
-		gbc_panel_2.anchor = GridBagConstraints.NORTHWEST;
-		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_2.gridx = 0;
-		gbc_panel_2.gridy = 1;
-		povuciPanel.add(panel_2, gbc_panel_2);
-		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{75, 190, 75, 86, 75, 109, 0};
-		gbl_panel_2.rowHeights = new int[]{23, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		panel_2.setLayout(gbl_panel_2);
-		
-		JLabel lblUnesiteUidCertifikata = new JLabel("Unesite UID certifikata kog zelite povuci");
-		GridBagConstraints gbc_lblUnesiteUidCertifikata = new GridBagConstraints();
-		gbc_lblUnesiteUidCertifikata.anchor = GridBagConstraints.WEST;
-		gbc_lblUnesiteUidCertifikata.insets = new Insets(0, 0, 0, 5);
-		gbc_lblUnesiteUidCertifikata.gridx = 1;
-		gbc_lblUnesiteUidCertifikata.gridy = 0;
-		panel_2.add(lblUnesiteUidCertifikata, gbc_lblUnesiteUidCertifikata);
-		lblUnesiteUidCertifikata.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		txtUid = new JTextField();
-		GridBagConstraints gbc_txtUid = new GridBagConstraints();
-		gbc_txtUid.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtUid.gridwidth = 3;
-		gbc_txtUid.insets = new Insets(0, 0, 0, 5);
-		gbc_txtUid.gridx = 2;
-		gbc_txtUid.gridy = 0;
-		panel_2.add(txtUid, gbc_txtUid);
-		txtUid.setToolTipText("UID Certifikata");
-		txtUid.setColumns(10);
-		
-		JButton btnPovuci = new JButton("Povuci certifikat");
-		GridBagConstraints gbc_btnPovuci = new GridBagConstraints();
-		gbc_btnPovuci.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnPovuci.gridx = 5;
-		gbc_btnPovuci.gridy = 0;
-		panel_2.add(btnPovuci, gbc_btnPovuci);
-		
 		JPanel panel_3 = new JPanel();
 		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
-		gbc_panel_3.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_3.gridheight = 4;
+		gbc_panel_3.gridwidth = 2;
+		gbc_panel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_3.fill = GridBagConstraints.BOTH;
 		gbc_panel_3.gridx = 0;
-		gbc_panel_3.gridy = 2;
+		gbc_panel_3.gridy = 1;
 		povuciPanel.add(panel_3, gbc_panel_3);
 		
-		JPanel panel_4 = new JPanel();
-		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
-		gbc_panel_4.fill = GridBagConstraints.BOTH;
-		gbc_panel_4.gridx = 0;
-		gbc_panel_4.gridy = 3;
-		povuciPanel.add(panel_4, gbc_panel_4);
+		CertificateTabelModel model_3 = new CertificateTabelModel();
+		GridBagLayout gbl_panel_3 = new GridBagLayout();
+		gbl_panel_3.columnWidths = new int[] {20, 286, 0, 452, 0};
+		gbl_panel_3.rowHeights = new int[]{427, 0};
+		gbl_panel_3.columnWeights = new double[]{1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_3.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		panel_3.setLayout(gbl_panel_3);
+		table_3 = new JTable(model_3);
+		table_3.setAutoCreateRowSorter(true);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridwidth = 3;
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		JScrollPane scrollPane = new JScrollPane(table_3);
+		panel_3.add(scrollPane, gbc);
+		
+		//table_3.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	     //   public void valueChanged(ListSelectionEvent event) {
+
+	        	/*String id = table_1.getValueAt(table_1.getSelectedRow(), 0).toString();
+	            System.out.println("tbl1: " + id);
+	            byte[] certBytes = Singleton.getInstance().getListaCertifikata().get(table_1.getSelectedRow()).getCertifikat();
+	            X509Certificate cert = Singleton.getInstance().getX509Certificate(certBytes);
+	            txtIzdavac1.setText(cert.getIssuerX500Principal().toString());
+	            txtSubjekat1.setText(cert.getSubjectX500Principal().toString());
+	            
+	            System.out.println(cert.getIssuerX500Principal().toString());
+	            System.out.println(cert.getSubjectX500Principal().toString());*/
+	     //   }
+	    //});
+		
+		JButton btnPovuci = new JButton("Povuci certifikat");
+		btnPovuci.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String sn = table_3.getValueAt(table_3.getSelectedRow(), 4).toString();
+	            CertificateViabilityController cvc = new CertificateViabilityController();
+	            try {
+					CertificateViabilityDTO cv = cvc.newStatus(new CertificateViabilityDTO(null, new BigInteger(sn), StatusCertifikata.POVUCEN));
+					if (cv!=null) {
+						JOptionPane.showMessageDialog(getMainFrame(), "Certifikat je uspesno povucen!", "Povlacenje", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						throw new Exception();
+					}
+				} catch (KeyManagementException | CredentialException | KeyStoreException | NoSuchAlgorithmException
+						| CertificateException | InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+						| SecurityException | ClassNotFoundException | IOException | ServerNotActiveException e1) {
+					JOptionPane.showMessageDialog(getMainFrame(), "Certifikat nije povucen!", "Povlacenje", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(getMainFrame(), "Certifikat nije povucen!", "Povlacenje", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		GridBagConstraints gbc_btnPovuci = new GridBagConstraints();
+		gbc_btnPovuci.insets = new Insets(0, 0, 5, 5);
+		gbc_btnPovuci.gridx = 0;
+		gbc_btnPovuci.gridy = 5;
+		povuciPanel.add(btnPovuci, gbc_btnPovuci);
 		tabbedPane.setEnabledAt(2, true);
 		
 		JPanel postojeciPanel = new JPanel();

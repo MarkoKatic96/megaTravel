@@ -3,6 +3,7 @@ package actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -91,6 +92,21 @@ public class ProveriKredencijaleActionListener implements ActionListener {
 			System.out.println("Neka nepoznata greska!");
 			JOptionPane.showMessageDialog(main.getMainFrame(), "Desila se greska sa serverom: " + e1.getMessage() + " \nPozovite administratora sistema ili pokusajte da se ulogujete malo kasnije!", "Login", JOptionPane.ERROR_MESSAGE);
 			return;
+		} catch (IllegalArgumentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InvocationTargetException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (NoSuchMethodException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
 	}

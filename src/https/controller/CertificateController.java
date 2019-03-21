@@ -27,42 +27,41 @@ public class CertificateController
 	
 	public CertifikatDTO getCertifikatById(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
-		CertifikatDTO cert = null;
-		cert = GetRequest.execute("https://localhost:8443/api/certificate/id/" + id, getToken(), new CertifikatDTO());
+		List<CertifikatDTO> cert = null;
+		cert = GetRequest.execute("https://localhost:8443/api/certificate/id/" + id, getToken(), CertifikatDTO.class, false);
 		if(cert == null)
 		{
 				JOptionPane.showMessageDialog(null, "Nepostojeci sertifikat", "Greska", JOptionPane.OK_OPTION);
 		}
 		
-		return cert;
+		return cert.get(0);
 	}
 	
 	public CertifikatDTO getX509CertificateById(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
-		CertifikatDTO cert = null;
-		cert = GetRequest.execute("https://localhost:8443/api/certificate/x509/" + id, getToken(), new CertifikatDTO());
+		List<CertifikatDTO> cert = null;
+		cert = GetRequest.execute("https://localhost:8443/api/certificate/x509/" + id, getToken(), CertifikatDTO.class, false);
 		if(cert == null)
 		{
 			JOptionPane.showMessageDialog(null, "Nepostojeci sertifikat", "Greska", JOptionPane.OK_OPTION);
 		}
 		System.out.println(cert);
 		
-		return cert;
+		return cert.get(0);
 	}
 	
 	public CertifikatDTO getCertifikatBySN(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
-		CertifikatDTO cert = null;
-		cert = GetRequest.execute("https://localhost:8443/api/certificate/sn/" + id, getToken(), new CertifikatDTO());
+		List<CertifikatDTO> cert = null;
+		cert = GetRequest.execute("https://localhost:8443/api/certificate/sn/" + id, getToken(), CertifikatDTO.class, false);
 		if(cert == null)
 		{
 			JOptionPane.showMessageDialog(null, "Nepostojeci sertifikat", "Greska", JOptionPane.OK_OPTION);
 		}
 		System.out.println(cert);
 		
-		return cert;
+		return cert.get(0);
 	}
-	
 	
 	public void removeById(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
@@ -76,24 +75,36 @@ public class CertificateController
 	
 	public boolean exists(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
-		boolean cert = false;
-		cert = GetRequest.execute("https://localhost:8443/api/certificate/exists/" + id, getToken(), new Boolean(cert));
+		List<Boolean> cert = new ArrayList<>();
+		cert = GetRequest.execute("https://localhost:8443/api/certificate/exists/" + id, getToken(), Boolean.class, false);
 		System.out.println(cert);
-		if(!cert)
+		if(!cert.get(0))
 			JOptionPane.showMessageDialog(null, "Nepostojeci sertifikat", "Greska", JOptionPane.OK_OPTION);
 		else
 			JOptionPane.showMessageDialog(null, "Postoji sertifikat sa tim id-jem", "Uspesno", JOptionPane.OK_OPTION);
 		
-		return cert;
+		return cert.get(0);
 	}
 	
 	public List<CertifikatDTO> getSubCertificates(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
 		List<CertifikatDTO> certs = null;
-		certs = GetRequest.execute("https://localhost:8443/api/certificate/subcert/" + id, getToken(), new ArrayList<CertifikatDTO>()); 
+		certs = GetRequest.execute("https://localhost:8443/api/certificate/subcert/" + id, getToken(), CertifikatDTO.class, true); 
 		if(certs.isEmpty())
 		{
 			JOptionPane.showMessageDialog(null, "Nema podsertifikata za izabrani parametar", "Greska", JOptionPane.OK_OPTION);
+		}
+
+		return certs;
+	}
+	
+	public List<CertifikatDTO> getAllCertificates() throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
+	{
+		List<CertifikatDTO> certs = null;
+		certs = GetRequest.execute("https://localhost:8443/api/certificate/all", getToken(), CertifikatDTO.class, true); 
+		if(certs.isEmpty())
+		{
+			JOptionPane.showMessageDialog(null, "Nema kreiranih sertifikata", "Greska", JOptionPane.OK_OPTION);
 		}
 
 		return certs;

@@ -69,6 +69,10 @@ public class LoginGUI {
 		btnPotvrdi.setBounds(132, 198, 79, 23);
 		btnPotvrdi.addActionListener(new ProveriKredencijaleActionListener(this));
 		frame.getContentPane().add(btnPotvrdi);
+		
+		//TODO: ERASE THIS BEFORE PRORDUCTION
+		txtEmail.setText("admin@megatravel.com");
+		txtPass.setText("stefan");
 	}
 
 	public JPasswordField getTxtPass() {

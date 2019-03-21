@@ -1,13 +1,13 @@
 package https.controller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.security.auth.login.CredentialException;
@@ -31,16 +31,16 @@ public class CertificateViabilityController
 	
 	public String getStatus(BigInteger serijskiBroj) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
-		String cert = null;
-		cert = GetRequest.execute("https://localhost:8443/api/viability/" + serijskiBroj, getToken(), new String());
+		List<String> cert = null;
+		cert = GetRequest.execute("https://localhost:8443/api/viability/" + serijskiBroj, getToken(), String.class, false);
 		//JOptionPane.showMessageDialog(null, "Trenutni status sertifikata je:" + cert.toString(), "Status", JOptionPane.OK_OPTION);
-		return cert;
+		return cert.get(0);
 	}
 	
 	public List<CertificateViabilityDTO> getAllStatus() throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
 		List<CertificateViabilityDTO> certs = null;
-		certs = GetRequest.execute("https://localhost:8443/api/viability/all", getToken(), new ArrayList<CertificateViabilityDTO>());
+		certs = GetRequest.execute("https://localhost:8443/api/viability/all", getToken(), CertificateViabilityDTO.class, true);
 		System.out.println(certs);
 		
 		return certs;
@@ -49,23 +49,23 @@ public class CertificateViabilityController
 	//?????????????????????????????????????????????????????//
 	//?????????????????????????????????????????????????????//
 	//?????????????????????????????????????????????????????//
-	public CertificateViabilityDTO newStatus() throws KeyManagementException, CredentialException, KeyStoreException, NoSuchAlgorithmException, CertificateException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException
+	public CertificateViabilityDTO newStatus(CertificateViabilityDTO certif) throws KeyManagementException, CredentialException, KeyStoreException, NoSuchAlgorithmException, CertificateException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException
 	{
-		CertificateViabilityDTO cert = null;
-		cert = PostRequest.execute("https://localhost:8443/api/viability", "",  new CertificateViabilityDTO(), null);
+		List<CertificateViabilityDTO> cert = null;
+		cert = PostRequest.execute("https://localhost:8443/api/viability", getToken(), certif, CertificateViabilityDTO.class, false);
 		System.out.println(cert);
 		
-		return cert;
+		return cert.get(0);
 	}
 	
 	
-	public CertificateViabilityDTO editStatus() throws KeyManagementException, CredentialException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException
+	public CertificateViabilityDTO editStatus(CertificateViabilityDTO certif) throws KeyManagementException, CredentialException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException, ServerNotActiveException
 	{
-		CertificateViabilityDTO cert = null;
-		cert = PutRequest.execute("https://localhost:8443/api/viability", "",  new CertificateViabilityDTO(), null);
+		List<CertificateViabilityDTO> cert = null;
+		cert = PutRequest.execute("https://localhost:8443/api/viability", getToken(), certif, CertificateViabilityDTO.class, false);
 		System.out.println(cert);
 		
-		return cert;
+		return cert.get(0);
 	}
 	
 	public static String getToken() {

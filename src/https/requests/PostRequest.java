@@ -3,6 +3,7 @@ package https.requests;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
@@ -11,6 +12,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -23,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PostRequest {
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T execute(String path, String token, Object postData, T cls) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException, KeyManagementException, ServerNotActiveException, CredentialException, InstantiationException, IllegalAccessException {
+	public static <T> List<T> execute(String path, String token, Object postData, Class<T> cls, boolean isList) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException, KeyManagementException, ServerNotActiveException, CredentialException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 		// Load CAs from an InputStream
 		InputStream certIs = new FileInputStream("resources/cert-chain.p12");
 		KeyStore ks = KeyStore.getInstance("PKCS12");
@@ -78,9 +81,24 @@ public class PostRequest {
 		Scanner s = new Scanner(in).useDelimiter("\\A");
 		String result = s.hasNext() ? s.next() : "";
 		
-		Object obj = cls.getClass().newInstance();
-		obj = mapper.readValue(result, cls.getClass());
-		
-		return (T) obj;
+		if (!isList) {
+			//Object obj = cls.getClass().newInstance();
+			Object obj = Class.forName(cls.getName()).getConstructor().newInstance();
+			if (cls == String.class) {
+				List<T> list = new ArrayList<>();
+				list.add((T) result);
+				return list;
+			}
+			obj = mapper.readValue(result, cls.getClass());
+			
+			List<T> list = new ArrayList<>();
+			list.add((T) obj);
+			return (List<T>) list;
+		} else {
+			ArrayList<T> obj = new ArrayList<>();
+			obj = mapper.readValue(result, mapper.getTypeFactory().constructCollectionType(List.class, cls));
+			
+			return (List<T>) obj;
+		}
 	}
 }
