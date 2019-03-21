@@ -31,6 +31,9 @@ public class CertificateModel {
 	private Date datumKraja;
 	
 	@NotNull
+	private Date datumKreiranja;
+	
+	@NotNull
 	private BigInteger serijskiBroj;
 	
 	@NotNull
@@ -62,6 +65,15 @@ public class CertificateModel {
 			this.nadcertifikat = nadcertifikat;
 		}
 		//this.statusCertifikata = StatusCertifikata.VALIDAN;
+	}
+
+	
+	public Date getDatumKreiranja() {
+		return datumKreiranja;
+	}
+
+	public void setDatumKreiranja(Date datumKreiranja) {
+		this.datumKreiranja = datumKreiranja;
 	}
 
 	public Long getId() {
