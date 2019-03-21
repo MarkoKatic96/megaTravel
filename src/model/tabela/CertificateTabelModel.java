@@ -1,4 +1,4 @@
-package gui;
+package model.tabela;
 
 import java.util.ArrayList;
 import java.util.List;

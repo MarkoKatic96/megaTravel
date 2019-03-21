@@ -8,75 +8,53 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.sasl.AuthenticationException;
+
+import app.main.Singleton;
 import https.model.CertificateCommunicationDTO;
 import https.requests.DeleteRequest;
 import https.requests.GetRequest;
 
 public class CertificateCommunicationController
-{
-	AdminController admContr;
-	
-	public CertificateCommunicationController()
-	{
-		admContr = new AdminController();
-	}
-	
-	public CertificateCommunicationDTO getCommunicationById(Long id)
+{	
+	public CertificateCommunicationDTO getCommunicationById(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
 		CertificateCommunicationDTO cert = null;
-		try
+		if(!getToken().equals("")) {
+			cert = GetRequest.execute("https://localhost:8443/api/communication/id/" + id, getToken(), new CertificateCommunicationDTO());
+		} else
 		{
-			if(admContr != null)
-				cert = GetRequest.execute("https://localhost:8443/api/communication/id/" + id, admContr.getToken(), new CertificateCommunicationDTO());
-			else
-			{
-				System.out.println("Invalid operation");
-				return null;
-			}
-				
+			System.out.println("Invalid operation");
+			throw new AuthenticationException();
+		}
+		
+		return cert;
+	}
+
+	public boolean removeCommunicationById(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
+	{
+		boolean cert = false;
+		if(!getToken().equals("")) {
+			cert = DeleteRequest.execute("https://localhost:8443/api/communication/id/" + id, getToken());
 			
-		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
-				| InstantiationException | IllegalAccessException | IOException e) {
-			
-			e.printStackTrace();
+		} else
+		{
+			System.out.println("Invalid operation");
+			throw new AuthenticationException();
 		}
 		
 		return cert;
 	}
 	
-	public boolean removeCommunicationById(Long id)
+	public boolean isCommunicationApproved() throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
 		boolean cert = false;
-		try
+		if(!getToken().equals("")) {
+			cert = GetRequest.execute("https://localhost:8443/api/communication", getToken(), new Boolean(cert));
+		} else
 		{
-			cert = DeleteRequest.execute("https://localhost:8443/api/communication/id/" + id, admContr.getToken());
-			
-		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
-				| InstantiationException | IllegalAccessException | IOException e) {
-			
-			e.printStackTrace();
-		}
-		
-		return cert;
-	}
-	
-	public boolean isCommunicationApproved()
-	{
-		boolean cert = false;
-		try
-		{
-			if(admContr != null)
-				cert = GetRequest.execute("https://localhost:8443/api/communication", admContr.getToken(), new Boolean(cert));
-			else
-			{
-				System.out.println("Invalid operation");
-				return false;
-			}
-			
-		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
-				| InstantiationException | IllegalAccessException | IOException e) {
-			
-			e.printStackTrace();
+			System.out.println("Invalid operation");
+			throw new AuthenticationException();
 		}
 		
 		return cert;
@@ -86,29 +64,24 @@ public class CertificateCommunicationController
 	//////////////////////////////////////
 	
 	
-	public List<CertificateCommunicationDTO> getAllCommunications()
+	public List<CertificateCommunicationDTO> getAllCommunications() throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
 		List<CertificateCommunicationDTO> certs = null;
-		try
+
+		if(!getToken().equals("")) {
+			certs = GetRequest.execute("https://localhost:8443/api/communication/all", getToken(), new ArrayList<CertificateCommunicationDTO>());
+		} else
 		{
-			if(admContr != null)
-				certs = GetRequest.execute("https://localhost:8443/api/communication/all", admContr.getToken(), new ArrayList<CertificateCommunicationDTO>());
-			else
-			{
-				System.out.println("Invalid operation");
-				return null;
-			}
-				
-			
-		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
-				| InstantiationException | IllegalAccessException | IOException e) {
-			
-			e.printStackTrace();
+			System.out.println("Invalid operation");
+			throw new AuthenticationException();
 		}
 		
 		return certs;
 	}
 	
 	
+	private String getToken() {
+		return Singleton.getInstance().getToken();
+	}
 	
 }

@@ -44,6 +44,7 @@ import model.CertifikatOrganizacija;
 import model.CertifikatOsoba;
 import model.CertifikatRoot;
 import model.TipCertifikata;
+import model.tabela.CertificateTabelModel;
 
 public class MainGUI {
 
@@ -97,8 +98,6 @@ public class MainGUI {
 	public JFrame getMainFrame() {
 		return frmAdminCertificateManagement;
 	}
-
-
 
 	/**
 	 * Initialize the contents of the frame.

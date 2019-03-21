@@ -1,20 +1,8 @@
 package app.main;
 
 import java.awt.EventQueue;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.List;
 
-import gui.MainGUI;
-import https.model.AdminPrijavaDTO;
-import https.model.CertificateCommunicationDTO;
-import https.requests.DeleteRequest;
-import https.requests.GetRequest;
-import https.requests.PostRequest;
+import gui.LoginGUI;
 
 public class Main {
 	/**
@@ -24,10 +12,10 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainGUI window = new MainGUI();
+					LoginGUI window = new LoginGUI();
 					window.getMainFrame().setVisible(true);
 					
-					
+					/*
 					try {
 						// PRIMER POZIVA GET, DELETE I POST REQUEST-a
 						
@@ -48,7 +36,7 @@ public class Main {
 						System.out.println("Moguce je (slucaj greske 'InstantiationException') i da je neki od parametara pogresan, verovatno nije pozvana adekvatna klasa (npr. treba lista klasa T, a umesto toga je pozvana samo klasa T)!");
 						e.printStackTrace();
 					}
-					
+					*/
 					
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -1,11 +1,16 @@
 package https.controller;
 
 import java.io.IOException;
+import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import javax.security.auth.login.CredentialException;
+import javax.security.sasl.AuthenticationException;
+
+import app.main.Singleton;
 import https.model.AdminDTO;
 import https.model.AdminPrijavaDTO;
 import https.requests.GetRequest;
@@ -13,69 +18,47 @@ import https.requests.PostRequest;
 
 public class AdminController
 {
-	private String token; 
-	
-	public AdminController()
+	public static AdminDTO getAdmin(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
-		
-	}
-	
-	public AdminDTO getAdmin(Long id)
-	{
-		AdminDTO adm = null;
-		try
-		{
-			adm = GetRequest.execute("https://localhost:8443/api/adminCert/id/" + id, this.getToken(), new AdminDTO());
-			
-		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
-				| InstantiationException | IllegalAccessException | IOException e) {
-			
-			e.printStackTrace();
+		if(getToken().equals("")) {
+			System.out.println("Invalid operation");
+			throw new AuthenticationException();
 		}
+		
+		AdminDTO adm = null;
+		adm = GetRequest.execute("https://localhost:8443/api/adminCert/id/" + id, getToken(), new AdminDTO());
 		
 		return adm;
 	}
 	
-	public AdminDTO getAdminByEmail(String email)
+	public AdminDTO getAdminByEmail(String email) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
-		AdminDTO adm = null;
-		try
-		{
-			adm = GetRequest.execute("https://localhost:8443/api/adminCert/email/" + email, this.getToken(), new AdminDTO());
-			
-		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
-				| InstantiationException | IllegalAccessException | IOException e) {
-			
-			e.printStackTrace();
+		if(getToken().equals("")) {
+			System.out.println("Invalid operation");
+			throw new AuthenticationException();
 		}
 		
+		AdminDTO adm = null;
+		adm = GetRequest.execute("https://localhost:8443/api/adminCert/email/" + email, getToken(), new AdminDTO());
 		return adm;
 	}
 	
-	public String login()
+	public String login(String email, String psw) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException, CredentialException, ServerNotActiveException
 	{
 		String logged = null;
-		try
-		{
-			logged = PostRequest.execute("https://localhost:8443/api/login", "", new AdminPrijavaDTO("borisbibic1996@gmail.com", "stefan"), new String());
-			this.setToken("Bearer" + logged);
-			
-		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
-				| InstantiationException | IllegalAccessException | IOException e) {
-			
-			e.printStackTrace();
-		}
-		
+		logged = PostRequest.execute("https://localhost:8443/api/login", "", new AdminPrijavaDTO(email, psw), new String());
+		logged = "Bearer " + logged;
+		this.setToken(logged);
 		return logged;
 	}
 	
 	
-	public String getToken() {
-		return token;
+	public static String getToken() {
+		return Singleton.getInstance().getToken();
 	}
 
 
 	public void setToken(String token) {
-		this.token = token;
+		Singleton.getInstance().setToken(token);
 	}
 }

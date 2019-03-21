@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -15,13 +16,14 @@ import java.util.Scanner;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+import javax.security.auth.login.CredentialException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PutRequest
 {
 	@SuppressWarnings("unchecked")
-	public static <T> T execute(String path, String token, Object postData, T cls) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException {
+	public static <T> T execute(String path, String token, Object postData, T cls) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException, ServerNotActiveException, CredentialException {
 		// Load CAs from an InputStream
 		InputStream certIs = new FileInputStream("resources/cert-chain.p12");
 		KeyStore ks = KeyStore.getInstance("PKCS12");
@@ -58,11 +60,20 @@ public class PutRequest
 		
 		// Get object to byte[] using ObjectMapper and write it to OutputStream
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.writeValue(connection.getOutputStream(), postData);
-		
+		try{
+			mapper.writeValue(connection.getOutputStream(), postData);
+		} catch (Exception e) {
+			throw new ServerNotActiveException();
+		}
+				
 		// Read data received from Server - InputStream
-		InputStream in = connection.getInputStream();
-		
+		InputStream in = null;
+		try {
+			in = connection.getInputStream();
+		} catch (Exception e) {
+			throw new CredentialException();
+		}
+				
 		@SuppressWarnings("resource")
 		Scanner s = new Scanner(in).useDelimiter("\\A");
 		String result = s.hasNext() ? s.next() : "";
