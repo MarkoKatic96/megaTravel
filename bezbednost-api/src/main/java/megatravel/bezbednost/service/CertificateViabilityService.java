@@ -57,7 +57,7 @@ public class CertificateViabilityService {
 		List<CertificateViabilityModel> lista= certificateViabilityRepository.findAll();
 		for (CertificateViabilityModel cvm : lista) {
 			if(cvm.getSerijskiBroj().equals(certificateViabilityModel.getSerijskiBroj())) {
-				return null;
+				return cvm;
 			}
 		}
 		return certificateViabilityRepository.save(certificateViabilityModel);
@@ -68,10 +68,9 @@ public class CertificateViabilityService {
 		for (CertificateViabilityModel cvm : lista) {
 			if(cvm.getSerijskiBroj().equals(sn)) {
 				cvm.setStatus(status);
-				certificateViabilityRepository.save(cvm);
-				return cvm;
+				return certificateViabilityRepository.save(cvm);
 			}
 		}
-		return new CertificateViabilityModel();
+		return certificateViabilityRepository.save(new CertificateViabilityModel(sn, status));
 	}
 }

@@ -105,6 +105,7 @@ public class CertificateViabilityController {
 	
 	@RequestMapping(value = "/api/certificate/viability", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CertificateViabilityDTO> editStatus(@RequestBody CertificateViabilityDTO commDTO, HttpServletRequest req){
+		System.out.println("editStatus()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
