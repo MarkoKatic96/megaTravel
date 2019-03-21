@@ -1,5 +1,6 @@
 package megatravel.bezbednost.keyStore;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +12,9 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import megatravel.bezbednost.model.TipCertifikata;
 
 public class KeyStoreWriter {
 	//KeyStore je Java klasa za citanje specijalizovanih datoteka koje se koriste za cuvanje kljuceva
@@ -27,6 +31,19 @@ public class KeyStoreWriter {
 			e.printStackTrace();
 		} catch (NoSuchProviderException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void savePrivateKey(PrivateKey privateKey, X509Certificate cert, TipCertifikata tip ) {
+		KeyStoreWriter ksw = new KeyStoreWriter();
+		File file = new File("./files/pki/keystores/" + tip.toString() +".jks");
+		if(file.exists()) {
+			ksw.loadKeyStore("./files/pki/keystores/" + tip.toString() +".jks", "secretpassword".toCharArray());
+			ksw.write(cert.getSerialNumber().toString(), privateKey, "secretpassword".toCharArray(), cert);
+		}else {
+			ksw.loadKeyStore(null, "secretpassword".toCharArray());//inicijalizuje keyStore
+			ksw.saveKeyStore("./files/pki/keystores/"+ tip.toString() +".jks", "secretpassword".toCharArray());//snima keyStore
+			ksw.write(cert.getSerialNumber().toString(), privateKey, "secretpassword".toCharArray(), cert);//upisuje u keyStore
 		}
 	}
 	
