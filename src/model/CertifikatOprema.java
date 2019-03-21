@@ -1,5 +1,11 @@
 package model;
 
+import java.security.PublicKey;
+import java.security.cert.X509Certificate;
+import java.util.Date;
+
+import sun.security.x509.X500Name;
+
 public class CertifikatOprema extends Certifikat {
 	private String MAC;
 	private String nazivOpreme;
@@ -21,8 +27,8 @@ public class CertifikatOprema extends Certifikat {
 	 * @param idOpreme
 	 */
 	public CertifikatOprema(String MAC, String nazivOpreme, String drzava, String organizacija, String suborganizacija,
-			String idOpreme) {
-		super();
+			String idOpreme, X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata) {
+		super(nadcertifikat, pocetak, kraj, naziv, publicKey, tipCertifikata);
 		this.MAC = MAC;
 		this.nazivOpreme = nazivOpreme;
 		this.drzava = drzava;
