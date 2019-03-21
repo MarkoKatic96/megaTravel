@@ -49,7 +49,7 @@ public class GenerateCertificate {
 		
 	}
 	
-	private KeyPair generateKeyPair() {
+	public KeyPair generateKeyPair() {
         try {
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA"); 
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
@@ -63,7 +63,7 @@ public class GenerateCertificate {
         return null;
 	}
 	
-	public X509Certificate generateCertificate(Certifikat certifikat) {
+	public SubjectData generateCertificate(Certifikat certifikat) {
 		SubjectData subjectData = null;
 		switch (certifikat.getTipCertifikata()) {
 			case APLIKACIJA:
@@ -94,22 +94,9 @@ public class GenerateCertificate {
 				break;
 		}
 		
-		if (subjectData==null) {
-			return null;
-		}
-		
-		KeyPair keyPairIssuer = generateKeyPair();
-		IssuerData issuerData = generateIssuerData(keyPairIssuer.getPrivate(), certifikat.getNadcertifikat());
-	    
-		//Generise se sertifikat za subjekta, potpisan od strane issuer-a
-		CertificateGenerator cg = new CertificateGenerator();
-		X509Certificate cert = cg.generateCertificate(subjectData, issuerData);
-		return cert;
+		return subjectData;
 	}
 
-	public IssuerData generateIssuerData(PrivateKey issuerKey, X509Certificate nadcertifikat) {
-		return null;
-	}
 
 	public SubjectData generateAppData(CertifikatAplikacija certifikat) {
 		try {

@@ -14,12 +14,12 @@ import java.util.List;
 import javax.security.auth.login.CredentialException;
 import javax.security.sasl.AuthenticationException;
 
+import app.main.Singleton;
 import https.model.CertificateCommunicationDTO;
 import https.requests.DeleteRequest;
 import https.requests.GetRequest;
 import https.requests.PostRequest;
 import https.requests.PutRequest;
-import model.Singleton;
 
 public class CertificateCommunicationController
 {

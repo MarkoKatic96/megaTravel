@@ -13,9 +13,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
+import app.main.Singleton;
 import https.controller.CertificateController;
 import https.model.CertifikatDTO;
-import model.Singleton;
 import model.TipCertifikata;
 
 public class CertificateTabelModel extends AbstractTableModel {

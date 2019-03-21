@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigInteger;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -20,8 +21,8 @@ public class CertifikatAplikacija extends Certifikat {
 	 * @param organizacija
 	 * @param verzija
 	 */
-	public CertifikatAplikacija(String nazivAplikacije, String organizacija, String verzija, X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata) {
-		super(nadcertifikat, pocetak, kraj, naziv, publicKey, tipCertifikata);
+	public CertifikatAplikacija(String nazivAplikacije, String organizacija, String verzija, X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata, BigInteger seriskiBroj) {
+		super(nadcertifikat, pocetak, kraj, naziv, publicKey, tipCertifikata, seriskiBroj);
 		this.nazivAplikacije = nazivAplikacije;
 		this.organizacija = organizacija;
 		this.verzija = verzija;
