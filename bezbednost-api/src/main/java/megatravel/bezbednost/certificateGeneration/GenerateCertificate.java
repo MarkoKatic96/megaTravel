@@ -1,10 +1,39 @@
 package megatravel.bezbednost.certificateGeneration;
 
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.Security;
+import java.security.SignatureException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
+import org.bouncycastle.asn1.x500.X500NameBuilder;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import megatravel.bezbednost.data.IssuerData;
+import megatravel.bezbednost.data.SubjectData;
+import megatravel.bezbednost.model.Certifikat;
+import megatravel.bezbednost.model.CertifikatAplikacija;
+import megatravel.bezbednost.model.CertifikatDomen;
+import megatravel.bezbednost.model.CertifikatOprema;
+import megatravel.bezbednost.model.CertifikatOrganizacija;
+import megatravel.bezbednost.model.CertifikatOsoba;
+import megatravel.bezbednost.model.CertifikatRoot;
 
 public class GenerateCertificate {
 	
-	/*public GenerateCertificate() {
+	public GenerateCertificate() {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 	
@@ -290,6 +319,6 @@ public class GenerateCertificate {
 		}
 		
 		return null;
-	}*/
+	}
 
 }

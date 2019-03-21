@@ -1,14 +1,26 @@
 package megatravel.bezbednost.certificateGeneration;
 
+import java.math.BigInteger;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 
 import javax.security.cert.X509Certificate;
 
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.X509v3CertificateBuilder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.OperatorCreationException;
+import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+
+import megatravel.bezbednost.data.IssuerData;
+import megatravel.bezbednost.data.SubjectData;
+
 public class CertificateGenerator {
-/*public CertificateGenerator() {}
+public CertificateGenerator() {}
 	
-	public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData) {
+	public java.security.cert.X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData) {
 		try {
 			//Posto klasa za generisanje sertifiakta ne moze da primi direktno privatni kljuc pravi se builder za objekat
 			//Ovaj objekat sadrzi privatni kljuc izdavaoca sertifikata i koristiti se za potpisivanje sertifikata
@@ -49,5 +61,5 @@ public class CertificateGenerator {
 			e.printStackTrace();
 		}
 		return null;
-	}*/
+	}
 }
