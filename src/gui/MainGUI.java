@@ -503,7 +503,7 @@ public class MainGUI {
 					if (cv!=null) {
 						JOptionPane.showMessageDialog(getMainFrame(), "Certifikat je uspesno povucen!", "Povlacenje", JOptionPane.INFORMATION_MESSAGE);
 						for (CertifikatDTO cert : Singleton.getInstance().getListaCertifikata()) {
-							if (cert.getSerijskiBroj().equals(sn)) {
+							if (cert.getSerijskiBroj().toString().equals(sn)) {
 								Singleton.getInstance().getListaCertifikata().remove(cert);
 							}
 						}
