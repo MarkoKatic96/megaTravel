@@ -18,13 +18,12 @@ import https.requests.PostRequest;
 
 public class AdminController
 {
-	public static AdminDTO getAdmin(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
+	public AdminController()
 	{
-		if(getToken().equals("")) {
-			System.out.println("Invalid operation");
-			throw new AuthenticationException();
-		}
-		
+	}
+	
+	public AdminDTO getAdmin(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
+	{
 		AdminDTO adm = null;
 		adm = GetRequest.execute("https://localhost:8443/api/adminCert/id/" + id, getToken(), new AdminDTO());
 		
@@ -33,6 +32,7 @@ public class AdminController
 	
 	public AdminDTO getAdminByEmail(String email) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
+
 		if(getToken().equals("")) {
 			System.out.println("Invalid operation");
 			throw new AuthenticationException();

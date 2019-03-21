@@ -16,14 +16,14 @@ import https.requests.DeleteRequest;
 import https.requests.GetRequest;
 
 public class CertificateCommunicationController
-{	
+{
+
 	public CertificateCommunicationDTO getCommunicationById(Long id) throws KeyManagementException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IOException
 	{
 		CertificateCommunicationDTO cert = null;
 		if(!getToken().equals("")) {
 			cert = GetRequest.execute("https://localhost:8443/api/communication/id/" + id, getToken(), new CertificateCommunicationDTO());
-		} else
-		{
+		} else {
 			System.out.println("Invalid operation");
 			throw new AuthenticationException();
 		}
@@ -36,7 +36,6 @@ public class CertificateCommunicationController
 		boolean cert = false;
 		if(!getToken().equals("")) {
 			cert = DeleteRequest.execute("https://localhost:8443/api/communication/id/" + id, getToken());
-			
 		} else
 		{
 			System.out.println("Invalid operation");
@@ -56,9 +55,9 @@ public class CertificateCommunicationController
 			System.out.println("Invalid operation");
 			throw new AuthenticationException();
 		}
-		
 		return cert;
 	}
+
 	//////////////////////////////////////
 	//PUT REQUEST/////////////////////////
 	//////////////////////////////////////

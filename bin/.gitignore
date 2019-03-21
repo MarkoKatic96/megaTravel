@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 /actions/
 /gui/
 /https/
 /app/
+=======
+/https/
+/model/
+/org/
+/security/
+>>>>>>> branch 'adminCertificateApp' of https://github.com/MarkoKatic96/megaTravel.git
