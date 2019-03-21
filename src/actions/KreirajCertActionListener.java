@@ -8,6 +8,13 @@ import javax.swing.JOptionPane;
 
 import gui.MainGUI;
 import model.Certifikat;
+import model.CertifikatAplikacija;
+import model.CertifikatCA;
+import model.CertifikatDomen;
+import model.CertifikatOprema;
+import model.CertifikatOrganizacija;
+import model.CertifikatOsoba;
+import model.TipCertifikata;
 
 public class KreirajCertActionListener implements ActionListener {
 
@@ -24,9 +31,141 @@ public class KreirajCertActionListener implements ActionListener {
 		//Step 0: provera validnosti unetih podataka
 		
 		Certifikat cert = main.getCertifikatData();
-		if (cert==null) {
-			JOptionPane.showMessageDialog(frame, "Nisu popunjeni svi podaci za izabran tip certifikata!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+		CertifikatAplikacija certAplikacija;
+		CertifikatDomen certDomen;
+		CertifikatOprema certOprema;
+		CertifikatOrganizacija certOrganizacija;
+		CertifikatOsoba certOsoba;
+		CertifikatCA certCA;
+
+		if(cert.getPocetak() == null) {
+			JOptionPane.showMessageDialog(frame, "Nije unesen datum pocetka vazenja sertifikata!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 			return;
+		}
+		if(cert.getKraj() == null) {
+			JOptionPane.showMessageDialog(frame, "Nije unesen datum kraja vazenja sertifikata!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if(cert.getPocetak().compareTo(cert.getKraj()) >= 0) {
+			JOptionPane.showMessageDialog(frame, "Zavrsetak trajanja certifikata ne moze biti pre pocetka!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if(cert.getNaziv().equals("")) {
+			JOptionPane.showMessageDialog(frame, "Nije popunjen naziv certifikata!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		switch ((TipCertifikata)cert.getTipCertifikata()) {
+		case APLIKACIJA:
+			certAplikacija = (CertifikatAplikacija)main.getCertifikatData();
+			if(certAplikacija.getNazivAplikacije().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv aplikacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certAplikacija.getOrganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certAplikacija.getVerzija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen verzija aplikacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		case DOMEN:
+			certDomen = (CertifikatDomen)main.getCertifikatData();
+			if(certDomen.getOrganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certDomen.getHttps().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen domen!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		case OPREMA:
+			certOprema = (CertifikatOprema)main.getCertifikatData();
+			if(certOprema.getMAC().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen MAC!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOprema.getNazivOpreme().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv opreme!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOprema.getDrzava().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv drzave!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOprema.getOrganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOprema.getSuborganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv suborganizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOprema.getIdOpreme().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen id opreme!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		case ORGANIZACIJA:
+			certOrganizacija = (CertifikatOrganizacija)main.getCertifikatData();
+			if(certOrganizacija.getKategorija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjena kategorija!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOrganizacija.getDrzava().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv drzave!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOrganizacija.getNazivOrganizacije().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOrganizacija.getPTT().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen PTT!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOrganizacija.getUlica().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjeno ime ulice!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		case OSOBA:
+			certOsoba = (CertifikatOsoba)main.getCertifikatData();
+			if(certOsoba.getIme().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjeno ime osobe!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOsoba.getPrezime().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjeno prezime osobe!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOsoba.getDrzava().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv drzave!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOsoba.getOrganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOsoba.getSuborganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv suborganizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOsoba.getEmail().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen email!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(certOsoba.getIdZaposlenog().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen id zaposlenog!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		default:
+			certCA = (CertifikatCA)main.getCertifikatData();
+	}
+		if (certCA !=null) {
+			if(certCA.getOrganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 		
 		// TODO Auto-generated method stub

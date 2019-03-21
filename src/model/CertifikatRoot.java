@@ -1,5 +1,11 @@
 package model;
 
+import java.security.PublicKey;
+import java.security.cert.X509Certificate;
+import java.util.Date;
+
+import sun.security.x509.X500Name;
+
 public class CertifikatRoot extends Certifikat {
 	private String organizacija;
 	
@@ -11,8 +17,8 @@ public class CertifikatRoot extends Certifikat {
 	/**
 	 * @param organizacija
 	 */
-	public CertifikatRoot(String organizacija) {
-		super();
+	public CertifikatRoot(String organizacija, X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata) {
+		super(nadcertifikat, pocetak, kraj, naziv, publicKey, tipCertifikata);
 		this.organizacija = organizacija;
 	}
 

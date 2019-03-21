@@ -59,6 +59,8 @@ import https.controller.CertificateViabilityController;
 import https.model.CertificateCommunicationDTO;
 import https.model.CertificateViabilityDTO;
 import model.Certifikat;
+import model.CertifikatAplikacija;
+import model.CertifikatCA;
 import model.CertifikatDomen;
 import model.CertifikatOprema;
 import model.CertifikatOrganizacija;
@@ -1329,59 +1331,60 @@ public class MainGUI {
 	}
 
 	private Certifikat getCAOsoba() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private Certifikat getCAOrganizacija() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private Certifikat getCAOprema() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private Certifikat getCADomen() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());		
+		return ret;
 	}
 
 	private Certifikat getCAAplikacija() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatCA ret = new CertifikatCA(txtOrganizacijaRoot.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private Certifikat getAppCertifikat() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatAplikacija ret = new CertifikatAplikacija(txtNazivAplikacije.getText(), txtOrganizacijaAplikacije.getText(), txtVerzija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private CertifikatRoot getRootCertifikat() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatRoot ret = new CertifikatRoot(txtOrganizacijaRoot.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private CertifikatOsoba getOsobaCertifikat() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatOsoba ret = new CertifikatOsoba(txtIme.getText(), txtPrezime.getText(), txtDrzava.getText(), txtOrganizacija.getText(), txtSuborganizacijaopreme.getText(), txtEmail.getText(), txtZaposleniid.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private CertifikatOrganizacija getOrganizacijaCertifikat() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatOrganizacija ret = new CertifikatOrganizacija(txtKategorija.getText(), txtDrzava.getText(), txtNazivOrganizacije.getText(), txtPtt.getText(), txtUlica.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private CertifikatOprema getOpremaCertifikat() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatOprema ret = new CertifikatOprema(txtSerijskibroj.getText(), txtNazivOpreme.getText(), txtDrzava.getText(), txtOrganizacijaOpreme.getText(), txtSuborganizacijaopreme.getText(), txtIdopreme.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
 
 	private CertifikatDomen getDomenCertifikat() {
-		// TODO Auto-generated method stub
-		return null;
+		CertifikatDomen ret = new CertifikatDomen(txtOrganizacija.getText(), txtDomen.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem());
+		return ret;
 	}
+
 	
 	
 }
