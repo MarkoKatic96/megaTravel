@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
+import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SignatureException;
@@ -11,11 +12,13 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.bouncycastle.asn1.x500.X500Name;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -249,20 +252,26 @@ public class CertificateController {
 			// ako je nadcertifikat root onda je null inace je pronadjen i dovucen iz baze
 		}
 		
-		SubjectData subData = new SubjectData(publicKey, x500name, serialNumber, startDate, endDate);
+		SubjectData subData = null;
+		try {
+			subData = new SubjectData(dataSum.getPublicKeyDecoded(), new X500Name(dataSum.getX500Name()), dataSum.getSerialNumber().toString(), dataSum.getStartDate(), dataSum.getEndDate());
+		} catch (InvalidKeySpecException | NoSuchAlgorithmException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		//proveravam da li vec postoji cert sa istim sn
-		boolean b = certificateService.existsBySerijskiBroj(new BigInteger(dataSum.getSubData().getSerialNumber()));
+		boolean b = certificateService.existsBySerijskiBroj(dataSum.getSerialNumber());
 		while (b) {
-			dataSum.getSubData().setSerialNumber(getRandomBigInteger());
-			b = certificateService.existsBySerijskiBroj(new BigInteger(dataSum.getSubData().getSerialNumber()));
+			dataSum.setSerialNumber(new BigInteger(getRandomBigInteger()));
+			b = certificateService.existsBySerijskiBroj(dataSum.getSerialNumber());
 		}
 		
 		TipCertifikata tipCertifikata = (nadcertifikat==null) ? TipCertifikata.ROOT : nadcertifikat.getTipCertifikata();
 		TipCertifikata tipNadcertifikata = getTipNadcertifikata(tipCertifikata);
 		GenerateCertificate gc = new GenerateCertificate();
-		X509Certificate nadcert;
-		X509Certificate cert;
+		X509Certificate nadcert = null;
+		X509Certificate cert = null;
 		
 		if (nadcertifikat!=null) {
 			try {
@@ -275,9 +284,9 @@ public class CertificateController {
 			
 			//generisanje certifikata
 			try {
-				cert = gc.generateCertificate(nadcert, tipNadcertifikata, tipCertifikata, dataSum.getSubData(), dataSum.getPair());
+				cert = gc.generateCertificate(nadcert, tipNadcertifikata, tipCertifikata, subData, new KeyPair(dataSum.getPublicKeyDecoded(), dataSum.getPrivateKeyDecoded()));
 			} catch (InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException
-					| SignatureException e) {
+					| SignatureException | InvalidKeySpecException e) {
 				System.out.println("Pukao zbog kreiranja certifikata");
 				e.printStackTrace();
 				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -286,9 +295,9 @@ public class CertificateController {
 			System.out.println("Generisan certifikat");
 		} else {
 			try {
-				cert = gc.generateSelfSignedCertificate(dataSum.getSubData(), dataSum.getPair());
+				cert = gc.generateSelfSignedCertificate(subData, new KeyPair(dataSum.getPublicKeyDecoded(), dataSum.getPrivateKeyDecoded()));
 			} catch (InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException
-					| SignatureException e) {
+					| SignatureException | InvalidKeySpecException e) {
 				System.out.println("Pukao zbog kreiranja certifikata");
 				e.printStackTrace();
 				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -299,12 +308,19 @@ public class CertificateController {
 		
 		//skladistim private key subjekta
 		KeyStoreWriter ksw = new KeyStoreWriter();
-		ksw.savePrivateKey(dataSum.getPair().getPrivate(), cert, tipCertifikata);
+		try {
+			ksw.savePrivateKey(dataSum.getPrivateKeyDecoded(), cert, tipCertifikata);
+		} catch (InvalidKeySpecException | NoSuchAlgorithmException e1) {
+			System.out.println("Pukao zbog konverzije kljuca");
+			e1.printStackTrace();
+			return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 		
 		//skladistim certifikat u bazi i FOLDERU
 		CertificateModel newCert = null;
 		try {
-			newCert = new CertificateModel(null, cert, tipCertifikata, nadcertifikat.getSerijskiBroj());
+			BigInteger sn = (nadcert==null) ? cert.getSerialNumber() : nadcertifikat.getSerijskiBroj();
+			newCert = new CertificateModel(null, cert, tipCertifikata, sn);
 		} catch (CertificateEncodingException e) {
 			System.out.println("Pukao zbog kreiranja CertificateModel-a");
 			e.printStackTrace();

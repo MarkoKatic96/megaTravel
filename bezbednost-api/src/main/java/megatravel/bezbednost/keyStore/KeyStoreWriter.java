@@ -23,6 +23,7 @@ public class KeyStoreWriter {
 	// - Privatni kljucevi
 	// - Tajni kljucevi, koji se koriste u simetricnima siframa
 	private KeyStore keyStore;
+	private static final String filepath = "./files/repository/keystores/";
 	
 	public KeyStoreWriter() {
 		try {
@@ -36,13 +37,13 @@ public class KeyStoreWriter {
 	
 	public void savePrivateKey(PrivateKey privateKey, X509Certificate cert, TipCertifikata tip ) {
 		KeyStoreWriter ksw = new KeyStoreWriter();
-		File file = new File("./files/pki/keystores/" + tip.toString() +".jks");
+		File file = new File(filepath + tip.toString() +".jks");
 		if(file.exists()) {
-			ksw.loadKeyStore("./files/pki/keystores/" + tip.toString() +".jks", "secretpassword".toCharArray());
+			ksw.loadKeyStore(filepath + tip.toString() +".jks", "secretpassword".toCharArray());
 			ksw.write(cert.getSerialNumber().toString(), privateKey, "secretpassword".toCharArray(), cert);
 		}else {
 			ksw.loadKeyStore(null, "secretpassword".toCharArray());//inicijalizuje keyStore
-			ksw.saveKeyStore("./files/pki/keystores/"+ tip.toString() +".jks", "secretpassword".toCharArray());//snima keyStore
+			ksw.saveKeyStore(filepath + tip.toString() +".jks", "secretpassword".toCharArray());//snima keyStore
 			ksw.write(cert.getSerialNumber().toString(), privateKey, "secretpassword".toCharArray(), cert);//upisuje u keyStore
 		}
 	}

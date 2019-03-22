@@ -3,6 +3,7 @@ package megatravel.bezbednost.model;
 import java.math.BigInteger;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -67,6 +68,7 @@ public class CertificateModel {
 		} else {
 			this.nadcertifikat = nadcertifikat;
 		}
+		this.datumKreiranja = Calendar.getInstance().getTime();
 		//this.statusCertifikata = StatusCertifikata.VALIDAN;
 	}
 
