@@ -113,6 +113,7 @@ public class MainGUI {
 	private JTextPane txtSubjekat1;
 	private JTextPane txtSubjekat2;
 	private JTable table_3;
+	private JTable table_4;
 	
 
 	/**
@@ -148,7 +149,7 @@ public class MainGUI {
 		gbl_kreirajPanel.columnWidths = new int[] {140, 160, 0};
 		gbl_kreirajPanel.rowHeights = new int[] {270, 200, 40, 30};
 		gbl_kreirajPanel.columnWeights = new double[]{0.0, 1.0};
-		gbl_kreirajPanel.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0};
+		gbl_kreirajPanel.rowWeights = new double[]{1.0, 0.0, 1.0, 0.0};
 		kreirajPanel.setLayout(gbl_kreirajPanel);
 		
 		JPanel panel = new JPanel();
@@ -560,6 +561,40 @@ public class MainGUI {
 		
 		JSplitPane splitPane_1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, table);
 		postojeciPanel.add(splitPane_1);
+	    
+		CertificateTabelModel model_4 = new CertificateTabelModel();
+		table_4 = new JTable(model_4);
+		table_4.setAutoCreateRowSorter(true);
+		table_4.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+
+	        	String sn = table_4.getValueAt(table_4.getSelectedRow(), 4).toString();
+	            System.out.println("tbl4: " + sn);
+	            txtNadcertifikat.setText(sn);
+	            /*byte[] certBytes = Singleton.getInstance().getListaCertifikata().get(table_1.getSelectedRow()).getCertifikat();
+	            X509Certificate cert = Singleton.getInstance().getX509Certificate(certBytes);
+	            txtIzdavac1.setText(cert.getIssuerX500Principal().toString());
+	            txtSubjekat1.setText(cert.getSubjectX500Principal().toString());
+	            
+	            System.out.println(cert.getIssuerX500Principal().toString());
+	            System.out.println(cert.getSubjectX500Principal().toString());*/
+	        }
+	    });
+	    /*GridBagConstraints gbc_table_4 = new GridBagConstraints();
+	    gbc_table_4.insets = new Insets(0, 0, 5, 5);
+	    gbc_table_4.fill = GridBagConstraints.BOTH;
+	    gbc_table_4.gridx = 1;
+	    gbc_table_4.gridy = 2;
+	    kreirajPanel.add(table_4, gbc_table_4);
+	     */
+	    JScrollPane scrollPane_Main = new JScrollPane(table_4);
+	    GridBagConstraints gbc_scrollPane_Main = new GridBagConstraints();
+	    gbc_scrollPane_Main.gridheight = 2;
+	    gbc_scrollPane_Main.insets = new Insets(0, 0, 5, 0);
+	    gbc_scrollPane_Main.fill = GridBagConstraints.BOTH;
+	    gbc_scrollPane_Main.gridx = 1;
+	    gbc_scrollPane_Main.gridy = 0;
+	    kreirajPanel.add(scrollPane_Main, gbc_scrollPane_Main);
 	    
 	    JPanel cardPanel = new JPanel();
 	    GridBagConstraints gbc_cardPanel = new GridBagConstraints();
@@ -1056,8 +1091,6 @@ public class MainGUI {
 	    gbc_txtVerzija.gridy = 2;
 	    panelAplikacija.add(txtVerzija, gbc_txtVerzija);
 	    txtVerzija.setColumns(10);
-		
-	    JButton btnNadcertifikat = new JButton("...");
 	    JLabel lblNadcertifikat = new JLabel("Nadcertifikat");
 	    
 	    cbTipCertifikata.setAction(new Action() {
@@ -1075,11 +1108,9 @@ public class MainGUI {
 	    	    }
 	    		
 	    		if (selected==TipCertifikata.ROOT) {
-	    	    	btnNadcertifikat.setVisible(false);
 	    	    	lblNadcertifikat.setVisible(false);
 	    	    	txtNadcertifikat.setVisible(false);
 	    	    } else {
-	    	    	btnNadcertifikat.setVisible(true);
 	    	    	lblNadcertifikat.setVisible(true);
 	    	    	txtNadcertifikat.setVisible(true);
 	    	    }
@@ -1172,34 +1203,11 @@ public class MainGUI {
 	    panelNadcertifikat.setLayout(new BoxLayout(panelNadcertifikat, BoxLayout.X_AXIS));
 	    
 	    txtNadcertifikat = new JTextField();
+	    txtNadcertifikat.setToolTipText("Izaberite nadcertifikat iz tabele");
 	    txtNadcertifikat.setEditable(false);
 	    txtNadcertifikat.setHorizontalAlignment(SwingConstants.LEFT);
 	    panelNadcertifikat.add(txtNadcertifikat);
 	    txtNadcertifikat.setColumns(12);
-	    
-	    btnNadcertifikat.setToolTipText("Prona\u0111i nadcertifikat");
-	    btnNadcertifikat.setAlignmentY(0.4f);
-	    btnNadcertifikat.setAlignmentX(0.4f);
-	    btnNadcertifikat.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser jfc = new JFileChooser();
-				jfc.setFileHidingEnabled(true);
-				jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				jfc.setDialogTitle("Izaberite nadcertifikat");
-				FileFilter filter = new FileNameExtensionFilter("Certificate", new String[] {"p8", "key", "p10", "csr", "cer", "crl", "p7c", "crt", "der", "pem", "p12", "pfx", "p7b", "spc", "p7r" });
-				jfc.setFileFilter(filter);
-				int retVal = jfc.showOpenDialog(frmAdminCertificateManagement);
-
-				if (retVal == JFileChooser.APPROVE_OPTION){
-					  System.out.println("You chose to open this certificate: " + jfc.getSelectedFile().getAbsolutePath());
-					  //File selectedFile = new File(jfc.getSelectedFile().getAbsolutePath());
-					  txtNadcertifikat.setText(jfc.getSelectedFile().getAbsolutePath());
-				}
-			}
-		});
-	    panelNadcertifikat.add(btnNadcertifikat);
 	    
 	    JLabel lblKeystore = new JLabel("KeyStore");
 	    GridBagConstraints gbc_lblKeystore = new GridBagConstraints();
@@ -1294,7 +1302,7 @@ public class MainGUI {
 			}
 		});
 	    panelCertifikat.add(btnCertifikat);
-	    panel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPodaciOCertifikatu, lblTip, cbTipCertifikata, lblPoetak, lblKraj, lblNadcertifikat, panelNadcertifikat, txtNadcertifikat, btnNadcertifikat, lblKeystore, panelKeyStore, txtKeystore, btnKeyStore, lblCertifikat, panelCertifikat, txtCertifikat, btnCertifikat, dateStart.getCalendarButton(), dateStart, dateEnd.getCalendarButton(), dateEnd}));
+	    panel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPodaciOCertifikatu, lblTip, cbTipCertifikata, lblPoetak, lblKraj, lblNadcertifikat, panelNadcertifikat, txtNadcertifikat, lblKeystore, panelKeyStore, txtKeystore, btnKeyStore, lblCertifikat, panelCertifikat, txtCertifikat, btnCertifikat, dateStart.getCalendarButton(), dateStart, dateEnd.getCalendarButton(), dateEnd}));
 	    
 	    JPanel panelBtn = new JPanel();
 	    GridBagConstraints gbc_panelBtn = new GridBagConstraints();
@@ -1311,7 +1319,6 @@ public class MainGUI {
 	    
 	    //setovanje pocetnog layouta
 	    ((CardLayout) cardPanel.getLayout()).show(cardPanel, TipCertifikata.APLIKACIJA.toString());
-
 	    
 	}
 	
