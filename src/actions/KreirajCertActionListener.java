@@ -2,13 +2,22 @@ package actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.rmi.server.ServerNotActiveException;
+import java.security.KeyManagementException;
 import java.security.KeyPair;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
+import javax.security.auth.login.CredentialException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import app.main.Singleton;
 import gui.MainGUI;
+import https.controller.CertificateController;
 import https.model.CertifikatDTO;
 import model.Certifikat;
 import model.CertifikatAplikacija;
@@ -17,6 +26,7 @@ import model.CertifikatDomen;
 import model.CertifikatOprema;
 import model.CertifikatOrganizacija;
 import model.CertifikatOsoba;
+import model.CertifikatRoot;
 import model.DataSum;
 import model.TipCertifikata;
 import security.certificates.GenerateCertificate;
@@ -42,7 +52,8 @@ public class KreirajCertActionListener implements ActionListener {
 		CertifikatOprema certOprema;
 		CertifikatOrganizacija certOrganizacija;
 		CertifikatOsoba certOsoba;
-		CertifikatCA certCA;
+		CertifikatCA certCA = null;
+		CertifikatRoot certRoot;
 
 		if(cert.getPocetak() == null) {
 			JOptionPane.showMessageDialog(frame, "Nije unesen datum pocetka vazenja sertifikata!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
@@ -160,11 +171,29 @@ public class KreirajCertActionListener implements ActionListener {
 				JOptionPane.showMessageDialog(frame, "Nije popunjen id zaposlenog!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-		default:
+		case CA_APLIKACIJA:
 			certCA = (CertifikatCA)main.getCertifikatData();
+		case CA_DOMEN:
+			certCA = (CertifikatCA)main.getCertifikatData();
+		case CA_OPREMA:
+			certCA = (CertifikatCA)main.getCertifikatData();
+		case CA_ORGANIZACIJA:
+			certCA = (CertifikatCA)main.getCertifikatData();
+		case CA_OSOBA:
+			certCA = (CertifikatCA)main.getCertifikatData();
+			
+		default:
+			certRoot = (CertifikatRoot)main.getCertifikatData();
 	}
-		if (certCA !=null) {
+		if (certCA != null) {
 			if(certCA.getOrganizacija().equals("")) {
+				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		
+		if (certRoot != null) {
+			if(certRoot.getOrganizacija().equals("")) {
 				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv organizacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -172,10 +201,10 @@ public class KreirajCertActionListener implements ActionListener {
 		
 		GenerateCertificate gen = new GenerateCertificate();
 		KeyPair pair = gen.generateKeyPair();
-		SubjectData subData = gen.generateCertificate(cert);
+		SubjectData subData = gen.generateSubjectData(cert,pair);
 		
 		boolean found = false;
-		if(cert.getSeriskiBrojNadSert() != null) {
+		if(cert.getNadcertifikat() != null) {
 			for (CertifikatDTO certDto : Singleton.getInstance().getListaCertifikata()) {
 				if(certDto.getSerijskiBroj() == cert.getSeriskiBrojNadSert()) {
 					found = true;
@@ -183,11 +212,29 @@ public class KreirajCertActionListener implements ActionListener {
 				}
 			}
 		}
-		if(!found) {
+		if(!found && cert.getNadcertifikat()!=null) {
 			JOptionPane.showMessageDialog(frame, "Nije pronadjen uneti sertifikat!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
-
+			return;
 		}
+		
 		DataSum sum = new DataSum(subData, pair, cert.getSeriskiBrojNadSert());
+		CertificateController cc = new CertificateController();
+		CertifikatDTO certDTO = null;
+		try {
+			certDTO = cc.createCertificate(sum);
+		} catch (KeyManagementException | CredentialException | CertificateException | KeyStoreException
+				| NoSuchAlgorithmException | InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException
+				| IOException | ServerNotActiveException e1) {
+			JOptionPane.showMessageDialog(null, "Sertifikat nije kreiran", "Greska", JOptionPane.OK_OPTION);
+			return;
+		}
+		
+		//cuvanje privateKey i cert na disku
+		Singleton.getInstance().getListaCertifikata().add(certDTO);
+		
+		
+		
 		// TODO Auto-generated method stub
 		// Step 1: ucitaj nadcertifikat ako je tip != root
 		// Step 2: kreiraj certifikat

@@ -22,6 +22,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.security.auth.login.CredentialException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class PutRequest
 {
@@ -63,9 +64,11 @@ public class PutRequest
 		
 		// Get object to byte[] using ObjectMapper and write it to OutputStream
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		try{
 			mapper.writeValue(connection.getOutputStream(), postData);
 		} catch (Exception e) {
+			System.out.println(e);
 			throw new ServerNotActiveException();
 		}
 				

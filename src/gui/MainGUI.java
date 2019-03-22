@@ -23,6 +23,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.security.auth.login.CredentialException;
 import javax.swing.Action;
@@ -498,6 +499,11 @@ public class MainGUI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (table_3.getSelectedRow()==-1) {
+					JOptionPane.showMessageDialog(getMainFrame(), "Certifikat nije izabran!", "Povlacenje", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
 				String sn = table_3.getValueAt(table_3.getSelectedRow(), 4).toString();
 	            CertificateViabilityController cvc = new CertificateViabilityController();
 	            try {
@@ -1367,7 +1373,7 @@ public class MainGUI {
 	}
 
 	private CertifikatRoot getRootCertifikat() {
-		CertifikatRoot ret = new CertifikatRoot(txtOrganizacijaRoot.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(), new BigInteger(txtNadcertifikat.getText()));
+		CertifikatRoot ret = new CertifikatRoot(txtOrganizacijaRoot.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(), new BigInteger(getRandomBigInteger()));
 		return ret;
 	}
 
@@ -1391,4 +1397,21 @@ public class MainGUI {
 		return ret;
 	}
 
+	private String getRandomBigInteger() {
+		BigInteger bigInteger = new BigInteger("2000000000000");// uper limit
+	    BigInteger min = new BigInteger("1000000000");// lower limit
+	    BigInteger bigInteger1 = bigInteger.subtract(min);
+	    Random rnd = new Random();
+	    int maxNumBitLength = bigInteger.bitLength();
+
+	    BigInteger aRandomBigInt;
+
+	    aRandomBigInt = new BigInteger(maxNumBitLength, rnd);
+	    if (aRandomBigInt.compareTo(min) < 0)
+	      aRandomBigInt = aRandomBigInt.add(min);
+	    if (aRandomBigInt.compareTo(bigInteger) >= 0)
+	      aRandomBigInt = aRandomBigInt.mod(bigInteger1).add(min);
+		
+	    return aRandomBigInt.toString();
+	}
 }

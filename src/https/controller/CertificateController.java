@@ -1,6 +1,8 @@
 package https.controller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -8,12 +10,16 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.CredentialException;
 import javax.swing.JOptionPane;
 
 import app.main.Singleton;
+import https.model.CertificateViabilityDTO;
 import https.model.CertifikatDTO;
 import https.requests.DeleteRequest;
 import https.requests.GetRequest;
+import https.requests.PutRequest;
+import model.DataSum;
 
 public class CertificateController 
 {
@@ -104,10 +110,23 @@ public class CertificateController
 		certs = GetRequest.execute("https://localhost:8443/api/certificate/all", getToken(), CertifikatDTO.class, true); 
 		if(certs.isEmpty())
 		{
-			JOptionPane.showMessageDialog(null, "Nema kreiranih sertifikata", "Greska", JOptionPane.OK_OPTION);
+			//JOptionPane.showMessageDialog(null, "Nema kreiranih sertifikata", "Greska", JOptionPane.OK_OPTION);
 		}
 
 		return certs;
+	}
+	
+	public CertifikatDTO createCertificate(DataSum dataSum) throws KeyManagementException, CredentialException, CertificateException, KeyStoreException, NoSuchAlgorithmException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, IOException, ServerNotActiveException
+	{
+		List<CertifikatDTO> cert = null;
+		cert = PutRequest.execute("https://localhost:8443/api/certificate/create", getToken(), dataSum, CertifikatDTO.class, false);
+		if(cert.isEmpty())
+		{
+			//JOptionPane.showMessageDialog(null, "Sertifikat nije kreiran", "Greska", JOptionPane.OK_OPTION);
+		}
+		System.out.println(cert);
+		
+		return cert.get(0);
 	}
 	
 	public static String getToken() {

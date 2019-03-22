@@ -3,6 +3,9 @@ package model;
 import java.math.BigInteger;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import sun.security.x509.X500Name;
@@ -31,8 +34,23 @@ public abstract class Certifikat {
 		super();
 		this.nadcertifikat = nadcertifikat;
 		this.seriskiBrojNadSert = seriskiBroj;
-		this.pocetak = pocetak;
-		this.kraj = kraj;
+		
+		String pattern  = "yyyy-MM-dd";
+		DateFormat formatter = new SimpleDateFormat(pattern);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			this.pocetak = formatter.parse(sdf.format(pocetak));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			this.kraj = formatter.parse(sdf.format(kraj));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.naziv = naziv;
 		this.publicKey = publicKey;
 		this.tipCertifikata = tipCertifikata;

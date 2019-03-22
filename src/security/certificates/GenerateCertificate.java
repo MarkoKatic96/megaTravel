@@ -1,11 +1,11 @@
 package security.certificates;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -15,6 +15,7 @@ import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -28,7 +29,6 @@ import model.CertifikatOprema;
 import model.CertifikatOrganizacija;
 import model.CertifikatOsoba;
 import model.CertifikatRoot;
-import security.data.IssuerData;
 import security.data.SubjectData;
 
 
@@ -63,31 +63,31 @@ public class GenerateCertificate {
         return null;
 	}
 	
-	public SubjectData generateCertificate(Certifikat certifikat) {
+	public SubjectData generateSubjectData(Certifikat certifikat, KeyPair keyPairSubject) {
 		SubjectData subjectData = null;
 		switch (certifikat.getTipCertifikata()) {
 			case APLIKACIJA:
-				subjectData = generateAppData((CertifikatAplikacija) certifikat);
+				subjectData = generateAppData((CertifikatAplikacija) certifikat, keyPairSubject);
 				break;
 			
 			case DOMEN:
-				subjectData = generateDomenData((CertifikatDomen) certifikat);
+				subjectData = generateDomenData((CertifikatDomen) certifikat, keyPairSubject);
 				break;
 			
 			case OPREMA:
-				subjectData = generateOpremaData((CertifikatOprema) certifikat);
+				subjectData = generateOpremaData((CertifikatOprema) certifikat, keyPairSubject);
 				break;
 				
 			case ORGANIZACIJA:
-				subjectData = generateOrganizacijaData((CertifikatOrganizacija) certifikat);
+				subjectData = generateOrganizacijaData((CertifikatOrganizacija) certifikat, keyPairSubject);
 				break;
 				
 			case OSOBA:
-				subjectData = generateOsobaData((CertifikatOsoba) certifikat);
+				subjectData = generateOsobaData((CertifikatOsoba) certifikat, keyPairSubject);
 				break;
 				
 			case ROOT:
-				subjectData = generateRootData((CertifikatRoot) certifikat);
+				subjectData = generateRootData((CertifikatRoot) certifikat, keyPairSubject);
 				break;
 	
 			default:
@@ -98,14 +98,15 @@ public class GenerateCertificate {
 	}
 
 
-	public SubjectData generateAppData(CertifikatAplikacija certifikat) {
+	public SubjectData generateAppData(CertifikatAplikacija certifikat, KeyPair keyPairSubject) {
 		try {
-			KeyPair keyPairSubject = generateKeyPair();
-			
+
 			//Datumi od kad do kad vazi sertifikat
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate = iso8601Formater.parse(certifikat.getPocetak().toString());
-			Date endDate = iso8601Formater.parse(certifikat.getKraj().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
+			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
@@ -131,20 +132,23 @@ public class GenerateCertificate {
 		return null;
 	}
 	
-	public SubjectData generateRootData(CertifikatRoot certifikat) {
+	public SubjectData generateRootData(CertifikatRoot certifikat, KeyPair keyPairSubject) {
 		try {
-			KeyPair keyPairSubject = generateKeyPair();
 			
 			//Datumi od kad do kad vazi sertifikat
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate = iso8601Formater.parse(certifikat.getPocetak().toString());
-			Date endDate = iso8601Formater.parse(certifikat.getKraj().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			//Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
+			//Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
+			Date startDate = certifikat.getPocetak();
+			Date endDate = certifikat.getKraj();
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.O, certifikat.getOrganizacija());
@@ -163,20 +167,20 @@ public class GenerateCertificate {
 		return null;
 	}
 
-	public SubjectData generateDomenData(CertifikatDomen certifikat) {
+	public SubjectData generateDomenData(CertifikatDomen certifikat, KeyPair keyPairSubject) {
 		try {
-			KeyPair keyPairSubject = generateKeyPair();
-			
 			//Datumi od kad do kad vazi sertifikat
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate = iso8601Formater.parse(certifikat.getPocetak().toString());
-			Date endDate = iso8601Formater.parse(certifikat.getKraj().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
+			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.CN, certifikat.getHttps());
@@ -194,21 +198,21 @@ public class GenerateCertificate {
 		return null;
 	}
 
-	public SubjectData generateOpremaData(CertifikatOprema certifikat) {
+	public SubjectData generateOpremaData(CertifikatOprema certifikat, KeyPair keyPairSubject) {
 		
 		try {
-			KeyPair keyPairSubject = generateKeyPair();
-			
 			//Datumi od kad do kad vazi sertifikat
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate = iso8601Formater.parse(certifikat.getPocetak().toString());
-			Date endDate = iso8601Formater.parse(certifikat.getKraj().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
+			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.SN, certifikat.getMAC());
@@ -232,21 +236,21 @@ public class GenerateCertificate {
 		return null;
 	}
 		
-	public SubjectData generateOrganizacijaData(CertifikatOrganizacija certifikat) {
+	public SubjectData generateOrganizacijaData(CertifikatOrganizacija certifikat, KeyPair keyPairSubject) {
 		
 		try {
-			KeyPair keyPairSubject = generateKeyPair();
-			
 			//Datumi od kad do kad vazi sertifikat
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate = iso8601Formater.parse(certifikat.getPocetak().toString());
-			Date endDate = iso8601Formater.parse(certifikat.getKraj().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
+			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.BUSINESS_CATEGORY,certifikat.getKategorija());
@@ -268,21 +272,21 @@ public class GenerateCertificate {
 		return null;
 	}
 		
-	public SubjectData generateOsobaData(CertifikatOsoba certifikat) {
+	public SubjectData generateOsobaData(CertifikatOsoba certifikat, KeyPair keyPairSubject) {
 		
 		try {
-			KeyPair keyPairSubject = generateKeyPair();
-			
 			//Datumi od kad do kad vazi sertifikat
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate = iso8601Formater.parse(certifikat.getPocetak().toString());
-			Date endDate = iso8601Formater.parse(certifikat.getKraj().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
+			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.CN, certifikat.getIme() + " " + certifikat.getPrezime());
@@ -306,6 +310,24 @@ public class GenerateCertificate {
 		}
 		
 		return null;
+	}
+	
+	private String getRandomBigInteger() {
+		BigInteger bigInteger = new BigInteger("2000000000000");// uper limit
+	    BigInteger min = new BigInteger("1000000000");// lower limit
+	    BigInteger bigInteger1 = bigInteger.subtract(min);
+	    Random rnd = new Random();
+	    int maxNumBitLength = bigInteger.bitLength();
+
+	    BigInteger aRandomBigInt;
+
+	    aRandomBigInt = new BigInteger(maxNumBitLength, rnd);
+	    if (aRandomBigInt.compareTo(min) < 0)
+	      aRandomBigInt = aRandomBigInt.add(min);
+	    if (aRandomBigInt.compareTo(bigInteger) >= 0)
+	      aRandomBigInt = aRandomBigInt.mod(bigInteger1).add(min);
+		
+	    return aRandomBigInt.toString();
 	}
 		
 }
