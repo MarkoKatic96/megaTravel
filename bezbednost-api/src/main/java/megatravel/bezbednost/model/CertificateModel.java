@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -31,6 +33,7 @@ public class CertificateModel {
 	private Date datumKraja;
 	
 	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date datumKreiranja;
 	
 	@NotNull

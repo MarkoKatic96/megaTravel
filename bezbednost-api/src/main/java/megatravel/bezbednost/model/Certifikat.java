@@ -4,7 +4,7 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
-import sun.security.x509.X500Name;
+import org.bouncycastle.asn1.x500.X500Name;
 
 public abstract class Certifikat {
 	private X509Certificate nadcertifikat;

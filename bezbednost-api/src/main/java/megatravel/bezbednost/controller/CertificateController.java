@@ -3,10 +3,16 @@ package megatravel.bezbednost.controller;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,12 +22,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import megatravel.bezbednost.certificateGeneration.GenerateCertificate;
+import megatravel.bezbednost.data.SubjectData;
+import megatravel.bezbednost.keyStore.KeyStoreWriter;
 import megatravel.bezbednost.model.AdminModel;
 import megatravel.bezbednost.model.CertificateModel;
+import megatravel.bezbednost.model.DataSum;
+import megatravel.bezbednost.model.TipCertifikata;
 import megatravel.bezbednost.service.AdminService;
 import megatravel.bezbednost.service.CertificateService;
 import megatravel.bezbednost.token.JwtTokenUtils;
@@ -214,5 +226,140 @@ public class CertificateController {
 		headers.add("X-Total-Count", String.valueOf(certTotal));
 		
 		return new ResponseEntity<>(comm, headers, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "api/certificate/create", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CertificateModel> createCertificate(@RequestBody DataSum dataSum, HttpServletRequest req) {
+		System.out.println("createCertificate()");
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		AdminModel korisnik = adminService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		 
+		CertificateModel nadcertifikat = null;
+		if (dataSum.getRootSerialNumber()!=null) {
+			nadcertifikat = certificateService.findBySerijskiBroj(dataSum.getRootSerialNumber());
+			if (nadcertifikat == null) {
+				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			// ako je nadcertifikat root onda je null inace je pronadjen i dovucen iz baze
+		}
+		
+		SubjectData subData = new SubjectData(publicKey, x500name, serialNumber, startDate, endDate);
+		
+		//proveravam da li vec postoji cert sa istim sn
+		boolean b = certificateService.existsBySerijskiBroj(new BigInteger(dataSum.getSubData().getSerialNumber()));
+		while (b) {
+			dataSum.getSubData().setSerialNumber(getRandomBigInteger());
+			b = certificateService.existsBySerijskiBroj(new BigInteger(dataSum.getSubData().getSerialNumber()));
+		}
+		
+		TipCertifikata tipCertifikata = (nadcertifikat==null) ? TipCertifikata.ROOT : nadcertifikat.getTipCertifikata();
+		TipCertifikata tipNadcertifikata = getTipNadcertifikata(tipCertifikata);
+		GenerateCertificate gc = new GenerateCertificate();
+		X509Certificate nadcert;
+		X509Certificate cert;
+		
+		if (nadcertifikat!=null) {
+			try {
+				nadcert = getX509Certificate(nadcertifikat.getCertifikat());
+			} catch (CertificateException e) {
+				System.out.println("Pukao zbog konverzije bita certifikata");
+				e.printStackTrace();
+				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
+			//generisanje certifikata
+			try {
+				cert = gc.generateCertificate(nadcert, tipNadcertifikata, tipCertifikata, dataSum.getSubData(), dataSum.getPair());
+			} catch (InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException
+					| SignatureException e) {
+				System.out.println("Pukao zbog kreiranja certifikata");
+				e.printStackTrace();
+				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
+			System.out.println("Generisan certifikat");
+		} else {
+			try {
+				cert = gc.generateSelfSignedCertificate(dataSum.getSubData(), dataSum.getPair());
+			} catch (InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException
+					| SignatureException e) {
+				System.out.println("Pukao zbog kreiranja certifikata");
+				e.printStackTrace();
+				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
+			System.out.println("Generisan selfsigned certifikat");
+		}
+		
+		//skladistim private key subjekta
+		KeyStoreWriter ksw = new KeyStoreWriter();
+		ksw.savePrivateKey(dataSum.getPair().getPrivate(), cert, tipCertifikata);
+		
+		//skladistim certifikat u bazi i FOLDERU
+		CertificateModel newCert = null;
+		try {
+			newCert = new CertificateModel(null, cert, tipCertifikata, nadcertifikat.getSerijskiBroj());
+		} catch (CertificateEncodingException e) {
+			System.out.println("Pukao zbog kreiranja CertificateModel-a");
+			e.printStackTrace();
+			return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+		newCert = certificateService.save(newCert);
+		
+		//...
+		
+		
+		return new ResponseEntity<>(newCert, HttpStatus.OK);
+	}
+
+	private TipCertifikata getTipNadcertifikata(TipCertifikata tipCertifikata) {
+		if (tipCertifikata == TipCertifikata.ROOT) {
+			return TipCertifikata.ROOT;
+			
+		} else if (tipCertifikata == TipCertifikata.CA_APLIKACIJA || tipCertifikata == TipCertifikata.CA_DOMEN || tipCertifikata == TipCertifikata.CA_OPREMA || tipCertifikata == TipCertifikata.CA_ORGANIZACIJA || tipCertifikata == TipCertifikata.CA_OSOBA) {
+			return TipCertifikata.ROOT;
+			
+		} else if (tipCertifikata == TipCertifikata.APLIKACIJA) {
+			return TipCertifikata.CA_APLIKACIJA;
+			
+		} else if (tipCertifikata == TipCertifikata.DOMEN) {
+			return TipCertifikata.CA_DOMEN;
+			
+		} else if (tipCertifikata == TipCertifikata.OPREMA) {
+			return TipCertifikata.CA_OPREMA;
+			
+		} else if (tipCertifikata == TipCertifikata.ORGANIZACIJA) {
+			return TipCertifikata.CA_ORGANIZACIJA;
+			
+		} else if (tipCertifikata == TipCertifikata.OSOBA) {
+			return TipCertifikata.OSOBA;
+		}
+		
+		return null;
+	}
+	
+	private String getRandomBigInteger() {
+		BigInteger bigInteger = new BigInteger("2000000000000");// uper limit
+	    BigInteger min = new BigInteger("1000000000");// lower limit
+	    BigInteger bigInteger1 = bigInteger.subtract(min);
+	    Random rnd = new Random();
+	    int maxNumBitLength = bigInteger.bitLength();
+
+	    BigInteger aRandomBigInt;
+
+	    aRandomBigInt = new BigInteger(maxNumBitLength, rnd);
+	    if (aRandomBigInt.compareTo(min) < 0)
+	      aRandomBigInt = aRandomBigInt.add(min);
+	    if (aRandomBigInt.compareTo(bigInteger) >= 0)
+	      aRandomBigInt = aRandomBigInt.mod(bigInteger1).add(min);
+		
+	    return aRandomBigInt.toString();
 	}
 }

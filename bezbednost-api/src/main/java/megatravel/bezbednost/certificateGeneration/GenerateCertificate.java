@@ -1,5 +1,6 @@
 package megatravel.bezbednost.certificateGeneration;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -10,26 +11,30 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.SignatureException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
+import java.util.Random;
 
+import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import megatravel.bezbednost.data.IssuerData;
 import megatravel.bezbednost.data.SubjectData;
-import megatravel.bezbednost.model.Certifikat;
+import megatravel.bezbednost.keyStore.KeyStoreReader;
 import megatravel.bezbednost.model.CertifikatAplikacija;
 import megatravel.bezbednost.model.CertifikatDomen;
 import megatravel.bezbednost.model.CertifikatOprema;
 import megatravel.bezbednost.model.CertifikatOrganizacija;
 import megatravel.bezbednost.model.CertifikatOsoba;
 import megatravel.bezbednost.model.CertifikatRoot;
+import megatravel.bezbednost.model.TipCertifikata;
 
 public class GenerateCertificate {
 	
@@ -63,52 +68,51 @@ public class GenerateCertificate {
         return null;
 	}
 	
-	public X509Certificate generateCertificate(Certifikat certifikat) {
-		SubjectData subjectData = null;
-		switch (certifikat.getTipCertifikata()) {
-			case APLIKACIJA:
-				subjectData = generateAppData((CertifikatAplikacija) certifikat);
-				break;
-			
-			case DOMEN:
-				subjectData = generateDomenData((CertifikatDomen) certifikat);
-				break;
-			
-			case OPREMA:
-				subjectData = generateOpremaData((CertifikatOprema) certifikat);
-				break;
-				
-			case ORGANIZACIJA:
-				subjectData = generateOrganizacijaData((CertifikatOrganizacija) certifikat);
-				break;
-				
-			case OSOBA:
-				subjectData = generateOsobaData((CertifikatOsoba) certifikat);
-				break;
-				
-			case ROOT:
-				subjectData = generateRootData((CertifikatRoot) certifikat);
-				break;
-	
-			default:
-				break;
-		}
+	public X509Certificate generateCertificate(X509Certificate nadcertifikat, TipCertifikata tipNadcertifikata, TipCertifikata tipCertifikata, SubjectData subjectData, KeyPair keyPair) throws InvalidKeyException, CertificateException, NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
+
+		//iz KeyStora uzimam privatni kljuc od nadcertifikata
+		KeyStoreReader ksr = new KeyStoreReader();
+		PrivateKey privateKey = ksr.readPrivateKey("./files/pki/keystores/"+ tipNadcertifikata.toString() +".jks", "secretpassword", nadcertifikat.getSerialNumber().toString(), "secretpassword");
 		
-		if (subjectData==null) {
-			return null;
+		IssuerData issuerData;
+		try {
+			issuerData = generateIssuerData(privateKey, nadcertifikat);
+		} catch (CertificateEncodingException e) {
+			issuerData = new IssuerData(privateKey, new X500Name(nadcertifikat.getIssuerX500Principal().getName()));
 		}
-		
-		KeyPair keyPairIssuer = generateKeyPair();
-		IssuerData issuerData = generateIssuerData(keyPairIssuer.getPrivate(), certifikat.getNadcertifikat());
 	    
 		//Generise se sertifikat za subjekta, potpisan od strane issuer-a
 		CertificateGenerator cg = new CertificateGenerator();
 		X509Certificate cert = cg.generateCertificate(subjectData, issuerData);
+		
+		//provera validnosti potpisa
+		cert.verify(nadcertifikat.getPublicKey());
+
+		//skladistenje certifikata u bazi i kljuca u keystoru je ostavljeno za pozivaoca metode
+		
+		return cert;
+	}
+	
+	public X509Certificate generateSelfSignedCertificate(SubjectData subjectData, KeyPair keyPair) throws InvalidKeyException, CertificateException, NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
+
+		//generisem Issuer-a od subjectData i keyPair-a
+		IssuerData issuerData = new IssuerData(keyPair.getPrivate(), subjectData.getX500name());
+	    
+		//Generise se sertifikat za subjekta, potpisan od strane issuer-a
+		CertificateGenerator cg = new CertificateGenerator();
+		X509Certificate cert = cg.generateCertificate(subjectData, issuerData);
+		
+		//provera validnosti potpisa
+		cert.verify(keyPair.getPublic());
+
+		//skladistenje certifikata u bazi i kljuca u keystoru je ostavljeno za pozivaoca metode
+		
 		return cert;
 	}
 
-	public IssuerData generateIssuerData(PrivateKey issuerKey, X509Certificate nadcertifikat) {
-		return null;
+	public IssuerData generateIssuerData(PrivateKey issuerKey, X509Certificate nadcertifikat) throws CertificateEncodingException {
+		X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) nadcertifikat).getSubject();
+		return new IssuerData(issuerKey, issuerName);
 	}
 
 	public SubjectData generateAppData(CertifikatAplikacija certifikat) {
@@ -124,7 +128,7 @@ public class GenerateCertificate {
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 			builder.addRDN(BCStyle.CN, certifikat.getNazivAplikacije());
@@ -157,7 +161,7 @@ public class GenerateCertificate {
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.O, certifikat.getOrganizacija());
@@ -189,7 +193,7 @@ public class GenerateCertificate {
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.CN, certifikat.getHttps());
@@ -221,7 +225,7 @@ public class GenerateCertificate {
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.SN, certifikat.getMAC());
@@ -259,7 +263,7 @@ public class GenerateCertificate {
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.BUSINESS_CATEGORY,certifikat.getKategorija());
@@ -295,7 +299,7 @@ public class GenerateCertificate {
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		    builder.addRDN(BCStyle.CN, certifikat.getIme() + " " + certifikat.getPrezime());
@@ -321,4 +325,22 @@ public class GenerateCertificate {
 		return null;
 	}
 
+	private String getRandomBigInteger() {
+		BigInteger bigInteger = new BigInteger("2000000000000");// uper limit
+	    BigInteger min = new BigInteger("1000000000");// lower limit
+	    BigInteger bigInteger1 = bigInteger.subtract(min);
+	    Random rnd = new Random();
+	    int maxNumBitLength = bigInteger.bitLength();
+
+	    BigInteger aRandomBigInt;
+
+	    aRandomBigInt = new BigInteger(maxNumBitLength, rnd);
+	    if (aRandomBigInt.compareTo(min) < 0)
+	      aRandomBigInt = aRandomBigInt.add(min);
+	    if (aRandomBigInt.compareTo(bigInteger) >= 0)
+	      aRandomBigInt = aRandomBigInt.mod(bigInteger1).add(min);
+		
+	    return aRandomBigInt.toString();
+	    
+	}
 }
