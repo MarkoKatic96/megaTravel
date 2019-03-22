@@ -14,7 +14,6 @@ import javax.security.auth.login.CredentialException;
 import javax.swing.JOptionPane;
 
 import app.main.Singleton;
-import https.model.CertificateViabilityDTO;
 import https.model.CertifikatDTO;
 import https.requests.DeleteRequest;
 import https.requests.GetRequest;

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
 import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
 import java.security.KeyPair;
@@ -217,7 +218,10 @@ public class KreirajCertActionListener implements ActionListener {
 			return;
 		}
 		
-		DataSum sum = new DataSum(subData, pair, cert.getSeriskiBrojNadSert());
+		DataSum sum = new DataSum(subData.getX500name().toString(), new BigInteger(subData.getSerialNumber()), subData.getStartDate(), subData.getEndDate(), pair.getPublic(), pair.getPrivate(), cert.getSeriskiBrojNadSert());
+		if (cert.getNadcertifikat()==null) {
+			sum.setRootSerialNumber(null);
+		}
 		CertificateController cc = new CertificateController();
 		CertifikatDTO certDTO = null;
 		try {
