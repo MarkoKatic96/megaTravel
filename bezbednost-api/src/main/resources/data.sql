@@ -1,2 +1,3 @@
 # ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
 insert into db_certificates.admin_model (aktiviran_nalog, email, ime, lozinka, prezime) values (b'1', 'admin@megatravel.com', 'boris', '$2a$12$iRk5DQT6DVpn2X.SjScOSeU0SXt54GLIhTjS7lxgI6an9I21BUhOW', 'bibic');
+INSERT INTO db_certificates.certificate_model (id, certifikat, datum_kraja, datum_kreiranja, datum_pocetka, nadcertifikat, serijski_broj, tip_certifikata) VALUES ('1', ' ', '2020-04-04 23:59:59', '2019-04-04 22:59:59', '2019-04-04 23:59:59', '0', '1', '5');
