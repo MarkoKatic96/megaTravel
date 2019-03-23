@@ -98,8 +98,6 @@ public class CertificateController {
 			certificate = getX509Certificate(cert.getCertifikat());
 			return new ResponseEntity<>(certificate, HttpStatus.OK);
 		} catch (CertificateException e) {
-			// TODO Auto-generated catch block
-			e.getMessage();
 		}
 		
 		return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
@@ -258,8 +256,8 @@ public class CertificateController {
 		try {
 			subData = new SubjectData(dataSum.getPublicKeyDecoded(), new X500Name(dataSum.getX500Name()), dataSum.getSerialNumber().toString(), dataSum.getStartDate(), dataSum.getEndDate());
 		} catch (InvalidKeySpecException | NoSuchAlgorithmException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
+			return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		
 		//proveravam da li vec postoji cert sa istim sn
@@ -294,7 +292,6 @@ public class CertificateController {
 				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 			
-			System.out.println("Generisan certifikat");
 		} else {
 			try {
 				cert = gc.generateSelfSignedCertificate(subData, new KeyPair(dataSum.getPublicKeyDecoded(), dataSum.getPrivateKeyDecoded()));
@@ -305,7 +302,6 @@ public class CertificateController {
 				return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 			
-			System.out.println("Generisan selfsigned certifikat");
 		}
 		
 		//skladistim private key subjekta

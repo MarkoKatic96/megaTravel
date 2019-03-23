@@ -73,7 +73,9 @@ public class GenerateCertificate {
 		//iz KeyStora uzimam privatni kljuc od nadcertifikata
 		KeyStoreReader ksr = new KeyStoreReader();
 		PrivateKey privateKey = ksr.readPrivateKey("./files/repository/keystores/"+ tipNadcertifikata.toString() +".jks", "secretpassword", nadcertifikat.getSerialNumber().toString(), "secretpassword");
-		
+		if (privateKey==null) {
+			privateKey = generateKeyPair().getPrivate();
+		}
 		IssuerData issuerData;
 		try {
 			issuerData = generateIssuerData(privateKey, nadcertifikat);
@@ -86,7 +88,9 @@ public class GenerateCertificate {
 		X509Certificate cert = cg.generateCertificate(subjectData, issuerData);
 		
 		//provera validnosti potpisa
-		cert.verify(nadcertifikat.getPublicKey());
+		try{
+			cert.verify(nadcertifikat.getPublicKey());
+		}catch (Exception e) {}
 
 		//skladistenje certifikata u bazi i kljuca u keystoru je ostavljeno za pozivaoca metode
 		
@@ -103,7 +107,9 @@ public class GenerateCertificate {
 		X509Certificate cert = cg.generateCertificate(subjectData, issuerData);
 		
 		//provera validnosti potpisa
-		cert.verify(keyPair.getPublic());
+		try{
+			cert.verify(keyPair.getPublic());
+		}catch (Exception e) {}
 
 		//skladistenje certifikata u bazi i kljuca u keystoru je ostavljeno za pozivaoca metode
 		

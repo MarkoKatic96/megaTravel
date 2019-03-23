@@ -1,6 +1,7 @@
 package megatravel.bezbednost.keyStore;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -114,7 +115,8 @@ public class KeyStoreReader {
 			//kreiramo instancu KeyStore
 			KeyStore ks = KeyStore.getInstance("JKS", "SUN");
 			//ucitavamo podatke
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
+			File file = new File(keyStoreFile);
+			BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
 			ks.load(in, keyStorePass.toCharArray());
 			
 			if(ks.isKeyEntry(alias)) {

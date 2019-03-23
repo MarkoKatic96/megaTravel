@@ -33,8 +33,8 @@ public class ECCExample {
 		    KeyPair keyPair = g.generateKeyPair();
 		    PrivateKey privateKey = keyPair.getPrivate();
 		    PublicKey publicKey = keyPair.getPublic();
-		    System.out.println("PublicKey:"+publicKey+"\n");
-		    System.out.println("PrivateKey:"+privateKey+"\n");
+		    //System.out.println("PublicKey:"+publicKey+"\n");
+		    //System.out.println("PrivateKey:"+privateKey+"\n");
 		    return keyPair;	
 		} 
 		catch (Exception e) 

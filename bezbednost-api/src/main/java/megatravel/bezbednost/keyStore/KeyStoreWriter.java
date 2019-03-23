@@ -44,6 +44,7 @@ public class KeyStoreWriter {
 		}else {
 			ksw.loadKeyStore(null, "secretpassword".toCharArray());//inicijalizuje keyStore
 			ksw.saveKeyStore(filepath + tip.toString() +".jks", "secretpassword".toCharArray());//snima keyStore
+			System.out.println(cert);
 			ksw.write(cert.getSerialNumber().toString(), privateKey, "secretpassword".toCharArray(), cert);//upisuje u keyStore
 		}
 	}
