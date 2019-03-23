@@ -68,11 +68,11 @@ public class GenerateCertificate {
         return null;
 	}
 	
-	public X509Certificate generateCertificate(X509Certificate nadcertifikat, TipCertifikata tipNadcertifikata, TipCertifikata tipCertifikata, SubjectData subjectData, KeyPair keyPair) throws InvalidKeyException, CertificateException, NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
+	public X509Certificate generateCertificate(X509Certificate nadcertifikat, TipCertifikata tipNadcertifikata, SubjectData subjectData, KeyPair keyPair) throws InvalidKeyException, CertificateException, NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
 
 		//iz KeyStora uzimam privatni kljuc od nadcertifikata
 		KeyStoreReader ksr = new KeyStoreReader();
-		PrivateKey privateKey = ksr.readPrivateKey("./files/pki/keystores/"+ tipNadcertifikata.toString() +".jks", "secretpassword", nadcertifikat.getSerialNumber().toString(), "secretpassword");
+		PrivateKey privateKey = ksr.readPrivateKey("./files/repository/keystores/"+ tipNadcertifikata.toString() +".jks", "secretpassword", nadcertifikat.getSerialNumber().toString(), "secretpassword");
 		
 		IssuerData issuerData;
 		try {

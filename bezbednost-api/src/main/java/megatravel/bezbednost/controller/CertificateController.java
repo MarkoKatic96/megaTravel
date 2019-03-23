@@ -1,6 +1,8 @@
 package megatravel.bezbednost.controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
@@ -232,7 +234,7 @@ public class CertificateController {
 	}
 	
 	@RequestMapping(value = "api/certificate/create", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CertificateModel> createCertificate(@RequestBody DataSum dataSum, HttpServletRequest req) {
+	public ResponseEntity<CertificateModel> createCertificate(@RequestBody DataSum dataSum, HttpServletRequest req) throws CertificateEncodingException, IOException {
 		System.out.println("createCertificate()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
@@ -267,8 +269,8 @@ public class CertificateController {
 			b = certificateService.existsBySerijskiBroj(dataSum.getSerialNumber());
 		}
 		
-		TipCertifikata tipCertifikata = (nadcertifikat==null) ? TipCertifikata.ROOT : nadcertifikat.getTipCertifikata();
-		TipCertifikata tipNadcertifikata = getTipNadcertifikata(tipCertifikata);
+		TipCertifikata tipNadcertifikata = (nadcertifikat==null) ? TipCertifikata.ROOT : nadcertifikat.getTipCertifikata();
+		TipCertifikata tipCertifikata = dataSum.getTipCertifikata();
 		GenerateCertificate gc = new GenerateCertificate();
 		X509Certificate nadcert = null;
 		X509Certificate cert = null;
@@ -284,7 +286,7 @@ public class CertificateController {
 			
 			//generisanje certifikata
 			try {
-				cert = gc.generateCertificate(nadcert, tipNadcertifikata, tipCertifikata, subData, new KeyPair(dataSum.getPublicKeyDecoded(), dataSum.getPrivateKeyDecoded()));
+				cert = gc.generateCertificate(nadcert, tipNadcertifikata, subData, new KeyPair(dataSum.getPublicKeyDecoded(), dataSum.getPrivateKeyDecoded()));
 			} catch (InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException
 					| SignatureException | InvalidKeySpecException e) {
 				System.out.println("Pukao zbog kreiranja certifikata");
@@ -330,32 +332,34 @@ public class CertificateController {
 		newCert = certificateService.save(newCert);
 		
 		//...
-		
+		saveCertificate(cert);
 		
 		return new ResponseEntity<>(newCert, HttpStatus.OK);
 	}
 
-	private TipCertifikata getTipNadcertifikata(TipCertifikata tipCertifikata) {
-		if (tipCertifikata == TipCertifikata.ROOT) {
-			return TipCertifikata.ROOT;
+	private TipCertifikata getTipCertifikata(TipCertifikata tipNadCertifikata) {
+		switch (tipNadCertifikata) {
+			case CA_APLIKACIJA:
+				return TipCertifikata.APLIKACIJA;
+			case CA_DOMEN:
+				return TipCertifikata.DOMEN;
+			case CA_OPREMA:
+				return TipCertifikata.OPREMA;
+			case CA_ORGANIZACIJA:
+				return TipCertifikata.ORGANIZACIJA;
+			case CA_OSOBA:
+				return TipCertifikata.OSOBA;
+			case ROOT:
+			try {
+				throw new Exception("Tu sam te cekao");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				return null;
 			
-		} else if (tipCertifikata == TipCertifikata.CA_APLIKACIJA || tipCertifikata == TipCertifikata.CA_DOMEN || tipCertifikata == TipCertifikata.CA_OPREMA || tipCertifikata == TipCertifikata.CA_ORGANIZACIJA || tipCertifikata == TipCertifikata.CA_OSOBA) {
-			return TipCertifikata.ROOT;
-			
-		} else if (tipCertifikata == TipCertifikata.APLIKACIJA) {
-			return TipCertifikata.CA_APLIKACIJA;
-			
-		} else if (tipCertifikata == TipCertifikata.DOMEN) {
-			return TipCertifikata.CA_DOMEN;
-			
-		} else if (tipCertifikata == TipCertifikata.OPREMA) {
-			return TipCertifikata.CA_OPREMA;
-			
-		} else if (tipCertifikata == TipCertifikata.ORGANIZACIJA) {
-			return TipCertifikata.CA_ORGANIZACIJA;
-			
-		} else if (tipCertifikata == TipCertifikata.OSOBA) {
-			return TipCertifikata.OSOBA;
+			default:
+				break;
 		}
 		
 		return null;
@@ -377,5 +381,14 @@ public class CertificateController {
 	      aRandomBigInt = aRandomBigInt.mod(bigInteger1).add(min);
 		
 	    return aRandomBigInt.toString();
+	}
+	
+	private void saveCertificate(X509Certificate cert) throws CertificateEncodingException, IOException {
+		final FileOutputStream os = new FileOutputStream("./files/repository/certificates/"+cert.getSerialNumber()+".cer");
+		//os.write("-----BEGIN CERTIFICATE-----\n".getBytes("US-ASCII"));
+		//String encodedCert = Base64Utility.encode(cert.getEncoded());
+		os.write(cert.getEncoded());
+		//os.write("-----END CERTIFICATE-----\n".getBytes("US-ASCII"));
+		os.close();
 	}
 }
