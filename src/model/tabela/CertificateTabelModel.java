@@ -36,7 +36,7 @@ public class CertificateTabelModel extends AbstractTableModel {
 		} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
 				| InstantiationException | IllegalAccessException | IOException e) {
 			JOptionPane.showMessageDialog(null, "Nije moguce inicijalizovati tabelu za komunikaciju certifikata", "Greska", JOptionPane.OK_OPTION);
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		
@@ -105,4 +105,11 @@ public class CertificateTabelModel extends AbstractTableModel {
 		return tipovi[col];
 	} 
 
+	public void addElement(CertifikatDTO dto) {
+		listaCertifikata.add(dto);
+	}
+	
+	public void remove(CertifikatDTO dto) {
+		listaCertifikata.remove(dto);
+	}
 }

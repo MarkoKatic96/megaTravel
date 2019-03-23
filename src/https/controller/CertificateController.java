@@ -50,7 +50,7 @@ public class CertificateController
 		{
 			JOptionPane.showMessageDialog(null, "Nepostojeci sertifikat", "Greska", JOptionPane.OK_OPTION);
 		}
-		System.out.println(cert);
+		//System.out.println(cert);
 		
 		return cert.get(0);
 	}
@@ -63,7 +63,7 @@ public class CertificateController
 		{
 			JOptionPane.showMessageDialog(null, "Nepostojeci sertifikat", "Greska", JOptionPane.OK_OPTION);
 		}
-		System.out.println(cert);
+		//System.out.println(cert);
 		
 		return cert.get(0);
 	}
@@ -82,7 +82,7 @@ public class CertificateController
 	{
 		List<Boolean> cert = new ArrayList<>();
 		cert = GetRequest.execute("https://localhost:8443/api/certificate/exists/" + id, getToken(), Boolean.class, false);
-		System.out.println(cert);
+		//System.out.println(cert);
 		if(!cert.get(0))
 			JOptionPane.showMessageDialog(null, "Nepostojeci sertifikat", "Greska", JOptionPane.OK_OPTION);
 		else
@@ -123,7 +123,7 @@ public class CertificateController
 		{
 			//JOptionPane.showMessageDialog(null, "Sertifikat nije kreiran", "Greska", JOptionPane.OK_OPTION);
 		}
-		System.out.println(cert);
+		//System.out.println(cert);
 		
 		return cert.get(0);
 	}

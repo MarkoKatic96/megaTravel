@@ -68,7 +68,8 @@ public class PutRequest
 		try{
 			mapper.writeValue(connection.getOutputStream(), postData);
 		} catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
+			System.out.println("Ups, server nije aktivan");
 			throw new ServerNotActiveException();
 		}
 				

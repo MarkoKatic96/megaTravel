@@ -40,7 +40,7 @@ public class CertificateViabilityController
 	{
 		List<CertificateViabilityDTO> certs = null;
 		certs = GetRequest.execute("https://localhost:8443/api/viability/all", getToken(), CertificateViabilityDTO.class, true);
-		System.out.println(certs);
+		//System.out.println(certs);
 		
 		return certs;
 	}
@@ -52,7 +52,7 @@ public class CertificateViabilityController
 	{
 		List<CertificateViabilityDTO> cert = null;
 		cert = PutRequest.execute("https://localhost:8443/api/certificate/viability", getToken(), certif, CertificateViabilityDTO.class, false);
-		System.out.println(cert);
+		//System.out.println(cert);
 		
 		return cert.get(0);
 	}
@@ -62,7 +62,7 @@ public class CertificateViabilityController
 	{
 		List<CertificateViabilityDTO> cert = null;
 		cert = PutRequest.execute("https://localhost:8443/api/viability", getToken(), certif, CertificateViabilityDTO.class, false);
-		System.out.println(cert);
+		//System.out.println(cert);
 		
 		return cert.get(0);
 	}

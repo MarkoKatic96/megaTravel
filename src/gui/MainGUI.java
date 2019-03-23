@@ -19,6 +19,7 @@ import java.rmi.server.ServerNotActiveException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -42,7 +43,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -105,7 +105,6 @@ public class MainGUI {
 	private JTextField txtNazivAplikacije;
 	private JTextField txtOrganizacijaAplikacije;
 	private JTextField txtVerzija;
-	private JTable table;
 	private JTable table_1;
 	private JTable table_2;
 	private JTextPane txtIzdavac1;
@@ -114,7 +113,10 @@ public class MainGUI {
 	private JTextPane txtSubjekat2;
 	private JTable table_3;
 	private JTable table_4;
-	
+	CertificateTabelModel model_1;
+	CertificateTabelModel model_2;
+	CertificateTabelModel model_3;
+	CertificateTabelModel model_4;
 
 	/**
 	 * Create the application frame.
@@ -211,8 +213,8 @@ public class MainGUI {
 		JLabel lblIzaberiteIzTabela = new JLabel("Izaberite iz tabela 2 certifikata koja smeju da komuniciraju");
 		panel_5.add(lblIzaberiteIzTabela);
 		
-		CertificateTabelModel model_1 = new CertificateTabelModel();
-		CertificateTabelModel model_2 = new CertificateTabelModel();
+		model_1 = new CertificateTabelModel();
+		model_2 = new CertificateTabelModel();
 		table_1 = new JTable(model_1);
 		table_2 = new JTable(model_2);
 		table_1.setAutoCreateRowSorter(true);
@@ -220,22 +222,22 @@ public class MainGUI {
 		table_1.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 
-	        	String id = table_1.getValueAt(table_1.getSelectedRow(), 0).toString();
-	            System.out.println("tbl1: " + id);
+	        	//String id = table_1.getValueAt(table_1.getSelectedRow(), 0).toString();
+	            //System.out.println("tbl1: " + id);
 	            byte[] certBytes = Singleton.getInstance().getListaCertifikata().get(table_1.getSelectedRow()).getCertifikat();
 	            X509Certificate cert = Singleton.getInstance().getX509Certificate(certBytes);
 	            txtIzdavac1.setText(cert.getIssuerX500Principal().toString());
 	            txtSubjekat1.setText(cert.getSubjectX500Principal().toString());
 	            
-	            System.out.println(cert.getIssuerX500Principal().toString());
-	            System.out.println(cert.getSubjectX500Principal().toString());
+	            //System.out.println(cert.getIssuerX500Principal().toString());
+	            //System.out.println(cert.getSubjectX500Principal().toString());
 	        }
 	    });
 		table_2.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 
-	        	String id = table_2.getValueAt(table_2.getSelectedRow(), 0).toString();
-	            System.out.println("tbl2: " + id);
+	        	//String id = table_2.getValueAt(table_2.getSelectedRow(), 0).toString();
+	            //System.out.println("tbl2: " + id);
 	            byte[] certBytes = Singleton.getInstance().getListaCertifikata().get(table_2.getSelectedRow()).getCertifikat();
 	            X509Certificate cert = Singleton.getInstance().getX509Certificate(certBytes);
 	            txtIzdavac2.setText(cert.getIssuerX500Principal().toString());
@@ -396,7 +398,7 @@ public class MainGUI {
 									| ServerNotActiveException e2) {
 								// TODO Auto-generated catch block
 								System.out.println("Faaaaaaaaaaaa");
-								e2.printStackTrace();
+								//e2.printStackTrace();
 							}
 							
 						}
@@ -409,11 +411,34 @@ public class MainGUI {
 		panel_8.add(btnPoveziCertifikate);
 		
 		JButton btnRazveziCertifikate = new JButton("Razveži certifikate");
-		btnRazveziCertifikate.addActionListener(new ActionListener() {
-			
+		btnRazveziCertifikate.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				CertificateCommunicationController ccc = new CertificateCommunicationController();
+				try {
+					List<CertificateCommunicationDTO> list = ccc.getAllCommunications();
+
+					if(table_1.getSelectedRow()==-1 || table_2.getSelectedRow()==-1) {
+						JOptionPane.showMessageDialog(getMainFrame(), "Morate izabrati certifikat u obe tabele!", "Razvezivanje", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					String id1 = table_1.getValueAt(table_1.getSelectedRow(), 0).toString();
+					String id2 = table_1.getValueAt(table_1.getSelectedRow(), 0).toString();
+					
+					for (CertificateCommunicationDTO cc : list) {
+						if ((cc.getSerijskiBroj1().toString().equals(id1) && cc.getSerijskiBroj2().toString().equals(id2)) || (cc.getSerijskiBroj2().toString().equals(id1) && cc.getSerijskiBroj1().toString().equals(id2))) {
+							ccc.removeCommunicationById(cc.getId());
+						}
+					}
+					
+					JOptionPane.showMessageDialog(getMainFrame(), "Uspesno su razvezani sertifikati!", "Razvezivanje", JOptionPane.OK_OPTION);
+					return;
+				} catch (KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException
+						| InstantiationException | IllegalAccessException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		});
@@ -463,7 +488,7 @@ public class MainGUI {
 		gbc_panel_3.gridy = 1;
 		povuciPanel.add(panel_3, gbc_panel_3);
 		
-		CertificateTabelModel model_3 = new CertificateTabelModel();
+		model_3 = new CertificateTabelModel();
 		GridBagLayout gbl_panel_3 = new GridBagLayout();
 		gbl_panel_3.columnWidths = new int[] {20, 286, 0, 452, 0};
 		gbl_panel_3.rowHeights = new int[]{427, 0};
@@ -514,6 +539,18 @@ public class MainGUI {
 						for (CertifikatDTO cert : Singleton.getInstance().getListaCertifikata()) {
 							if (cert.getSerijskiBroj().toString().equals(sn)) {
 								Singleton.getInstance().getListaCertifikata().remove(cert);
+								model_1.remove(cert);
+								model_3.remove(cert);
+								model_2.remove(cert);
+								model_4.remove(cert);
+								getTable_1().repaint();
+								getTable_2().repaint();
+								getTable_3().repaint();
+								getTable_4().repaint();
+								getModel_1().fireTableDataChanged();
+								getModel_2().fireTableDataChanged();
+								getModel_3().fireTableDataChanged();
+								getModel_4().fireTableDataChanged();
 							}
 						}
 					} else {
@@ -536,57 +573,21 @@ public class MainGUI {
 		gbc_btnPovuci.gridy = 5;
 		povuciPanel.add(btnPovuci, gbc_btnPovuci);
 		tabbedPane.setEnabledAt(2, true);
-		
-		JPanel postojeciPanel = new JPanel();
-		tabbedPane.addTab("Postojeći certifikati", null, postojeciPanel, null);
-		
-		JTree tree = new JTree();
-		//GridBagConstraints gbc_tree = new GridBagConstraints();
-		//gbc_tree.gridheight = 2;
-		//gbc_tree.insets = new Insets(0, 0, 5, 5);
-		//gbc_tree.fill = GridBagConstraints.BOTH;
-		//gbc_tree.gridx = 0;
-		//gbc_tree.gridy = 0;
-		//postojeciPanel.add(tree, gbc_tree);
-		
-		table = new JTable();
-		postojeciPanel.setLayout(new BoxLayout(postojeciPanel, BoxLayout.X_AXIS));
-		//GridBagConstraints gbc_table = new GridBagConstraints();
-		//gbc_table.insets = new Insets(0, 0, 5, 0);
-		//gbc_table.gridheight = 2;
-		//gbc_table.fill = GridBagConstraints.BOTH;
-		//gbc_table.gridx = 1;
-		//gbc_table.gridy = 0;
-		//postojeciPanel.add(table, gbc_table);
-		
-		JSplitPane splitPane_1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, table);
-		postojeciPanel.add(splitPane_1);
 	    
-		CertificateTabelModel model_4 = new CertificateTabelModel();
+		model_4 = new CertificateTabelModel();
 		table_4 = new JTable(model_4);
 		table_4.setAutoCreateRowSorter(true);
 		table_4.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-
+	        	if (table_4.getSelectedRow()==-1) {
+	        		return;
+	        	}
 	        	String sn = table_4.getValueAt(table_4.getSelectedRow(), 4).toString();
-	            System.out.println("tbl4: " + sn);
+	            //System.out.println("tbl4: " + sn);
 	            txtNadcertifikat.setText(sn);
-	            /*byte[] certBytes = Singleton.getInstance().getListaCertifikata().get(table_1.getSelectedRow()).getCertifikat();
-	            X509Certificate cert = Singleton.getInstance().getX509Certificate(certBytes);
-	            txtIzdavac1.setText(cert.getIssuerX500Principal().toString());
-	            txtSubjekat1.setText(cert.getSubjectX500Principal().toString());
-	            
-	            System.out.println(cert.getIssuerX500Principal().toString());
-	            System.out.println(cert.getSubjectX500Principal().toString());*/
 	        }
 	    });
-	    /*GridBagConstraints gbc_table_4 = new GridBagConstraints();
-	    gbc_table_4.insets = new Insets(0, 0, 5, 5);
-	    gbc_table_4.fill = GridBagConstraints.BOTH;
-	    gbc_table_4.gridx = 1;
-	    gbc_table_4.gridy = 2;
-	    kreirajPanel.add(table_4, gbc_table_4);
-	     */
+
 	    JScrollPane scrollPane_Main = new JScrollPane(table_4);
 	    GridBagConstraints gbc_scrollPane_Main = new GridBagConstraints();
 	    gbc_scrollPane_Main.gridheight = 2;
@@ -1098,7 +1099,7 @@ public class MainGUI {
 	    	@Override
 	    	public void actionPerformed(ActionEvent e) {
 	    		TipCertifikata selected = (TipCertifikata) cbTipCertifikata.getSelectedItem();
-	    		System.out.println(selected);
+	    		//System.out.println(selected);
 	    		CardLayout cl = (CardLayout)(cardPanel.getLayout());
 	    		
 	    		if (selected==TipCertifikata.CA_APLIKACIJA || selected==TipCertifikata.CA_DOMEN || selected==TipCertifikata.CA_OPREMA || selected==TipCertifikata.CA_ORGANIZACIJA || selected==TipCertifikata.CA_OSOBA) {
@@ -1248,7 +1249,7 @@ public class MainGUI {
 				int retVal = jfc.showOpenDialog(frmAdminCertificateManagement);
 
 				if (retVal == JFileChooser.APPROVE_OPTION){
-					  System.out.println("You chose to open this KeyStore: " + jfc.getSelectedFile().getAbsolutePath());
+					  //System.out.println("You chose to open this KeyStore: " + jfc.getSelectedFile().getAbsolutePath());
 					  //File selectedFile = new File(jfc.getSelectedFile().getAbsolutePath());
 					  txtKeystore.setText(jfc.getSelectedFile().getAbsolutePath());
 				}
@@ -1295,7 +1296,7 @@ public class MainGUI {
 				int retVal = jfc.showOpenDialog(frmAdminCertificateManagement);
 
 				if (retVal == JFileChooser.APPROVE_OPTION){
-					  System.out.println("You chose to save new certificate in: " + jfc.getSelectedFile().getAbsolutePath());
+					  //System.out.println("You chose to save new certificate in: " + jfc.getSelectedFile().getAbsolutePath());
 					  //File selectedFile = new File(jfc.getSelectedFile().getAbsolutePath());
 					  txtCertifikat.setText(jfc.getSelectedFile().getAbsolutePath());
 				}
@@ -1370,22 +1371,22 @@ public class MainGUI {
 	}
 	
 	private Certifikat getCAOsoba() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(), new BigInteger(txtNadcertifikat.getText()));
+		CertifikatCA ret = new CertifikatCA(txtOrganizacijaRoot.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(), new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private Certifikat getCAOrganizacija() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatCA ret = new CertifikatCA(txtOrganizacijaRoot.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private Certifikat getCAOprema() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatCA ret = new CertifikatCA(txtOrganizacijaRoot.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private Certifikat getCADomen() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));		
+		CertifikatCA ret = new CertifikatCA(txtOrganizacijaRoot.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));		
 		return ret;
 	}
 
@@ -1405,7 +1406,7 @@ public class MainGUI {
 	}
 
 	private CertifikatOsoba getOsobaCertifikat() {
-		CertifikatOsoba ret = new CertifikatOsoba(txtIme.getText(), txtPrezime.getText(), txtDrzava.getText(), txtOrganizacija.getText(), txtSuborganizacijaopreme.getText(), txtEmail.getText(), txtZaposleniid.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatOsoba ret = new CertifikatOsoba(txtIme.getText(), txtPrezime.getText(), "", textOrganizacija.getText(), textSuborganizacija.getText(), txtEmail.getText(), txtZaposleniid.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
@@ -1415,7 +1416,7 @@ public class MainGUI {
 	}
 
 	private CertifikatOprema getOpremaCertifikat() {
-		CertifikatOprema ret = new CertifikatOprema(txtSerijskibroj.getText(), txtNazivOpreme.getText(), txtDrzava.getText(), txtOrganizacijaOpreme.getText(), txtSuborganizacijaopreme.getText(), txtIdopreme.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatOprema ret = new CertifikatOprema(txtSerijskibroj.getText(), txtNazivOpreme.getText(), txtLokacijaOpreme.getText(), txtOrganizacijaOpreme.getText(), txtSuborganizacijaopreme.getText(), txtIdopreme.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
@@ -1431,11 +1432,46 @@ public class MainGUI {
 	public String getSertificatePath() {
 		return txtCertifikat.getText();
 	}
+	
+	
+	
+	public CertificateTabelModel getModel_1() {
+		return model_1;
+	}
+
+	public CertificateTabelModel getModel_2() {
+		return model_2;
+	}
+
+	public CertificateTabelModel getModel_3() {
+		return model_3;
+	}
+
+	public CertificateTabelModel getModel_4() {
+		return model_4;
+	}
+
+	public JTable getTable_1() {
+		return table_1;
+	}
+
+	public JTable getTable_2() {
+		return table_2;
+	}
+
+	public JTable getTable_3() {
+		return table_3;
+	}
+
+	public JTable getTable_4() {
+		return table_4;
+	}
+
 	private String getRandomBigInteger() {
 		BigInteger bigInteger = new BigInteger("2000000000000");// uper limit
 	    BigInteger min = new BigInteger("1000000000");// lower limit
 	    BigInteger bigInteger1 = bigInteger.subtract(min);
-	    Random rnd = new Random();
+	    Random rnd = new SecureRandom();
 	    int maxNumBitLength = bigInteger.bitLength();
 
 	    BigInteger aRandomBigInt;

@@ -10,7 +10,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -54,12 +53,12 @@ public class DeleteRequest {
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 
-		InputStream in = connection.getInputStream();
+		//InputStream in = connection.getInputStream();
 		
-		@SuppressWarnings("resource")
-		Scanner s = new Scanner(in).useDelimiter("\\A");
-		String result = s.hasNext() ? s.next() : "";
-		System.out.println("Rezultat DELETE Requesta: '" + result + "'");	
+		//@SuppressWarnings("resource")
+		//Scanner s = new Scanner(in).useDelimiter("\\A");
+		//String result = s.hasNext() ? s.next() : "";
+		//System.out.println("Rezultat DELETE Requesta: '" + result + "'");	
 
 		return true;
 	}

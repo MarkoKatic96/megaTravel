@@ -80,7 +80,7 @@ public class KreirajCertActionListener implements ActionListener {
 		}
 		
 		
-		System.out.println("OVO JE TIP"+(TipCertifikata)cert.getTipCertifikata());
+		//System.out.println("OVO JE TIP"+(TipCertifikata)cert.getTipCertifikata());
 		
 		switch ((TipCertifikata)cert.getTipCertifikata()) {
 		case APLIKACIJA:	
@@ -167,10 +167,6 @@ public class KreirajCertActionListener implements ActionListener {
 			}
 			if(certOsoba.getPrezime().equals("")) {
 				JOptionPane.showMessageDialog(frame, "Nije popunjeno prezime osobe!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			if(certOsoba.getDrzava().equals("")) {
-				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv drzave!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if(certOsoba.getOrganizacija().equals("")) {
@@ -260,9 +256,23 @@ public class KreirajCertActionListener implements ActionListener {
 		
 		//cuvanje privateKey i cert na disku
 		Singleton.getInstance().getListaCertifikata().add(certDTO);
+		main.getModel_1().addElement(certDTO);
+		main.getModel_2().addElement(certDTO);
+		main.getModel_3().addElement(certDTO);
+		main.getModel_4().addElement(certDTO);
+		main.getTable_1().repaint();
+		main.getTable_2().repaint();
+		main.getTable_3().repaint();
+		main.getTable_4().repaint();
+		main.getModel_1().fireTableDataChanged();
+		main.getModel_2().fireTableDataChanged();
+		main.getModel_3().fireTableDataChanged();
+		main.getModel_4().fireTableDataChanged();
+		
 		KeyStoreWriter ksw = new KeyStoreWriter();
 		ksw.savePrivateKey(pair.getPrivate(), Singleton.getInstance().getX509Certificate(certDTO.getCertifikat()), certDTO.getTipCertifikata(), keyStorePath);
-
+		
+		
 		FileOutputStream os = null;
 		try {
 			os = new FileOutputStream(certPath+"/"+certDTO.getSerijskiBroj()+".cer");

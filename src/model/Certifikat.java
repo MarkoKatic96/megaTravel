@@ -42,14 +42,12 @@ public abstract class Certifikat {
 		try {
 			this.pocetak = formatter.parse(sdf.format(pocetak));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.pocetak = pocetak;
 		}
 		try {
 			this.kraj = formatter.parse(sdf.format(kraj));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.kraj = kraj;
 		}
 		this.naziv = naziv;
 		this.publicKey = publicKey;

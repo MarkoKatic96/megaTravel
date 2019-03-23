@@ -38,7 +38,7 @@ public class ProveriKredencijaleActionListener implements ActionListener {
 		if (!emailIspravan()) {
 			nullifyTextArea();
 			if (incrementBadAtt()) {
-				System.out.println("e" + badAttepmts);
+				//System.out.println("e" + badAttepmts);
 				JOptionPane.showMessageDialog(main.getMainFrame(), "Uneti kredencijali su neispravni!", "Login", JOptionPane.ERROR_MESSAGE);
 			}
 			return;
@@ -46,7 +46,7 @@ public class ProveriKredencijaleActionListener implements ActionListener {
 		if (!pswIspravan()) {
 			nullifyTextArea();
 			if (incrementBadAtt()) {
-				System.out.println("p" + badAttepmts);
+				//System.out.println("p" + badAttepmts);
 				JOptionPane.showMessageDialog(main.getMainFrame(), "Uneti kredencijali su neispravni!", "Login", JOptionPane.ERROR_MESSAGE);
 			}
 			return;
@@ -59,14 +59,14 @@ public class ProveriKredencijaleActionListener implements ActionListener {
 			//baca exceptions
 			String token = adminController.login(main.getTxtEmail().getText(), new String(main.getTxtPass().getPassword()));
 			if (token.startsWith("Bearer ")) {
-				System.out.println("true loged in");
+				//System.out.println("true loged in");
 				main.close();
 				
 				MainGUI window = new MainGUI();
 				window.getMainFrame().setVisible(true);
 				return;
 			} else {
-				System.out.println("WTF: " + token);
+				//System.out.println("WTF: " + token);
 				JOptionPane.showMessageDialog(main.getMainFrame(), "Token je nevalidan! Najbolje je da se ponovo logujete i dobijete novi token. Ukoliko nastavite dalje, mozda cete naici na probleme sa radom aplikacije.", "Login", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
