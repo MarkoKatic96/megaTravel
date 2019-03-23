@@ -38,6 +38,7 @@ public class CertifikatOsoba extends Certifikat {
 		this.suborganizacija = suborganizacija;
 		this.email = email;
 		this.idZaposlenog = idZaposlenog;
+		super.setTipCertifikata(TipCertifikata.OSOBA);
 	}
 
 	public String getIme() {

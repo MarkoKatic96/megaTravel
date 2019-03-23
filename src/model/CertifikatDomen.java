@@ -23,6 +23,7 @@ public class CertifikatDomen extends Certifikat {
 		super(nadcertifikat, pocetak, kraj, naziv, publicKey, tipCertifikata, seriskiBroj);
 		this.organizacija = organizacija;
 		this.https = https;
+		super.setTipCertifikata(TipCertifikata.DOMEN);
 	}
 	
 	public String getOrganizacija() {

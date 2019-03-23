@@ -36,6 +36,7 @@ public class CertifikatOprema extends Certifikat {
 		this.organizacija = organizacija;
 		this.suborganizacija = suborganizacija;
 		this.idOpreme = idOpreme;
+		super.setTipCertifikata(TipCertifikata.OPREMA);
 	}
 
 	public String getMAC() {

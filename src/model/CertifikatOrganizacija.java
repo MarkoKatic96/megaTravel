@@ -33,6 +33,7 @@ public class CertifikatOrganizacija extends Certifikat {
 		this.nazivOrganizacije = nazivOrganizacije;
 		this.PTT = PTT;
 		this.ulica = ulica;
+		super.setTipCertifikata(TipCertifikata.ORGANIZACIJA);
 	}
 	
 	public String getKategorija() {

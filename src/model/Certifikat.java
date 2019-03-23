@@ -83,4 +83,8 @@ public abstract class Certifikat {
 	public TipCertifikata getTipCertifikata() {
 		return tipCertifikata;
 	}
+	
+	public void setTipCertifikata(TipCertifikata tip) {
+		this.tipCertifikata = tip;
+	}
 }

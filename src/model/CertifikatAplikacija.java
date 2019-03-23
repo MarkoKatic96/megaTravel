@@ -26,6 +26,7 @@ public class CertifikatAplikacija extends Certifikat {
 		this.nazivAplikacije = nazivAplikacije;
 		this.organizacija = organizacija;
 		this.verzija = verzija;
+		super.setTipCertifikata(TipCertifikata.APLIKACIJA);
 	}
 
 	public String getNazivAplikacije() {

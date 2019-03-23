@@ -19,13 +19,14 @@ public class DataSum {
 	private byte[] publicKey;
 	private byte[] privateKey;
 	private BigInteger rootSerialNumber;
+	private TipCertifikata tipCertifikata;
 	
 	public DataSum() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public DataSum(String x500Name, BigInteger serialNumber, Date startDate, Date endDate, PublicKey publicKey,
-			PrivateKey privateKey, BigInteger rootSerialNumber) {
+			PrivateKey privateKey, BigInteger rootSerialNumber, TipCertifikata tipCertifikata) {
 		super();
 		this.x500Name = x500Name;
 		this.serialNumber = serialNumber;
@@ -34,6 +35,7 @@ public class DataSum {
 		this.publicKey = publicKey.getEncoded();
 		this.privateKey = privateKey.getEncoded();
 		this.rootSerialNumber = rootSerialNumber;
+		this.tipCertifikata = tipCertifikata;
 	}
 
 	public String getX500Name() {
@@ -66,6 +68,14 @@ public class DataSum {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	
+	public TipCertifikata getTipCertifikata() {
+		return tipCertifikata;
+	}
+
+	public void setTipCertifikata(TipCertifikata tipCertifikata) {
+		this.tipCertifikata = tipCertifikata;
 	}
 
 	public PublicKey getPublicKeyDecoded() throws InvalidKeySpecException, NoSuchAlgorithmException {

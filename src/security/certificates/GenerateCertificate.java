@@ -16,7 +16,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.UUID;
 
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -105,14 +104,14 @@ public class GenerateCertificate {
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
-			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
+			Date startDate = certifikat.getPocetak();
+			Date endDate = certifikat.getKraj();
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
 			
 			//Serijski broj sertifikata
-			String sn = UUID.randomUUID().toString();
+			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 			builder.addRDN(BCStyle.CN, certifikat.getNazivAplikacije());
@@ -172,9 +171,9 @@ public class GenerateCertificate {
 			//Datumi od kad do kad vazi sertifikat
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
-			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
+			
+			Date startDate = certifikat.getPocetak();
+			Date endDate = certifikat.getKraj();
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
@@ -205,8 +204,8 @@ public class GenerateCertificate {
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
-			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
+			Date startDate = certifikat.getPocetak();
+			Date endDate = certifikat.getKraj();
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
@@ -243,12 +242,11 @@ public class GenerateCertificate {
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
-			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
+			Date startDate = certifikat.getPocetak();
+			Date endDate = certifikat.getKraj();
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}
-			
 			//Serijski broj sertifikata
 			String sn = getRandomBigInteger();
 			//klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
@@ -279,8 +277,8 @@ public class GenerateCertificate {
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-			Date startDate = iso8601Formater.parse(sdf.format(certifikat.getPocetak().toString()));
-			Date endDate = iso8601Formater.parse(sdf.format(certifikat.getKraj().toString()));
+			Date startDate = certifikat.getPocetak();
+			Date endDate = certifikat.getKraj();
 			if (startDate.compareTo(endDate)>=0) {
 				throw new ParseException("Pocetak vazenja certifikata mora biti pre isteka vazenja istog!", 0);
 			}

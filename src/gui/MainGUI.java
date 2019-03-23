@@ -1349,33 +1349,53 @@ public class MainGUI {
 		}
 	}
 
+	public X509Certificate getNadrCert()
+	{
+		X509Certificate nadr = null;
+		
+		if(txtNadcertifikat.getText().isEmpty())
+		{
+			return null;
+		}
+			
+		for(CertifikatDTO certt : Singleton.getInstance().getListaCertifikata())
+		{
+			if(txtNadcertifikat.getText().equals(certt.getSerijskiBroj().toString()))
+			{
+				return Singleton.getInstance().getX509Certificate(certt.getCertifikat());
+			}
+		}
+		
+		return nadr;
+	}
+	
 	private Certifikat getCAOsoba() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(), new BigInteger(txtNadcertifikat.getText()));
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(), new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private Certifikat getCAOrganizacija() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private Certifikat getCAOprema() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private Certifikat getCADomen() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));		
+		CertifikatCA ret = new CertifikatCA(txtOrganizacija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));		
 		return ret;
 	}
 
 	private Certifikat getCAAplikacija() {
-		CertifikatCA ret = new CertifikatCA(txtOrganizacijaRoot.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatCA ret = new CertifikatCA(txtOrganizacijaRoot.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private Certifikat getAppCertifikat() {
-		CertifikatAplikacija ret = new CertifikatAplikacija(txtNazivAplikacije.getText(), txtOrganizacijaAplikacije.getText(), txtVerzija.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatAplikacija ret = new CertifikatAplikacija(txtNazivAplikacije.getText(), txtOrganizacijaAplikacije.getText(), txtVerzija.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
@@ -1385,25 +1405,32 @@ public class MainGUI {
 	}
 
 	private CertifikatOsoba getOsobaCertifikat() {
-		CertifikatOsoba ret = new CertifikatOsoba(txtIme.getText(), txtPrezime.getText(), txtDrzava.getText(), txtOrganizacija.getText(), txtSuborganizacijaopreme.getText(), txtEmail.getText(), txtZaposleniid.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatOsoba ret = new CertifikatOsoba(txtIme.getText(), txtPrezime.getText(), txtDrzava.getText(), txtOrganizacija.getText(), txtSuborganizacijaopreme.getText(), txtEmail.getText(), txtZaposleniid.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private CertifikatOrganizacija getOrganizacijaCertifikat() {
-		CertifikatOrganizacija ret = new CertifikatOrganizacija(txtKategorija.getText(), txtDrzava.getText(), txtNazivOrganizacije.getText(), txtPtt.getText(), txtUlica.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatOrganizacija ret = new CertifikatOrganizacija(txtKategorija.getText(), txtDrzava.getText(), txtNazivOrganizacije.getText(), txtPtt.getText(), txtUlica.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private CertifikatOprema getOpremaCertifikat() {
-		CertifikatOprema ret = new CertifikatOprema(txtSerijskibroj.getText(), txtNazivOpreme.getText(), txtDrzava.getText(), txtOrganizacijaOpreme.getText(), txtSuborganizacijaopreme.getText(), txtIdopreme.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatOprema ret = new CertifikatOprema(txtSerijskibroj.getText(), txtNazivOpreme.getText(), txtDrzava.getText(), txtOrganizacijaOpreme.getText(), txtSuborganizacijaopreme.getText(), txtIdopreme.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
 	private CertifikatDomen getDomenCertifikat() {
-		CertifikatDomen ret = new CertifikatDomen(txtOrganizacija.getText(), txtDomen.getText(), null, dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
+		CertifikatDomen ret = new CertifikatDomen(txtOrganizacija.getText(), txtDomen.getText(), getNadrCert(), dateStart.getDate(), dateEnd.getDate(), null, null, (TipCertifikata)cbTipCertifikata.getSelectedItem(),new BigInteger(txtNadcertifikat.getText()));
 		return ret;
 	}
 
+	public String getKeyStore() {
+		return txtKeystore.getText();
+	}
+	
+	public String getSertificatePath() {
+		return txtCertifikat.getText();
+	}
 	private String getRandomBigInteger() {
 		BigInteger bigInteger = new BigInteger("2000000000000");// uper limit
 	    BigInteger min = new BigInteger("1000000000");// lower limit

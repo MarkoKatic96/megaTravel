@@ -21,6 +21,7 @@ public class CertifikatCA extends Certifikat {
 	public CertifikatCA(String organizacija, X509Certificate nadcertifikat, Date pocetak, Date kraj, X500Name naziv, PublicKey publicKey, TipCertifikata tipCertifikata, BigInteger seriskiBroj) {
 		super(nadcertifikat, pocetak, kraj, naziv, publicKey, tipCertifikata, seriskiBroj);
 		this.organizacija = organizacija;
+		super.setTipCertifikata(tipCertifikata);
 	}
 
 

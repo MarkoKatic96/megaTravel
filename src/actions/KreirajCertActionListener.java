@@ -2,6 +2,8 @@ package actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
@@ -32,6 +34,7 @@ import model.DataSum;
 import model.TipCertifikata;
 import security.certificates.GenerateCertificate;
 import security.data.SubjectData;
+import security.keystore.KeyStoreWriter;
 
 public class KreirajCertActionListener implements ActionListener {
 
@@ -54,8 +57,15 @@ public class KreirajCertActionListener implements ActionListener {
 		CertifikatOrganizacija certOrganizacija;
 		CertifikatOsoba certOsoba;
 		CertifikatCA certCA = null;
-		CertifikatRoot certRoot;
-
+		CertifikatRoot certRoot = null;
+		
+		String certPath = main.getSertificatePath();
+		String keyStorePath = main.getKeyStore();
+		
+		if(certPath.isEmpty() || keyStorePath.isEmpty()) {
+			JOptionPane.showMessageDialog(frame, "Nije unesen keystore ili certifikat!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if(cert.getPocetak() == null) {
 			JOptionPane.showMessageDialog(frame, "Nije unesen datum pocetka vazenja sertifikata!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 			return;
@@ -69,8 +79,11 @@ public class KreirajCertActionListener implements ActionListener {
 			return;
 		}
 		
+		
+		System.out.println("OVO JE TIP"+(TipCertifikata)cert.getTipCertifikata());
+		
 		switch ((TipCertifikata)cert.getTipCertifikata()) {
-		case APLIKACIJA:
+		case APLIKACIJA:	
 			certAplikacija = (CertifikatAplikacija)main.getCertifikatData();
 			if(certAplikacija.getNazivAplikacije().equals("")) {
 				JOptionPane.showMessageDialog(frame, "Nije popunjen naziv aplikacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
@@ -84,6 +97,7 @@ public class KreirajCertActionListener implements ActionListener {
 				JOptionPane.showMessageDialog(frame, "Nije popunjen verzija aplikacije!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			break;
 		case DOMEN:
 			certDomen = (CertifikatDomen)main.getCertifikatData();
 			if(certDomen.getOrganizacija().equals("")) {
@@ -94,6 +108,7 @@ public class KreirajCertActionListener implements ActionListener {
 				JOptionPane.showMessageDialog(frame, "Nije popunjen domen!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			break;
 		case OPREMA:
 			certOprema = (CertifikatOprema)main.getCertifikatData();
 			if(certOprema.getMAC().equals("")) {
@@ -120,6 +135,7 @@ public class KreirajCertActionListener implements ActionListener {
 				JOptionPane.showMessageDialog(frame, "Nije popunjen id opreme!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			break;
 		case ORGANIZACIJA:
 			certOrganizacija = (CertifikatOrganizacija)main.getCertifikatData();
 			if(certOrganizacija.getKategorija().equals("")) {
@@ -142,6 +158,7 @@ public class KreirajCertActionListener implements ActionListener {
 				JOptionPane.showMessageDialog(frame, "Nije popunjeno ime ulice!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			break;
 		case OSOBA:
 			certOsoba = (CertifikatOsoba)main.getCertifikatData();
 			if(certOsoba.getIme().equals("")) {
@@ -172,19 +189,26 @@ public class KreirajCertActionListener implements ActionListener {
 				JOptionPane.showMessageDialog(frame, "Nije popunjen id zaposlenog!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			break;
 		case CA_APLIKACIJA:
 			certCA = (CertifikatCA)main.getCertifikatData();
+			break;
 		case CA_DOMEN:
 			certCA = (CertifikatCA)main.getCertifikatData();
+			break;
 		case CA_OPREMA:
 			certCA = (CertifikatCA)main.getCertifikatData();
+			break;
 		case CA_ORGANIZACIJA:
 			certCA = (CertifikatCA)main.getCertifikatData();
+			break;
 		case CA_OSOBA:
 			certCA = (CertifikatCA)main.getCertifikatData();
+			break;
 			
 		default:
 			certRoot = (CertifikatRoot)main.getCertifikatData();
+			break;
 	}
 		if (certCA != null) {
 			if(certCA.getOrganizacija().equals("")) {
@@ -205,21 +229,21 @@ public class KreirajCertActionListener implements ActionListener {
 		SubjectData subData = gen.generateSubjectData(cert,pair);
 		
 		boolean found = false;
-		if(cert.getNadcertifikat() != null) {
+		if(cert.getTipCertifikata() != TipCertifikata.ROOT) {
 			for (CertifikatDTO certDto : Singleton.getInstance().getListaCertifikata()) {
-				if(certDto.getSerijskiBroj() == cert.getSeriskiBrojNadSert()) {
+				if(certDto.getSerijskiBroj().equals(cert.getSeriskiBrojNadSert())) {
 					found = true;
 					break;
 				}
 			}
 		}
-		if(!found && cert.getNadcertifikat()!=null) {
+		if(!found && cert.getTipCertifikata()!=TipCertifikata.ROOT) {
 			JOptionPane.showMessageDialog(frame, "Nije pronadjen uneti sertifikat!","Kreiranje certifikata",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
-		DataSum sum = new DataSum(subData.getX500name().toString(), new BigInteger(subData.getSerialNumber()), subData.getStartDate(), subData.getEndDate(), pair.getPublic(), pair.getPrivate(), cert.getSeriskiBrojNadSert());
-		if (cert.getNadcertifikat()==null) {
+		DataSum sum = new DataSum(subData.getX500name().toString(), new BigInteger(subData.getSerialNumber()), subData.getStartDate(), subData.getEndDate(), pair.getPublic(), pair.getPrivate(), cert.getSeriskiBrojNadSert(), cert.getTipCertifikata());
+		if (cert.getTipCertifikata()==TipCertifikata.ROOT) {
 			sum.setRootSerialNumber(null);
 		}
 		CertificateController cc = new CertificateController();
@@ -236,8 +260,31 @@ public class KreirajCertActionListener implements ActionListener {
 		
 		//cuvanje privateKey i cert na disku
 		Singleton.getInstance().getListaCertifikata().add(certDTO);
-		
-		
+		KeyStoreWriter ksw = new KeyStoreWriter();
+		ksw.savePrivateKey(pair.getPrivate(), Singleton.getInstance().getX509Certificate(certDTO.getCertifikat()), certDTO.getTipCertifikata(), keyStorePath);
+
+		FileOutputStream os = null;
+		try {
+			os = new FileOutputStream(certPath+"/"+certDTO.getSerijskiBroj()+".cer");
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		//os.write("-----BEGIN CERTIFICATE-----\n".getBytes("US-ASCII"));
+		//String encodedCert = Base64Utility.encode(cert.getEncoded());
+		try {
+			os.write(certDTO.getCertifikat());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//os.write("-----END CERTIFICATE-----\n".getBytes("US-ASCII"));
+		try {
+			os.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		// TODO Auto-generated method stub
 		// Step 1: ucitaj nadcertifikat ako je tip != root

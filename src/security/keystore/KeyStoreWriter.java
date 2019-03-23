@@ -1,5 +1,6 @@
 package security.keystore;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +12,9 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import model.TipCertifikata;
 
 public class KeyStoreWriter {
 	//KeyStore je Java klasa za citanje specijalizovanih datoteka koje se koriste za cuvanje kljuceva
@@ -70,6 +74,22 @@ public class KeyStoreWriter {
 			keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
 		} catch (KeyStoreException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void savePrivateKey(PrivateKey privateKey, X509Certificate cert, TipCertifikata tip, String filepath ) {
+		KeyStoreWriter ksw = new KeyStoreWriter();
+		if(!filepath.endsWith(".jks")) {
+			filepath=filepath+".jks";
+		}
+		File file = new File(filepath);
+		if(file.exists()) {
+			ksw.loadKeyStore(filepath, "secretpassword".toCharArray());
+			ksw.write(cert.getSerialNumber().toString(), privateKey, "secretpassword".toCharArray(), cert);
+		}else {
+			ksw.loadKeyStore(null, "secretpassword".toCharArray());//inicijalizuje keyStore
+			ksw.saveKeyStore(filepath, "secretpassword".toCharArray());//snima keyStore
+			ksw.write(cert.getSerialNumber().toString(), privateKey, "secretpassword".toCharArray(), cert);//upisuje u keyStore
 		}
 	}
 }
