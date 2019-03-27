@@ -1,0 +1,424 @@
+<h4>Kreiraj novi sertifikat:</h4>
+<br /><br />
+<form>
+  <table style="float: left;">
+    <thead>
+    </thead>
+    <tbody id="krDefault">
+      <tr>
+        <td>
+          <h5>Tip sertifikata &nbsp;</h5>
+        </td>
+        <td>
+          <select (change)="selectChangeHandler($event)">
+            <option *ngFor="let sert of krSertVrste" [value]="sert">{{sert}}</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Pocetak</h5>
+        </td>
+        <td><input type="date" /></td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Kraj</h5>
+        </td>
+        <td><input type="date" /></td>
+      </tr>
+      <tr>
+        <td>
+          <h5>KeyStore</h5>
+        </td>
+        <td><input type="file" /></td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Sertifikat</h5>
+        </td>
+        <td><input type="file" /></td>
+      </tr>
+    </tbody>
+
+
+    <!--APLIKACIJA APLIKACIJA APLIKACIJA-->
+    <!--APLIKACIJA APLIKACIJA APLIKACIJA-->
+    <!--APLIKACIJA APLIKACIJA APLIKACIJA-->
+
+
+    <tbody id="krAplikacija" *ngIf="selected == 'APLIKACIJA'">
+      <tr>
+        <td>
+          <h5>Nadsertifikat</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input disabled mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Naziv aplikacije</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Organizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Verzija aplikacije</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+
+    <!--DOMEN DOMEN DOMEN-->
+    <!--DOMEN DOMEN DOMEN-->
+    <!--DOMEN DOMEN DOMEN-->
+
+
+    <tbody id="krDomen" *ngIf="selected == 'DOMEN'">
+      <tr>
+        <td>
+          <h5>Nadsertifikat</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input disabled mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Organizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Domen</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+
+    <!--OPREMA OPREMA OPREMA-->
+    <!--OPREMA OPREMA OPREMA-->
+    <!--OPREMA OPREMA OPREMA-->
+
+
+    <tbody id="krOprema" *ngIf="selected == 'OPREMA'">
+      <tr>
+        <td>
+          <h5>Nadsertifikat</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input disabled mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>MAC opreme</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Naziv opreme</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Lokacija opreme</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Organizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Suborganizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>ID opreme</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+
+    <!--ORGANIZACIJA ORGANIZACIJA ORGANIZACIJA-->
+    <!--ORGANIZACIJA ORGANIZACIJA ORGANIZACIJA-->
+    <!--ORGANIZACIJA ORGANIZACIJA ORGANIZACIJA-->
+
+
+    <tbody id="krOrganizacija" *ngIf="selected == 'ORGANIZACIJA'">
+      <tr>
+        <td>
+          <h5>Nadsertifikat</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input disabled mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Kategorija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Drzava</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Naziv organizacije</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Grad</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>PTT</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Ulica</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+
+    <!--OSOBA OSOBA OSOBA-->
+    <!--OSOBA OSOBA OSOBA-->
+    <!--OSOBA OSOBA OSOBA-->
+
+
+    <tbody id="krOsoba" *ngIf="selected == 'OSOBA'">
+      <tr>
+        <td>
+          <h5>Nadsertifikat</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input disabled mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Ime</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Prezime</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Organizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Suborganizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Email</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Zaposleni ID</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+
+    <!--ROOT ROOT ROOT-->
+    <!--ROOT ROOT ROOT-->
+    <!--ROOT ROOT ROOT-->
+
+
+    <tbody id="krRoot" *ngIf="selected == 'ROOT'">
+      <tr>
+        <td>
+          <h5>Organizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+
+    <!--CA_APLIKACIJA CA_APLIKACIJA CA_APLIKACIJA-->
+    <!--CA_APLIKACIJA CA_APLIKACIJA CA_APLIKACIJA-->
+    <!--CA_APLIKACIJA CA_APLIKACIJA CA_APLIKACIJA-->
+
+
+    <tbody id="krCaSvi"
+      *ngIf="selected == 'CA_APLIKACIJA' || selected == 'CA_DOMEN' || selected == 'CA_OPREMA' || selected == 'CA_ORGANIZACIJA' || selected == 'CA_OSOBA'">
+      <tr>
+        <td>
+          <h5>Root certifikat</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input disabled mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h5>Organizacija</h5>
+        </td>
+        <td>
+          <div class="md-form">
+            <input mdbInput type="text" class="form-control">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  
+
+
+</form>
+<button class="btn btn-outline-primary my-2 my-sm-0">Kreiraj sertifikat</button> <!--vrati u form-->
