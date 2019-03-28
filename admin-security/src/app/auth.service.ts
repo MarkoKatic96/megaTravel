@@ -18,7 +18,7 @@ export class AuthService {
 
   getUserDetails(email, password)
   {
-    return this.http.post('/api/login', {
+    return this.http.post('https://localhost:8443/api/login', {
       email,
       password
     })

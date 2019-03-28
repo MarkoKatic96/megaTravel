@@ -1,4 +1,4 @@
-<form>
+<form (submit)="loginUser($event)">
   <table>
     <tr>
       <td>Unesi email adresu &nbsp;</td>
@@ -8,7 +8,7 @@
       <td>Unesi lozinku</td>
       <td><input type="password" id="password"/></td>
     </tr><br />
-    <tr><td></td><td><input type="submit" class="btn btn-outline-danger my-2 my-sm-0" /></td></tr>
+    <tr><td></td><td><input type="submit" class="btn btn-outline-danger my-2 my-sm-0" value="Prijavi se"/></td></tr>
   </table>
   
 </form>
