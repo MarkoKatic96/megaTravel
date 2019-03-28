@@ -1,4 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from  "@angular/common/http";
+import { Observable } from 'rxjs';
+import { ProbaService } from '../proba.service';
+
+class  Sertifikat {
+
+  id : number;
+
+  tip: string;
+  
+  pocetak: string;
+  
+  kraj: string;
+  
+  serijski_broj: number;
+
+  nadsertifikat: number;
+  
+  }
 
 @Component({
   selector: 'app-postojeci-sertifikati',
@@ -7,9 +26,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostojeciSertifikatiComponent implements OnInit {
 
-  constructor() { }
+  id: number;
+  tip: string;
 
-  ngOnInit() {
+  constructor(private sertService: ProbaService)
+  {
+    console.log('constructor');
+  }
+
+  ngOnInit() 
+  {
+    console.log('ngInit')
+  }
+
+  prikaziSertifikate()
+  {
+    this.sertService.getSertifikate().subscribe((data: Sertifikat) => {
+      id: data['id'];
+      tip: data['tip'];
+    })
+
+    console.log(this.tip + 'dsads');
   }
 
 }
