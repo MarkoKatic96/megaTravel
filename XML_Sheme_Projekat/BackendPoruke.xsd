@@ -1,4 +1,194 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="https://github.com/MarkoKatic96/megaTravel/porukebackend"
-    xmlns="https://github.com/MarkoKatic96/megaTravel/porukebackend"> </xs:schema>
+    xmlns="https://github.com/MarkoKatic96/megaTravel/porukebackend">
+    <xs:element name="login">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="email">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="lozinka" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dodajTipSmestaja">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tipSmestajaId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="nazivTipaSmestaja" type="TipSmestaja"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="izmeniTipSmestaja">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tipSmestajaId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="nazivTipaSmestaja" type="TipSmestaja"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dodajKategorizacijuSmestaja">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="kategorizacijaId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="nazivKategorizacije" type="KategorizacijaSmestaja"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="izmeniKategorizacijuSmestaja">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="kategorizacijaId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="nazivKategorizacije" type="KategorizacijaSmestaja"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dodajDodatneUsluge">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dodatnaUslugaId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="nazivDodatneUsluge" type="DodatneUsluge"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="izmeniDodatneUsluge">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dodatnaUslugaId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="nazivDodatneUsluge" type="DodatneUsluge"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="objaviKomentar">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="komentarId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="korisnikId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="sadrzajKomentara" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="blokirajKomentar">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="komentarId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="blokirajKorisnika">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="korisnikId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="aktivirajKorisnika">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="korisnikId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dodajAgenta">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="agentId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="ime">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="prezime">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="adresa" type="TAdresa"/>
+                <xs:element name="poslovniMaticniBroj">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:int"/>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="TAdresa">
+        <xs:sequence>
+            <xs:element name="grad">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="ulica">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="broj">
+                <xs:simpleType>
+                    <xs:restriction base="xs:int"/>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="TipSmestaja">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="KategorizacijaSmestaja">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="DodatneUsluge">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+</xs:schema>
