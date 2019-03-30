@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="https://github.com/MarkoKatic96/megaTravel/porukebackend"
+    xmlns:rejting="https://github.com/MarkoKatic96/megaTravel/xmlrejting"
+    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisink"
+    xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+    xmlns:backend="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
     xmlns="https://github.com/MarkoKatic96/megaTravel/porukebackend">
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlrejting"
+        schemaLocation="RejtingShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
+        schemaLocation="KorisnikShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
+        schemaLocation="BackendShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+        schemaLocation="AgentShema.xsd"/>
     <xs:element name="login">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="email">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string"/>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="lozinka" type="xs:string"/>
+                <xs:element  ref="backend:Login"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -86,80 +93,38 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="objaviKomentar">
+    <xs:element name="objaviKomentar"> 
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="komentarId">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:long"/>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="korisnikId">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:long"/>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="sadrzajKomentara" type="xs:string"/>
+                <xs:element  ref="rejting:Komentar"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="blokirajKomentar">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="komentarId">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:long"/>
-                    </xs:simpleType>
-                </xs:element>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="blokirajKorisnika">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="korisnikId">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:long"/>
-                    </xs:simpleType>
-                </xs:element>
+                <xs:element  ref="rejting:Komentar"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="aktivirajKorisnika">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="korisnikId">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:long"/>
-                    </xs:simpleType>
-                </xs:element>
+                <xs:element ref="korisnik:Korisnik"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="blokirajKorisnika">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element  ref="korisnik:Korisnik"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="dodajAgenta">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="agentId">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:long"/>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="ime">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string"/>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="prezime">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string"/>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="adresa" type="TAdresa"/>
-                <xs:element name="poslovniMaticniBroj">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:int"/>
-                    </xs:simpleType>
-                </xs:element>
+                <xs:element  ref="agent:Agent"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
