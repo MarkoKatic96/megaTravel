@@ -2,8 +2,10 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
     xmlns:backend="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
-    xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent">
-    <xs:import schemaLocation="KorisnikShema.xsd"/>
+    xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik">
+    <xs:import schemaLocation="KorisnikShema.xsd"
+        namespace="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"/>
     <xs:import id="agent" namespace="https://github.com/MarkoKatic96/megaTravel/xmlagent"
         schemaLocation="AgentShema.xsd"/>
     <xs:element name="Login">
@@ -11,13 +13,13 @@
             <xs:sequence>
                 <xs:element name="email">
                     <xs:simpleType>
-                        <xs:restriction base="TEmail">
+                        <xs:restriction base="agent:TEmail">
                             <xs:maxLength value="60"/>
                             <xs:minLength value="8"/>
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="lozinka" type="TLozinka"> </xs:element>
+                <xs:element name="lozinka" type="agent:TEmail"> </xs:element>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -26,7 +28,7 @@
             <xs:sequence>
                 <xs:element default="pera.peric@megatravel.com" name="email">
                     <xs:simpleType>
-                        <xs:restriction base="TEmail">
+                        <xs:restriction base="agent:TEmail">
                             <xs:pattern value="\w+[\w\-\.]*\@megatravel\.com"/>
                             <xs:whiteSpace value="replace"/>
                         </xs:restriction>
@@ -50,7 +52,7 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="lozinka" type="TLozinka"> </xs:element>
+                <xs:element name="lozinka" type="agent:TLozinka"> </xs:element>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

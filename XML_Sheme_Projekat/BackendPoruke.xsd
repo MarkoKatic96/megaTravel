@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="https://github.com/MarkoKatic96/megaTravel/porukebackend"
     xmlns:rejting="https://github.com/MarkoKatic96/megaTravel/xmlrejting"
-    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisink"
+    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
     xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
     xmlns:backend="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
     xmlns="https://github.com/MarkoKatic96/megaTravel/porukebackend">
@@ -29,7 +29,7 @@
                         <xs:restriction base="xs:long"/>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="nazivTipaSmestaja" type="TipSmestaja"/>
+                <xs:element name="nazivTipaSmestaja" type="agent:TipSmestaja"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -41,7 +41,7 @@
                         <xs:restriction base="xs:long"/>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="nazivTipaSmestaja" type="TipSmestaja"/>
+                <xs:element name="nazivTipaSmestaja" type="agent:TipSmestaja"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -53,7 +53,7 @@
                         <xs:restriction base="xs:long"/>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="nazivKategorizacije" type="KategorizacijaSmestaja"/>
+                <xs:element name="nazivKategorizacije" type="agent:TKategorijaSmestaja"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -65,7 +65,7 @@
                         <xs:restriction base="xs:long"/>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="nazivKategorizacije" type="KategorizacijaSmestaja"/>
+                <xs:element name="nazivKategorizacije" type="agent:TKategorijaSmestaja"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -77,7 +77,7 @@
                         <xs:restriction base="xs:long"/>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="nazivDodatneUsluge" type="DodatneUsluge"/>
+                <xs:element name="nazivDodatneUsluge" type="agent:DodatneUsluge"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -89,7 +89,7 @@
                         <xs:restriction base="xs:long"/>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="nazivDodatneUsluge" type="DodatneUsluge"/>
+                <xs:element name="nazivDodatneUsluge" type="agent:DodatneUsluge"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -128,32 +128,4 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="TAdresa">
-        <xs:sequence>
-            <xs:element name="grad">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string"/>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="ulica">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string"/>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="broj">
-                <xs:simpleType>
-                    <xs:restriction base="xs:int"/>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:simpleType name="TipSmestaja">
-        <xs:restriction base="xs:string"/>
-    </xs:simpleType>
-    <xs:simpleType name="KategorizacijaSmestaja">
-        <xs:restriction base="xs:string"/>
-    </xs:simpleType>
-    <xs:simpleType name="DodatneUsluge">
-        <xs:restriction base="xs:string"/>
-    </xs:simpleType>
 </xs:schema>

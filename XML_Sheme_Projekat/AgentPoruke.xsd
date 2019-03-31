@@ -65,4 +65,20 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    <xs:element name="getPromenjeneRezervacije">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="agentId"/>
+                <xs:element name="timestampPoslednjePromene"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="sendPromenjeneRezervacije">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="agent:Rezervacija"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="agent:Samostalna_rezervacija"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>
