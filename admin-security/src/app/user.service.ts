@@ -25,20 +25,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getSomeData()
-  {
-    return this.http.get<myData>('/api/nekilink')
-  }
-
-  isLoggedIn(): Observable<isLoggedIn>
-  {
-    return this.http.get<isLoggedIn>('/api/nekilinkkojicedavracatrue/false/zaloggedin')
-  }
-
-  logout()
-  {
-    //necemo imati logout za sad
-  }
+  
 
 
 }

@@ -17,6 +17,7 @@ import { Tabela2Component } from './komunikacija/tabela2/tabela2.component';
 import { ListanjeComponent } from './kreiraj-sertifikat/listanje/listanje.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { NavigationComponent } from './navigation/navigation.component';
     Tabela1Component,
     Tabela2Component,
     ListanjeComponent,
-    NavigationComponent
+    NavigationComponent,
+    RegisterComponent
   ],
   imports: [
     HttpClientModule, 

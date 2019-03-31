@@ -26,18 +26,18 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         return true
       }
 
-      return this.user.isLoggedIn().pipe(map(res => {
-        if(res.status)
-        {
-          this.auth.setLoggedIn(true)
-          return true
-        }
-        else
-        {
-          this.router.navigate(['login'])
-          return false
-        }
-      }))
+      // return this.user.isLoggedIn().pipe(map(res => {
+      //   if(res.status)
+      //   {
+      //     this.auth.setLoggedIn(true)
+      //     return true
+      //   }
+      //   else
+      //   {
+      //     this.router.navigate(['login'])
+      //     return false
+      //   }
+      // }))
     
     return this.auth.isLoggedIn;
   }

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+
   constructor(private Auth: AuthService, private router: Router) { }
 
   ngOnInit() {
@@ -21,13 +22,16 @@ export class LoginComponent implements OnInit {
     const target = event.target;
     const email = target.querySelector('#email').value;
     const password = target.querySelector('#password').value;
+    console.log(email);
+
 
     this.Auth.getUserDetails(email, password).subscribe(data =>{
-      if(true){
+      if(data.success){
         this.router.navigate(['kreirajsert']);
         this.Auth.setLoggedIn(true);
       }
       else{
+        window.alert(data.message);
       }
     })
 
