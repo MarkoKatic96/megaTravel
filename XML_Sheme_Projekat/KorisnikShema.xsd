@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
-    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik">
+    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
+    targetNamespace="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
+    xmlns="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik">
     <xs:import id="agent" namespace="https://github.com/MarkoKatic96/megaTravel/xmlagent"
         schemaLocation="AgentShema.xsd"/>
     <xs:element name="Korisnik">

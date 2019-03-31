@@ -17,7 +17,7 @@
     <xs:element name="login">
         <xs:complexType>
             <xs:sequence>
-                <xs:element  ref="backend:Login"/>
+                <xs:element ref="backend:Login"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -93,17 +93,17 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="objaviKomentar"> 
+    <xs:element name="objaviKomentar">
         <xs:complexType>
             <xs:sequence>
-                <xs:element  ref="rejting:Komentar"/>
+                <xs:element ref="rejting:Komentar"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="blokirajKomentar">
         <xs:complexType>
             <xs:sequence>
-                <xs:element  ref="rejting:Komentar"/>
+                <xs:element ref="rejting:Komentar"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -117,14 +117,14 @@
     <xs:element name="blokirajKorisnika">
         <xs:complexType>
             <xs:sequence>
-                <xs:element  ref="korisnik:Korisnik"/>
+                <xs:element ref="korisnik:Korisnik"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="dodajAgenta">
         <xs:complexType>
             <xs:sequence>
-                <xs:element  ref="agent:Agent"/>
+                <xs:element ref="agent:Agent"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

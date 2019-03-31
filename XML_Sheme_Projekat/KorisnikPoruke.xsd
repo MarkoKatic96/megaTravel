@@ -1,4 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="https://github.com/MarkoKatic96/megaTravel/porukekorinik"
-    xmlns="https://github.com/MarkoKatic96/megaTravel/porukekorinik"> </xs:schema>
+    xmlns="https://github.com/MarkoKatic96/megaTravel/porukekorinik"
+    xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
+    xmlns:backend="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
+    xmlns:rejting="https://github.com/MarkoKatic96/megaTravel/xmlrejting">
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlrejting"
+        schemaLocation="RejtingShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
+        schemaLocation="KorisnikShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
+        schemaLocation="BackendShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+        schemaLocation="AgentShema.xsd"/>
+    <xs:element name="login">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="backend:Login"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="signup">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="backend:Signup"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getAllSmestaj">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="agent:Smestaj"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="pretraziSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="korisnik:OsnovnaPretraga"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rezultatPretrageSmestaja">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="agent:Smestaj"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="pretraziSmestajNapredno">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="korisnik:NaprednaPretraga"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rezultatPretrageSmestajaNapredno">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="agent:Smestaj"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rezervisiSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="agent:Samostalna_rezervacija"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getNeprocitanePoruke">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="backend:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getPorukeFromAgent">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="backend:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="sendPorukaToAgent">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="backend:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rateSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="rejting:Ocena"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="commentSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="rejting:Komentar"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="otkaziSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="idRezervacuhe" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
