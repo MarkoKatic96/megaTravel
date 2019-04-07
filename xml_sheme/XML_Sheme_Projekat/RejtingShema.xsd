@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://github.com/MarkoKatic96/megaTravel/xmlrejting"
+    xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+    xmlns:rejting="https://github.com/MarkoKatic96/megaTravel/xmlrejting">
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+        schemaLocation="AgentShema.xsd"/>
+    <xs:element name="Komentar">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="idKomentara">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="idSmestaja">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="idRezervacije">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="idKorisnika">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="komentar">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="500"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="datum" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Ocena">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="idOcena" type="xs:long"/>
+                <xs:element name="idSmestaj" type="xs:long"/>
+                <xs:element name="idRezervacija" type="xs:long"/>
+                <xs:element name="idKorisnik" type="xs:long"/>
+                <xs:element name="ocena" type="xs:short"/>
+                <xs:element name="datum" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
