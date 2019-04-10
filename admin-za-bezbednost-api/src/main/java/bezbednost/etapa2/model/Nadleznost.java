@@ -28,6 +28,12 @@ public class Nadleznost {
 		this.servisId = servisId;
 	}
 	
+	public Nadleznost(Long rolaId, Long servisId) {
+		super();
+		this.rolaId = rolaId;
+		this.servisId = servisId;
+	}
+	
 	public Nadleznost() {
 		
 	}

@@ -26,6 +26,11 @@ public class Servis {
 		this.naziv = naziv;
 	}
 	
+	public Servis(String naziv) {
+		super();
+		this.naziv = naziv;
+	}
+	
 	public Servis() {
 		
 	}
