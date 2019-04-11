@@ -2,26 +2,25 @@ package bezbednost.etapa2.dto;
 
 import bezbednost.etapa2.model.Korisnik;
 
-public class AdminDTO {
-	
+public class KorisnikDTO {
 	private Long id;
 	private String username;
 	private String password;
-		
-	public AdminDTO(String username, String password) {
+	
+	public KorisnikDTO(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
 	}
 	
-	public AdminDTO(Korisnik admin) {
-		super();
-		this.id = admin.getId();
-		this.username = admin.getUsername();
-		this.password = admin.getPassword();
+	public KorisnikDTO(Korisnik k) {
+		this.id = k.getId();
+		this.username = k.getUsername();
+		this.password = k.getPassword();
 	}
 	
-	public AdminDTO() {
+	public KorisnikDTO() {
+		
 	}
 
 	public Long getId() {
@@ -47,4 +46,9 @@ public class AdminDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	
+
 }
+
+	

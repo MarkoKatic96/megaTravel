@@ -18,7 +18,7 @@ import bezbednost.etapa2.model.Servis;
 public class ServisController {
 
 	@Autowired
-	ServisService servisService;
+	private ServisService servisService;
 	
 	@RequestMapping("api/getAllServices")
 	public ResponseEntity<List<Servis>> getAllServices(){

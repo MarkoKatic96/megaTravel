@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import bezbednost.etapa2.dto.RolaDTO;
+import bezbednost.etapa2.model.Korisnik;
 import bezbednost.etapa2.model.Rola;
 
 @RestController
 public class RolaController {
 	
 	@Autowired
-	RolaService rolaService;
+	private RolaService rolaService;
 	
 	@RequestMapping("api/getAllRoles")
 	public ResponseEntity<List<Rola>> getAllRoles(){
@@ -29,6 +30,18 @@ public class RolaController {
 	@RequestMapping("api/getRoleById/{id}")
 	public ResponseEntity<Rola> getRolaById(@PathVariable Long id){
 		Rola r = rolaService.getRolaById(id);
+		return new ResponseEntity<Rola>(r, HttpStatus.OK);
+	}
+	
+	@RequestMapping("api/dodajServis/{rid}/{sid}")
+	public ResponseEntity<Rola> dodajServis(@PathVariable("rid") Long rolaId, @PathVariable("sid") Long servisId){
+		Rola r = rolaService.dodajServis(rolaId, servisId);
+		return new ResponseEntity<Rola>(r, HttpStatus.OK);
+	}
+	
+	@RequestMapping("api/ukloniServis/{rid}/{sid}")
+	public ResponseEntity<Rola> ukloniServis(@PathVariable("rid") Long rolaId, @PathVariable("sid") Long servisId){
+		Rola r = rolaService.ukloniServis(rolaId, servisId);
 		return new ResponseEntity<Rola>(r, HttpStatus.OK);
 	}
 	

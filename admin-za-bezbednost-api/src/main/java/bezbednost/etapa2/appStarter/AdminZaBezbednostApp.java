@@ -1,5 +1,5 @@
 package bezbednost.etapa2.appStarter;
-
+//https://www.baeldung.com/role-and-privilege-for-spring-security-registration
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

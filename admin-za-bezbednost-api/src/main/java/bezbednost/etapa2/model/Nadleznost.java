@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+//mozda nece trebati, moram jos videti
 @Entity
 @Table(name="nadleznost")
 public class Nadleznost {

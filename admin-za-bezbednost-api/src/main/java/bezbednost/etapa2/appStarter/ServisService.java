@@ -11,7 +11,7 @@ import bezbednost.etapa2.model.Servis;
 public class ServisService {
 	
 	@Autowired
-	ServisRepository servisRepository;
+	private ServisRepository servisRepository;
 	
 	public List<Servis> getAllServices(){
 		return servisRepository.findAll();

@@ -12,7 +12,7 @@ import bezbednost.etapa2.model.Rola;
 public class NadleznostService {
 	
 	@Autowired
-	NadleznostRepository nadleznostRepository;
+	private NadleznostRepository nadleznostRepository;
 	
 	public List<Nadleznost> getAllNadleznosti(){
 		return nadleznostRepository.findAll();

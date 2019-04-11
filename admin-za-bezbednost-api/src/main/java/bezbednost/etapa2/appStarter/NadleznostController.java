@@ -21,7 +21,7 @@ import bezbednost.etapa2.model.Rola;
 public class NadleznostController {
 	
 	@Autowired
-	NadleznostService nadleznostService;
+	private NadleznostService nadleznostService;
 	
 	@RequestMapping("api/getAllNadleznost")
 	public ResponseEntity<List<Nadleznost>> getAllNadleznosti(){
