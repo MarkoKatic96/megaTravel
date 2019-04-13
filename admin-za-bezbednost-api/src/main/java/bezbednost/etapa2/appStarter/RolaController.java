@@ -57,34 +57,128 @@ public class RolaController {
 	}
 	
 	@RequestMapping("api/getRoleById/{id}")
-	public ResponseEntity<Rola> getRolaById(@PathVariable Long id){
-		Rola r = rolaService.getRolaById(id);
-		return new ResponseEntity<Rola>(r, HttpStatus.OK);
+	public ResponseEntity<Rola> getRolaById(@PathVariable Long id, HttpServletRequest req){
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());
+		}
+		for (Servis servis : listaServisa) {
+			if(servis.getNaziv().equals("api/getRoleById/{id}")) {
+				Rola r = rolaService.getRolaById(id);
+				return new ResponseEntity<Rola>(r, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping("api/dodajServis/{rid}/{sid}")
-	public ResponseEntity<Rola> dodajServis(@PathVariable("rid") Long rolaId, @PathVariable("sid") Long servisId){
-		Rola r = rolaService.dodajServis(rolaId, servisId);
-		return new ResponseEntity<Rola>(r, HttpStatus.OK);
+	public ResponseEntity<Rola> dodajServis(@PathVariable("rid") Long rolaId, @PathVariable("sid") Long servisId, HttpServletRequest req){
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());
+		}
+		
+		for (Servis servis : listaServisa) {
+			if(servis.getNaziv().equals("api/dodajServis/{rid}/{sid}")) {
+				Rola r = rolaService.dodajServis(rolaId, servisId);
+				return new ResponseEntity<Rola>(r, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping("api/ukloniServis/{rid}/{sid}")
-	public ResponseEntity<Rola> ukloniServis(@PathVariable("rid") Long rolaId, @PathVariable("sid") Long servisId){
-		Rola r = rolaService.ukloniServis(rolaId, servisId);
-		return new ResponseEntity<Rola>(r, HttpStatus.OK);
+	public ResponseEntity<Rola> ukloniServis(@PathVariable("rid") Long rolaId, @PathVariable("sid") Long servisId, HttpServletRequest req){
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());
+		}
+		
+		for (Servis servis : listaServisa) {
+			if(servis.getNaziv().equals("api/ukloniServis/{rid}/{sid}")) {
+				Rola r = rolaService.ukloniServis(rolaId, servisId);
+				return new ResponseEntity<Rola>(r, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "api/deleteRole/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteRola(@PathVariable Long id){
-		String poruka = rolaService.deleteRola(id);
-		return new ResponseEntity<String>(poruka, HttpStatus.OK);
+	public ResponseEntity<String> deleteRola(@PathVariable Long id, HttpServletRequest req){
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());
+		}
+		
+		for (Servis servis : listaServisa) {
+			if(servis.getNaziv().equals("api/deleteRole/{id}")) {
+				String poruka = rolaService.deleteRola(id);
+				return new ResponseEntity<String>(poruka, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "api/createRole", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Rola> createRola(@RequestBody RolaDTO dto){
-		String naziv = dto.getNaziv();
-		Rola r = rolaService.createRola(new Rola(naziv));
-		return new ResponseEntity<Rola>(r, HttpStatus.OK);
+	public ResponseEntity<Rola> createRola(@RequestBody RolaDTO dto, HttpServletRequest req){
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());
+		}
+		
+		for (Servis servis : listaServisa) {
+			if(servis.getNaziv().equals("api/createRole")) {
+				String naziv = dto.getNaziv();
+				Rola r = rolaService.createRola(new Rola(naziv));
+				return new ResponseEntity<Rola>(r, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 }
