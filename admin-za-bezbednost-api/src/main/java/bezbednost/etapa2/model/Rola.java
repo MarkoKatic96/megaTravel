@@ -3,6 +3,7 @@ package bezbednost.etapa2.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class Rola {
 	@Size(min=1, max=100)
 	private String naziv; //dobro bi bilo i da naziv role bude unikatan
 	
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "roles_services", 
         joinColumns = @JoinColumn(

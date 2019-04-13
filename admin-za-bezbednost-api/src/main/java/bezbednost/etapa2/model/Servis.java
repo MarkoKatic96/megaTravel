@@ -3,6 +3,7 @@ package bezbednost.etapa2.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class Servis {
 	@Size(min=1, max=100)
 	private String naziv; 	//dobro bi bilo i da naziv servisa bude unikatan
 	
-	@ManyToMany(mappedBy = "servisi")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "servisi")
     private Collection<Rola> roles;
 
 	public Servis(Long id, String naziv) {

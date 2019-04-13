@@ -1,6 +1,9 @@
 package bezbednost.etapa2.appStarter;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import bezbednost.etapa2.dto.RolaDTO;
 import bezbednost.etapa2.model.Korisnik;
 import bezbednost.etapa2.model.Rola;
+import bezbednost.etapa2.model.Servis;
 
 @RestController
 public class RolaController {
@@ -22,9 +26,34 @@ public class RolaController {
 	@Autowired
 	private RolaService rolaService;
 	
+	@Autowired
+	private KorisnikService korisnikService;
+	
+	@Autowired
+	private JwtTokenUtils jwtTokenUtils;
+	
 	@RequestMapping("api/getAllRoles")
-	public ResponseEntity<List<Rola>> getAllRoles(){
-		return new ResponseEntity<List<Rola>>(rolaService.getAllRoles(), HttpStatus.OK);
+	public ResponseEntity<List<Rola>> getAllRoles(HttpServletRequest req){
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();//lista rola ulogovanog korisnika
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());//uzimamo sve servise svake role
+		}
+		for (Servis servis : listaServisa) {//prolazimo kroz servise i proveravamo da li ulogovani korisnik ima pravo da izvrsi dati servis
+			if(servis.getNaziv().equals("api/getAllRoles")) {
+				return new ResponseEntity<List<Rola>>(rolaService.getAllRoles(), HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping("api/getRoleById/{id}")

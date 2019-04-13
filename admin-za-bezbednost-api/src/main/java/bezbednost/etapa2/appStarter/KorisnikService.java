@@ -6,11 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import bezbednost.etapa2.dto.KorisnikPrijavaDTO;
 import bezbednost.etapa2.model.Korisnik;
 import bezbednost.etapa2.model.Rola;
+
 
 @Service
 public class KorisnikService {
@@ -20,6 +29,12 @@ public class KorisnikService {
 	
 	@Autowired
 	private RolaRepository rolaRepository;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JwtTokenUtils jwtTokenProvider;
 	
 	public List<Korisnik> getAllUsers(){
 		return korisnikRepository.findAll();
@@ -84,6 +99,55 @@ public class KorisnikService {
 		}
 		
 		return korisnikRepository.save(k);
+	}
+	
+	public String signin(String email, String lozinka) {
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, lozinka));
+			return jwtTokenProvider.createToken(email);
+		} catch (AuthenticationException e) {
+			throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+	
+	/*@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> login(@RequestBody AdminPrijavaDTO adminPrijavaDTO) {
+		System.out.println("login()");
+		
+		AdminModel korisnik = adminService.findByEmail(adminPrijavaDTO.getEmail());
+		if(korisnik == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		if (!korisnik.isAktiviranNalog()) {
+			// ne moze da se uloguje posto nije aktiviran mail
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		try {
+			String jwt = adminService.signin(adminPrijavaDTO.getEmail(), adminPrijavaDTO.getLozinka());
+			ObjectMapper mapper = new ObjectMapper();
+			return new ResponseEntity<>(mapper.writeValueAsString(jwt), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+		}
+	}*/
+	
+	public String login(KorisnikPrijavaDTO dto) {
+		
+		Korisnik korisnik = findByEmail(dto.getEmail());
+		if(korisnik == null) {
+			return null;
+		}
+		
+		try {
+			String jwt = signin(dto.getEmail(),  dto.getLozinka());
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.writeValueAsString(jwt);
+		}catch (Exception e) {
+			return "Nesto je poslo po zlu.";
+		}
 	}
 
 }

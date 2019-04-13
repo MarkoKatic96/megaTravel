@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import bezbednost.etapa2.dto.KorisnikDTO;
+import bezbednost.etapa2.dto.KorisnikPrijavaDTO;
 import bezbednost.etapa2.dto.RolaDTO;
 import bezbednost.etapa2.model.Korisnik;
 import bezbednost.etapa2.model.Rola;
@@ -52,6 +53,12 @@ public class KorisnikController {
 		String password = dto.getPassword();
 		Korisnik k = korisnikService.createKorisnik(new Korisnik(username, password));
 		return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> login(@RequestBody KorisnikPrijavaDTO dto) {
+		String jwt = korisnikService.login(dto);
+		return new ResponseEntity<String>(jwt, HttpStatus.OK);
 	}
 
 }
