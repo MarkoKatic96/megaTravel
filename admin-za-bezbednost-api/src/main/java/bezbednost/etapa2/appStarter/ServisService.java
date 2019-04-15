@@ -17,6 +17,9 @@ public class ServisService {
 	@Autowired
 	private RolaService roleService;
 	
+	@Autowired
+	private RolaRepository rolaRepository;
+	
 	public List<Servis> getAllServices(){
 		return servisRepository.findAll();
 	}
@@ -45,6 +48,20 @@ public class ServisService {
 			return "Odabran servis nije pronadjen.";
 		}
 	}
+	
+	/*public Servis deleteServisInRola(Long rolaId, Long servisId) {
+		Rola r = roleService.getRolaById(rolaId);
+		List<Servis> servisi = (List<Servis>) r.getServisi();
+		for (Servis servis : servisi) {
+			if(servis.getId()==servisId) {
+				servisi.remove(servis);
+				r.setServisi(servisi);
+				rolaRepository.save(r);
+				return servis;
+			}
+		}
+		return null;
+	}*/
 	
 	public Servis createServis(Servis servis) {
 		List<Servis> lista = servisRepository.findAll();

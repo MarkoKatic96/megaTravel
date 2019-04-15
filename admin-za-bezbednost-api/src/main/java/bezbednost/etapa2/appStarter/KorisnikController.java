@@ -36,7 +36,7 @@ public class KorisnikController {
 	@RequestMapping("api/getAllUsers")
 	public ResponseEntity<List<Korisnik>> getAllUsers(HttpServletRequest req){
 		
-		/*String token = jwtTokenUtils.resolveToken(req);
+		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email);
@@ -51,11 +51,11 @@ public class KorisnikController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/getAllUsers")) {*/
+			if(servis.getNaziv().equals("api/getAllUsers")) {
 				return new ResponseEntity<List<Korisnik>>(korisnikService.getAllUsers(), HttpStatus.OK);
-			/*}
+			}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping("api/getUserById/{email}")
@@ -87,7 +87,7 @@ public class KorisnikController {
 	@RequestMapping("api/dodajRolu/{email}/{id}")
 	public ResponseEntity<Korisnik> dodajRolu(@PathVariable("email") String email, @PathVariable("id") Long id, HttpServletRequest req){
 		
-		/*String token = jwtTokenUtils.resolveToken(req);
+		String token = jwtTokenUtils.resolveToken(req);
 		String email1 = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email1);
@@ -102,12 +102,12 @@ public class KorisnikController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/dodajRolu/{email}/{id}")) {*/
+			if(servis.getNaziv().equals("api/dodajRolu/{email}/{id}")) {
 				Korisnik k = korisnikService.dodajRolu(email, id);
 				return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
-			/*}
+			}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	/*@RequestMapping("api/roleKojeNema/{username}")
@@ -123,7 +123,7 @@ public class KorisnikController {
 	@RequestMapping("api/ukloniRolu/{email}/{id}")
 	public ResponseEntity<Korisnik> ukloniRolu(@PathVariable("email") String email, @PathVariable("id") Long id, HttpServletRequest req){
 		
-		/*String token = jwtTokenUtils.resolveToken(req);
+		String token = jwtTokenUtils.resolveToken(req);
 		String email1 = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email1);
@@ -138,12 +138,12 @@ public class KorisnikController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/ukloniRolu/{email}/{id}")) {*/
+			if(servis.getNaziv().equals("api/ukloniRolu/{email}/{id}")) {
 				Korisnik k = korisnikService.ukloniRolu(email, id);
 				return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
-		/*	}
+			}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping("api/getRolesFromUser/{username}")
