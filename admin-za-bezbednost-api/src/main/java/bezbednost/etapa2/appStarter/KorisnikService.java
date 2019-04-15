@@ -31,6 +31,9 @@ public class KorisnikService {
 	private RolaRepository rolaRepository;
 	
 	@Autowired
+	private RolaService rolaService;
+	
+	@Autowired
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
@@ -110,27 +113,23 @@ public class KorisnikService {
 		}
 	}
 	
-	/*@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> login(@RequestBody AdminPrijavaDTO adminPrijavaDTO) {
-		System.out.println("login()");
-		
-		AdminModel korisnik = adminService.findByEmail(adminPrijavaDTO.getEmail());
-		if(korisnik == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public List<Rola> getRoleFromUser(String username){
+		Korisnik k = findByEmail(username);
+		if(k!=null) {
+			List<Rola> listaKorisnikovihRola = (List<Rola>) k.getRoles();
+			return listaKorisnikovihRola;
 		}
-		
-		if (!korisnik.isAktiviranNalog()) {
-			// ne moze da se uloguje posto nije aktiviran mail
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		try {
-			String jwt = adminService.signin(adminPrijavaDTO.getEmail(), adminPrijavaDTO.getLozinka());
-			ObjectMapper mapper = new ObjectMapper();
-			return new ResponseEntity<>(mapper.writeValueAsString(jwt), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+		return null;
+	}
+	
+	/*public List<Rola> getRoleKojeIma(String username){
+		List<Rola> lista = rolaService.getAllRoles();
+		List<Rola> roleKojeNema = new ArrayList<Rola>();
+		List<Rola> roleKojeIma = getRoleFromUser(username);
+		for (Rola rola2 : roleKojeIma) {
+			for (Rola rola : lista) {
+				if()
+			}
 		}
 	}*/
 	

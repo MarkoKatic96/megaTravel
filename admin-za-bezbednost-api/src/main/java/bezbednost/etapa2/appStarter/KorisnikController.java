@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import bezbednost.etapa2.model.Rola;
 import bezbednost.etapa2.model.Servis;
 
 @RestController
+@CrossOrigin(origins = "https://localhost:3000")
 public class KorisnikController {
 	
 	@Autowired
@@ -34,7 +36,7 @@ public class KorisnikController {
 	@RequestMapping("api/getAllUsers")
 	public ResponseEntity<List<Korisnik>> getAllUsers(HttpServletRequest req){
 		
-		String token = jwtTokenUtils.resolveToken(req);
+		/*String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email);
@@ -49,11 +51,11 @@ public class KorisnikController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/getAllUsers")) {
+			if(servis.getNaziv().equals("api/getAllUsers")) {*/
 				return new ResponseEntity<List<Korisnik>>(korisnikService.getAllUsers(), HttpStatus.OK);
-			}
+			/*}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
 	}
 	
 	@RequestMapping("api/getUserById/{email}")
@@ -85,7 +87,7 @@ public class KorisnikController {
 	@RequestMapping("api/dodajRolu/{email}/{id}")
 	public ResponseEntity<Korisnik> dodajRolu(@PathVariable("email") String email, @PathVariable("id") Long id, HttpServletRequest req){
 		
-		String token = jwtTokenUtils.resolveToken(req);
+		/*String token = jwtTokenUtils.resolveToken(req);
 		String email1 = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email1);
@@ -100,18 +102,28 @@ public class KorisnikController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/dodajRolu/{email}/{id}")) {
+			if(servis.getNaziv().equals("api/dodajRolu/{email}/{id}")) {*/
 				Korisnik k = korisnikService.dodajRolu(email, id);
 				return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
-			}
+			/*}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
 	}
+	
+	/*@RequestMapping("api/roleKojeNema/{username}")
+	public ResponseEntity<List<Rola>> roleKojeNema(@PathVariable("username") String username){
+		List<Rola> lista = rolaService.getAllRoles();
+		List<Rola> roleKojeNema = new ArrayList<Rola>();
+		List<Rola> roleKojeIma = getAllRolesFromUser(username);
+		for (Rola rola : lista) {
+			if()
+		}
+	}*/
 	
 	@RequestMapping("api/ukloniRolu/{email}/{id}")
 	public ResponseEntity<Korisnik> ukloniRolu(@PathVariable("email") String email, @PathVariable("id") Long id, HttpServletRequest req){
 		
-		String token = jwtTokenUtils.resolveToken(req);
+		/*String token = jwtTokenUtils.resolveToken(req);
 		String email1 = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email1);
@@ -126,13 +138,19 @@ public class KorisnikController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/ukloniRolu/{email}/{id}")) {
+			if(servis.getNaziv().equals("api/ukloniRolu/{email}/{id}")) {*/
 				Korisnik k = korisnikService.ukloniRolu(email, id);
 				return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
-			}
+		/*	}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
 	}
+	
+	@RequestMapping("api/getRolesFromUser/{username}")
+	public ResponseEntity<List<Rola>> getAllRolesFromUser(@PathVariable String username){
+		List<Rola> lista = korisnikService.getRoleFromUser(username);
+		return new ResponseEntity<List<Rola>>(lista, HttpStatus.OK);
+	} 
 	
 	@RequestMapping(value = "api/createKorisnik", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> createKorisnik(@RequestBody KorisnikDTO dto, HttpServletRequest req){

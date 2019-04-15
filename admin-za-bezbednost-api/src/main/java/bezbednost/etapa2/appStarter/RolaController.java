@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import bezbednost.etapa2.model.Rola;
 import bezbednost.etapa2.model.Servis;
 
 @RestController
+@CrossOrigin(origins = "https://localhost:3000")
 public class RolaController {
 	
 	@Autowired
@@ -35,7 +37,7 @@ public class RolaController {
 	@RequestMapping("api/getAllRoles")
 	public ResponseEntity<List<Rola>> getAllRoles(HttpServletRequest req){
 		
-		String token = jwtTokenUtils.resolveToken(req);
+		/*String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email);
@@ -49,11 +51,11 @@ public class RolaController {
 			listaServisa.addAll(rola.getServisi());//uzimamo sve servise svake role
 		}
 		for (Servis servis : listaServisa) {//prolazimo kroz servise i proveravamo da li ulogovani korisnik ima pravo da izvrsi dati servis
-			if(servis.getNaziv().equals("api/getAllRoles")) {
+			if(servis.getNaziv().equals("api/getAllRoles")) {*/
 				return new ResponseEntity<List<Rola>>(rolaService.getAllRoles(), HttpStatus.OK);
-			}
+			/*}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
 	}
 	
 	@RequestMapping("api/getRoleById/{id}")
