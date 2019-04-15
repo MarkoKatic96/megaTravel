@@ -1,14 +1,8 @@
 package megatravel.agentlocal.controller;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.SocketFactory;
-import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,88 +36,14 @@ public class SmestajController {
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "api/smestaj/synchronize", method = RequestMethod.GET)
-	public ResponseEntity<String> getCommunicationById(@PathVariable Long id, HttpServletRequest req) {
-		System.out.println("getCommunicationById()");
-		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		AgentModel korisnik = agentService.findByEmail(email);
-		if (korisnik == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-		
-		String host = "localhost:8080/api/smestaj/welcome";
-		int port = 8080;
-		SocketFactory tlsSocketFactory = SSLSocketFactory.getDefault();
-		//s = tlsSocketFactory.createSocket(s, host, port, true);
-		Socket socket = null;
-		try {
-			socket = tlsSocketFactory.createSocket(host, port);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		DataInputStream in = null;
-		try {
-			in = new DataInputStream( 
-			        new BufferedInputStream(socket.getInputStream()));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} 
-  
-            String line = ""; 
-  
-            // reads message from client until "Over" is sent 
-            while (!line.equals("Over")) 
-            { 
-                try
-                { 
-                    line = in.readUTF(); 
-                    System.out.println(line); 
-  
-                } 
-                catch(IOException e) 
-                { 
-                    System.out.println(e); 
-                } 
-            } 
-            System.out.println("Closing connection"); 
-  
-            // close connection 
-            try {
-				socket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-            try {
-				in.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-		
-		return new ResponseEntity<>(line, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "api/smestaj/welcome", method = RequestMethod.GET, produces = {	MediaType.TEXT_HTML_VALUE })
-	public ResponseEntity<String> getWelcomeMessage(HttpServletRequest req) {
-		System.out.println("getWelcomeMessage()");
-		return new ResponseEntity<>("<html><body>Hello world</body></html>", HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/error", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
-	public ResponseEntity<String> getErrorMessage(HttpServletRequest req) {
-		System.out.println("getErrorMessage()");
-		return new ResponseEntity<>("<html><body>Bad error, very bad :(</body></html>", HttpStatus.OK);
+	public ResponseEntity<List<SmestajDTO>> getSynchronized(HttpServletRequest req) {
+		System.out.println("GLOBAL: getSynchronized()");
+		return getAllSmestaji(req);
 	}
 	
 	@RequestMapping(value = "api/smestaj", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req) {
-		System.out.println("getAllSmestaji()");
+		System.out.println("GLOBAL: getAllSmestaji()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -133,9 +53,7 @@ public class SmestajController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		
-		List<SmestajModel> smestaji = smestajService.findAll();
-		
+		List<SmestajModel> smestaji = smestajService.findAll(korisnik.getId());
 		
 		HttpHeaders headers = new HttpHeaders();
 		long hoteliTotal = smestaji.size();
@@ -152,7 +70,7 @@ public class SmestajController {
 	
 	@RequestMapping(value = "api/smestaj/{id}", method = RequestMethod.GET)
 	public ResponseEntity<SmestajDTO> getSmestaj(@PathVariable Long id, HttpServletRequest req) {
-		System.out.println("getSmestaj()");
+		System.out.println("GLOBAL: getSmestaj()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -169,12 +87,16 @@ public class SmestajController {
 		
 		SmestajDTO smestajDTO = new SmestajDTO(smestaj);
 		
+		if (smestajDTO.getVlasnik().getId()!=korisnik.getId()) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
 		return new ResponseEntity<>(smestajDTO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "api/smestaj", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> create(@RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
-		System.out.println("create()");
+		System.out.println("GLOBAL: create()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -194,9 +116,24 @@ public class SmestajController {
 	}
 	
 	@RequestMapping(value = "api/smestaj/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest req) {
+		System.out.println("GLOBAL: delete()");
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		AgentModel korisnik = agentService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
 		SmestajModel smestaj = smestajService.findOne(id);
 		if (smestaj != null) {
+			
+			if (smestaj.getVlasnik().getId()!=korisnik.getId()) {
+				return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			}
+			
 			smestajService.remove(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 			

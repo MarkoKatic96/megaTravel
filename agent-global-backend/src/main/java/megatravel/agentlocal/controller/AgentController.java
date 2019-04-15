@@ -26,7 +26,7 @@ public class AgentController {
 	
 	@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> login(@RequestBody AgentPrijavaDTO agentPrijavaDTO) {
-		System.out.println("login()");
+		System.out.println("GLOBAL: login()");
 		
 		AgentModel korisnik = agentService.findByEmail(agentPrijavaDTO.getEmail());
 		if(korisnik == null) {
@@ -50,6 +50,7 @@ public class AgentController {
 	
 	@RequestMapping(value = "api/signup", method = RequestMethod.POST)
 	public ResponseEntity<String> signup(@RequestBody AgentRegistracijaDTO agentDTO) {
+		System.out.println("GLOBAL: signup()");
 		
 		AgentModel tempKorisnik = agentService.findByEmail(agentDTO.getEmail());
 		if(tempKorisnik != null) {
@@ -58,11 +59,14 @@ public class AgentController {
 		}
 		
 		AgentModel korisnik = new AgentModel(null, agentDTO.getIme(), agentDTO.getPrezime(), agentDTO.getPoslovniMaticniBroj(), null, agentDTO.getLozinka(), agentDTO.getEmail(), true);
+		korisnik.setDatumClanstva(new java.sql.Date(System.currentTimeMillis()));
 		
 		try{
 			AgentModel retValue = agentService.signup(korisnik);
 			if (retValue!=null) {
-				return login(new AgentPrijavaDTO(retValue.getEmail(), retValue.getLozinka()));
+				String jwt = agentService.signin(agentDTO.getEmail(), agentDTO.getLozinka());
+				ObjectMapper mapper = new ObjectMapper();
+				return new ResponseEntity<>(mapper.writeValueAsString(jwt), HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);

@@ -1,5 +1,7 @@
 package megatravel.agentlocal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import megatravel.agentlocal.dto.AgentPrijavaDTO;
 import megatravel.agentlocal.dto.AgentRegistracijaDTO;
+import megatravel.agentlocal.https.ssl.SSLMutualAuth;
 import megatravel.agentlocal.model.AgentModel;
 import megatravel.agentlocal.service.AgentService;
 import megatravel.agentlocal.token.JwtTokenUtils;
@@ -26,49 +29,46 @@ public class AgentController {
 	
 	@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> login(@RequestBody AgentPrijavaDTO agentPrijavaDTO) {
-		System.out.println("login()");
+		System.out.println("LOCAL: login()");
 		
-		AgentModel korisnik = agentService.findByEmail(agentPrijavaDTO.getEmail());
-		if(korisnik == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		
-		if (!korisnik.isAktiviranNalog()) {
-			// ne moze da se uloguje posto nije aktiviran mail
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
+		List<String> loggedL = null;
 		try {
-			String jwt = agentService.signin(agentPrijavaDTO.getEmail(), agentPrijavaDTO.getLozinka());
-			ObjectMapper mapper = new ObjectMapper();
-			return new ResponseEntity<>(mapper.writeValueAsString(jwt), HttpStatus.OK);
+			loggedL = SSLMutualAuth.callPost("https://localhost:8443/api/login", "", new String("{\"email\":\"" +  agentPrijavaDTO.getEmail() + "\",\"lozinka\": \"" + agentPrijavaDTO.getLozinka() + "\"}"), String.class, false);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
 		}
+		
+		String logged = loggedL.get(0);
+		if (logged.equals("")) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		//logged = "Bearer " + logged.substring(1, logged.length()-1);
+		
+		return new ResponseEntity<>(logged, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "api/signup", method = RequestMethod.POST)
 	public ResponseEntity<String> signup(@RequestBody AgentRegistracijaDTO agentDTO) {
+		System.out.println("LOCAL: signup()");
 		
-		AgentModel tempKorisnik = agentService.findByEmail(agentDTO.getEmail());
-		if(tempKorisnik != null) {
-			//mora biti jedinstveni mail za korisnika
+		List<String> loggedL = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			loggedL = SSLMutualAuth.callPost("https://localhost:8443/api/signup", "", mapper.writeValueAsString(agentDTO), String.class, false);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		String logged = loggedL.get(0);
+		if (logged.equals("")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		AgentModel korisnik = new AgentModel(null, agentDTO.getIme(), agentDTO.getPrezime(), agentDTO.getPoslovniMaticniBroj(), null, agentDTO.getLozinka(), agentDTO.getEmail(), true);
+		korisnik.setDatumClanstva(new java.sql.Date(System.currentTimeMillis()));
+		agentService.signup(korisnik);
 		
-		try{
-			AgentModel retValue = agentService.signup(korisnik);
-			if (retValue!=null) {
-				return login(new AgentPrijavaDTO(retValue.getEmail(), retValue.getLozinka()));
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
-
-		
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(logged, HttpStatus.CREATED);
 	}
 }

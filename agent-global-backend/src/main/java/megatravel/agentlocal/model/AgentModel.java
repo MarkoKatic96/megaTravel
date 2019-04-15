@@ -15,7 +15,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import megatravel.agentlocal.validation.EmailValidation;
 import megatravel.agentlocal.validation.StaticData;
 
 @Entity
@@ -33,7 +32,7 @@ public class AgentModel {
 	private String prezime;
 	
 	@NotNull
-    @Size(min=StaticData.minimalnaDuzinaPMB, max=StaticData.maximalnaDuzinaPMB)
+    //@Size(min=StaticData.minimalnaDuzinaPMB, max=StaticData.maximalnaDuzinaPMB)
 	private Long poslovniMaticniBroj;
 	
 	@NotNull
@@ -43,7 +42,7 @@ public class AgentModel {
 	@NotNull
 	private String lozinka;
 	
-	@EmailValidation
+	//@EmailValidation
 	@NotNull
     @Size(min=10, max=60)
 	private String email;
@@ -61,6 +60,9 @@ public class AgentModel {
 		this.prezime = prezime;
 		this.poslovniMaticniBroj = poslovniMaticniBroj;
 		this.datumClanstva = datumClanstva;
+		if (datumClanstva==null) {
+			datumClanstva = new java.sql.Date(System.currentTimeMillis()); 
+		}
 		this.lozinka = lozinka;
 		this.email = email;
 		this.aktiviranNalog = aktiviranNalog;
@@ -133,6 +135,9 @@ public class AgentModel {
 
 	public void setDatumClanstva(Date datumClanstva) {
 		this.datumClanstva = datumClanstva;
+		if (datumClanstva==null) {
+			datumClanstva = new java.sql.Date(System.currentTimeMillis()); 
+		}
 	}
 
 	public Set<SmestajModel> getSmestaji() {

@@ -39,6 +39,10 @@ public class AgentRegistracijaDTO {
 		this.lozinka = agent.getLozinka();
 		this.aktiviranNalog = agent.isAktiviranNalog();
 	}
+	
+	public AgentRegistracijaDTO() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getId() {
 		return id;

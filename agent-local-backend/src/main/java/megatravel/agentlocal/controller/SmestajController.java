@@ -1,18 +1,10 @@
 package megatravel.agentlocal.controller;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.SocketFactory;
-import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import megatravel.agentlocal.dto.SmestajDTO;
+import megatravel.agentlocal.https.ssl.SSLMutualAuth;
 import megatravel.agentlocal.model.AgentModel;
 import megatravel.agentlocal.model.SmestajModel;
 import megatravel.agentlocal.service.AgentService;
@@ -42,88 +37,8 @@ public class SmestajController {
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "api/smestaj/synchronize/{id}", method = RequestMethod.GET)
-	public ResponseEntity<String> getCommunicationById(@PathVariable Long id, HttpServletRequest req) {
-		System.out.println("getCommunicationById()");
-		
-		/*String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		AgentModel korisnik = agentService.findByEmail(email);
-		if (korisnik == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-		*/
-		String host = "localhost:8080/api/smestaj/welcome";
-		int port = 8080;
-		SocketFactory tlsSocketFactory = SSLSocketFactory.getDefault();
-		//s = tlsSocketFactory.createSocket(s, host, port, true);
-		Socket socket = null;
-		try {
-			socket = tlsSocketFactory.createSocket(host, port);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		DataInputStream in = null;
-		try {
-			in = new DataInputStream( 
-			        new BufferedInputStream(socket.getInputStream()));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} 
-  
-            String line = ""; 
-  
-            // reads message from client until "Over" is sent 
-            while (!line.equals("Over")) 
-            { 
-                try
-                { 
-                    line = in.readUTF(); 
-                    System.out.println(line); 
-  
-                } 
-                catch(IOException e) 
-                { 
-                    System.out.println(e); 
-                } 
-            } 
-            System.out.println("Closing connection"); 
-  
-            // close connection 
-            try {
-				socket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-            try {
-				in.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-		
-		return new ResponseEntity<>(line, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "api/smestaj/welcome", method = RequestMethod.GET, produces = {	MediaType.TEXT_HTML_VALUE })
-	public ResponseEntity<String> getWelcomeMessage(HttpServletRequest req) {
-		System.out.println("getWelcomeMessage()");
-		return new ResponseEntity<>("<html><body>Hello world</body></html>", HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/error", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
-	public ResponseEntity<String> getErrorMessage(HttpServletRequest req) {
-		System.out.println("getErrorMessage()");
-		return new ResponseEntity<>("<html><body>Bad error, very bad :(</body></html>", HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "api/smestaj", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req) {
-		System.out.println("getAllSmestaji()");
+	public ResponseEntity<List<SmestajDTO>> getSynchronized(@PathVariable Long id, HttpServletRequest req) {
+		System.out.println("LOCAL: getSynchronized()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -133,26 +48,54 @@ public class SmestajController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		
-		List<SmestajModel> smestaji = smestajService.findAll();
-		
-		
-		HttpHeaders headers = new HttpHeaders();
-		long hoteliTotal = smestaji.size();
-		headers.add("X-Total-Count", String.valueOf(hoteliTotal));
-
-		List<SmestajDTO> retVal = new ArrayList<SmestajDTO>();
-
-		for (SmestajModel s : smestaji) {
-			retVal.add(new SmestajDTO(s));
+		List<SmestajDTO> loggedL = null;
+		try {
+			loggedL = SSLMutualAuth.callGet("https://localhost:8443/api/smestaj/synchronize", "Bearer " + token , SmestajDTO.class, true);
+		} catch (Exception e) {
+			if (e.getMessage().contains("403")) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			}
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
+		
+		if (!loggedL.isEmpty()) {
+			for (SmestajModel smestajDTO : smestajService.findAll()) {
+				smestajService.remove(smestajDTO.getId());
+			}
+			
+			for (SmestajDTO smestajDTO : loggedL) {
+				smestajService.save(new SmestajModel(smestajDTO.getId(), smestajDTO.getAdresa(), new AgentModel(smestajDTO.getVlasnik().getId(), smestajDTO.getVlasnik().getIme(), smestajDTO.getVlasnik().getPrezime(), smestajDTO.getVlasnik().getPoslovniMaticniBroj(), smestajDTO.getVlasnik().getDatumClanstva(), korisnik.getLozinka(), smestajDTO.getVlasnik().getEmail(), smestajDTO.getVlasnik().isAktiviranNalog()), smestajDTO.getCena(), smestajDTO.getOpis(), smestajDTO.getMaxOsoba()));
+			}
+		}
+		
+		return new ResponseEntity<>(loggedL, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "api/smestaj", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req) {
+		System.out.println("LOCAL: getAllSmestaji()");
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		AgentModel korisnik = agentService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<SmestajDTO> loggedL = null;
+		try {
+			loggedL = SSLMutualAuth.callGet("https://localhost:8443/api/smestaj", "Bearer " + token, SmestajDTO.class, true);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(loggedL, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "api/smestaj/{id}", method = RequestMethod.GET)
 	public ResponseEntity<SmestajDTO> getSmestaj(@PathVariable Long id, HttpServletRequest req) {
-		System.out.println("getSmestaj()");
+		System.out.println("LOCAL: getSmestaj()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -169,12 +112,16 @@ public class SmestajController {
 		
 		SmestajDTO smestajDTO = new SmestajDTO(smestaj);
 		
+		if (smestajDTO.getVlasnik().getId()!=korisnik.getId()) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
 		return new ResponseEntity<>(smestajDTO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "api/smestaj", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> create(@RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
-		System.out.println("create()");
+		System.out.println("LOCAL: create()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -185,6 +132,20 @@ public class SmestajController {
 		}
 		
 		SmestajModel smestaj = new SmestajModel(smestajDTO.getId(), smestajDTO.getAdresa(), korisnik, smestajDTO.getCena(), smestajDTO.getOpis(), smestajDTO.getMaxOsoba());
+		
+		List<SmestajDTO> loggedL = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			loggedL = SSLMutualAuth.callPost("https://localhost:8443/api/signup", "Bearer " + token, mapper.writeValueAsString(smestajDTO), SmestajDTO.class, false);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		SmestajDTO logged = loggedL.get(0);
+		if (logged==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		smestaj = smestajService.save(smestaj);
 		
 		korisnik.addSmestaj(smestaj);
@@ -194,16 +155,24 @@ public class SmestajController {
 	}
 	
 	@RequestMapping(value = "api/smestaj/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		SmestajModel smestaj = smestajService.findOne(id);
-		if (smestaj != null) {
-			smestajService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-			
-		} 
-		else 
-		{
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest req) {
+		System.out.println("LOCAL: delete()");
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		AgentModel korisnik = agentService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
+		
+		try {
+			SSLMutualAuth.callDelete("https://localhost:8443/api/smestaj/" + id, "Bearer " + token, "", Void.class, false);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		smestajService.remove(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

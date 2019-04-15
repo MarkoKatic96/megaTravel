@@ -13,10 +13,6 @@ public class SmestajService {
 	
 	@Autowired
 	SmestajRepository smestajRepository;
-	
-	public List<SmestajModel> findAll() {
-		return smestajRepository.findAll();
-	}
 
 	public SmestajModel findOne(Long id) {
 		return smestajRepository.findOne(id);
@@ -28,5 +24,9 @@ public class SmestajService {
 
 	public void remove(Long id) {
 		smestajRepository.delete(id);
+	}
+
+	public List<SmestajModel> findAll(Long id) {
+		return smestajRepository.findAll(id);
 	}
 }

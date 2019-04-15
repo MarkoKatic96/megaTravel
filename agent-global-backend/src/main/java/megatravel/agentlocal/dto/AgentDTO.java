@@ -36,6 +36,10 @@ public class AgentDTO {
 		this.email = agent.getEmail();
 		this.aktiviranNalog = agent.isAktiviranNalog();
 	}
+	
+	public AgentDTO() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getId() {
 		return id;

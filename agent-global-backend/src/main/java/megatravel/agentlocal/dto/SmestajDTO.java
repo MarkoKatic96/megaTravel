@@ -31,6 +31,10 @@ public class SmestajDTO {
 		this.maxOsoba = maxOsoba;
 		this.vlasnik = new AgentDTO(vlasnik);
 	}
+	
+	public SmestajDTO() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getId() {
 		return id;
