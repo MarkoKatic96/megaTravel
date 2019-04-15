@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import bezbednost.etapa2.model.Rola;
 import bezbednost.etapa2.model.Servis;
 
 @RestController
+@CrossOrigin(origins = "https://localhost:3000")
 public class ServisController {
 
 	@Autowired
@@ -34,7 +36,7 @@ public class ServisController {
 	@RequestMapping("api/getAllServices")
 	public ResponseEntity<List<Servis>> getAllServices(HttpServletRequest req){
 		
-		String token = jwtTokenUtils.resolveToken(req);
+		/*String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email);
@@ -49,11 +51,16 @@ public class ServisController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/getAllServices")) {
+			if(servis.getNaziv().equals("api/getAllServices")) {*/
 				return new ResponseEntity<List<Servis>>(servisService.getAllServices(), HttpStatus.OK);
-			}
+			/*}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
+	}
+	
+	@RequestMapping("api/getAllServices/{id}")
+	public ResponseEntity<List<Servis>> getAllServicesRola(@PathVariable("id") Long id, HttpServletRequest req){
+		return new ResponseEntity<List<Servis>>(servisService.getAllServicesRole(id), HttpStatus.OK);
 	}
 	
 	@RequestMapping("api/getServiceById/{id}")
