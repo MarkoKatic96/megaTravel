@@ -39,7 +39,7 @@ public class ServisController {
 	@RequestMapping("api/getAllServices")
 	public ResponseEntity<List<Servis>> getAllServices(HttpServletRequest req){
 		
-		/*String token = jwtTokenUtils.resolveToken(req);
+		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email);
@@ -54,11 +54,11 @@ public class ServisController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/getAllServices")) {*/
+			if(servis.getNaziv().equals("api/getAllServices")) {
 				return new ResponseEntity<List<Servis>>(servisService.getAllServices(), HttpStatus.OK);
-			/*}
+			}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping("api/getAllServices/{id}")

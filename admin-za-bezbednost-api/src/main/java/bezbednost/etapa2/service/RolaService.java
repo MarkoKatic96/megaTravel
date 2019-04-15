@@ -93,4 +93,10 @@ public class RolaService {
 		return rolaRepository.save(r);
 	}
 	
+	public List<Servis> getServiseRole(Long rolaId){
+		Rola r = getRolaById(rolaId);
+		List<Servis> lista = (List<Servis>) r.getServisi();
+		return lista;
+	}
+	
 }
