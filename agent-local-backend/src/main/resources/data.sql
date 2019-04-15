@@ -1,2 +1,3 @@
 # ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
-INSERT INTO `db_agent_local`.`agent_model` (`id`, `aktiviran_nalog`, `datum_clanstva`, `email`, `ime`, `lozinka`, `poslovni_maticni_broj`, `prezime`) VALUES ('1', b'1', '2019-4-12', 'agent@megatravel.com', 'Pera', '$12$iRk5DQT6DVpn2X.SjScOSeU0SXt54GLIhTjS7lxgI6an9I21BUhOW', '1078554121454', 'Peric');
+# sifra je promenjena na: je 'secretpassword'
+INSERT INTO `db_agent_local`.`agent_model` (`id`, `aktiviran_nalog`, `datum_clanstva`, `email`, `ime`, `lozinka`, `poslovni_maticni_broj`, `prezime`) VALUES ('1', b'1', '2019-4-12', 'agent@megatravel.com', 'Pera', '$2a$12$58iCmqU7LVb.yaPafDK3K.V2h29.EIfB4J3JOz/xQnAC9T4fQo4z.', '1078554121454', 'Peric');

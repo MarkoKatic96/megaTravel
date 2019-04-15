@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.megatravel</groupId>
-	<artifactId>agent-local-backend</artifactId>
+	<artifactId>agent-global-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>agent-local-backend</name>
-	<description>Agent local backend</description>
+	<name>agent-global-backend</name>
+	<description>Agent global backend</description>
 
 	<properties>
 	  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -88,13 +88,7 @@
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-core</artifactId>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		</dependency>
-		
+				
   </dependencies>
   
   <build>

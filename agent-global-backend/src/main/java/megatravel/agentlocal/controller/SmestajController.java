@@ -41,18 +41,18 @@ public class SmestajController {
 	@Autowired
 	JwtTokenUtils jwtTokenUtils;
 	
-	@RequestMapping(value = "api/smestaj/synchronize/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "api/smestaj/synchronize", method = RequestMethod.GET)
 	public ResponseEntity<String> getCommunicationById(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("getCommunicationById()");
 		
-		/*String token = jwtTokenUtils.resolveToken(req);
+		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		AgentModel korisnik = agentService.findByEmail(email);
 		if (korisnik == null) {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		*/
+		
 		String host = "localhost:8080/api/smestaj/welcome";
 		int port = 8080;
 		SocketFactory tlsSocketFactory = SSLSocketFactory.getDefault();
