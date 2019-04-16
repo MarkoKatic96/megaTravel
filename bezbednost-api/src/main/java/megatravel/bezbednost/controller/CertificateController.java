@@ -231,9 +231,10 @@ public class CertificateController {
 		return new ResponseEntity<>(comm, headers, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "api/certificate/create", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CertificateModel> createCertificate(@RequestBody DataSum dataSum, HttpServletRequest req) throws CertificateEncodingException, IOException {
+	@RequestMapping(value = "api/certificate/create", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/zip")
+	public ResponseEntity<X509Certificate> createCertificate(@RequestBody DataSum dataSum, HttpServletRequest req) throws CertificateEncodingException, IOException {
 		System.out.println("createCertificate()");
+	
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -241,6 +242,15 @@ public class CertificateController {
 		AdminModel korisnik = adminService.findByEmail(email);
 		if (korisnik == null) {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		if(dataSum.getPrivateKey() == null || dataSum.getPublicKey() == null)
+		{
+			GenerateCertificate gen = new GenerateCertificate();
+			KeyPair pair = gen.generateKeyPair();
+			
+			dataSum.setPrivateKey(pair.getPrivate().getEncoded());
+			dataSum.setPublicKey(pair.getPublic().getEncoded());
 		}
 		 
 		CertificateModel nadcertifikat = null;
@@ -330,7 +340,7 @@ public class CertificateController {
 		//...
 		saveCertificate(cert);
 		
-		return new ResponseEntity<>(newCert, HttpStatus.OK);
+		return new ResponseEntity<>(cert, HttpStatus.OK);
 	}
 
 	private TipCertifikata getTipCertifikata(TipCertifikata tipNadCertifikata) {
