@@ -98,7 +98,7 @@
 						<outputDirectory>${basedir}/src/main/webapp</outputDirectory>
 						<resources>
 							<resource>
-								<directory>${basedir}/admin-security/dist/admin-security</directory>
+								<directory>${basedir}/../admin-security/dist/admin-security</directory>
 							</resource>
 						</resources>
 					</configuration>
