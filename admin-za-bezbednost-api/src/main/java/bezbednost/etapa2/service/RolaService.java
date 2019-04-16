@@ -97,6 +97,6 @@ public class RolaService {
 		Rola r = getRolaById(rolaId);
 		List<Servis> lista = (List<Servis>) r.getServisi();
 		return lista;
-	}
+	} 
 	
 }
