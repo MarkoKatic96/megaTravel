@@ -1,0 +1,29 @@
+<h4>Odaberite sertifikat koji zelite da povucete. <strong>OPREZ</strong> povlacenje sertifikata je nepovratna operacija!<br /> Svi sertifikati potpisani ovim sertifikatom mogu postati <strong>NEVALIDNI</strong>!</h4>
+<br /><br />
+<table class="table" border="1">
+  <thead>
+    <th> ID </th>
+    <th> TIP </th>
+    <th> DATUM POCETKA </th>
+    <th> DATUM ZAVRSETKA </th>
+    <th> SERIJSKI BROJ </th>
+    <th> NADSERTIFIKAT </th>
+    <th> POVUCI </th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cert of sertifikati">
+      <td>{{cert.id}}</td>
+      <td>{{cert.tipCertifikata}}</td>
+      <td>{{cert.datumPocetka | date: 'dd/MM/yyyy'}}</td>
+      <td>{{cert.datumKraja  | date: 'dd/MM/yyyy'}}</td>
+      <td>{{cert.serijskiBroj}}</td>
+      <td>{{cert.nadcertifikat}}</td>
+      <td><button class="btn btn-outline-danger my-2 my-sm-0" (click)="povuciSert(cert.id)">Povuci sertifikat</button></td>
+    </tr>
+  </tbody>
+</table>
+<br /><br />
+  
+
+  
+

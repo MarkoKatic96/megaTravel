@@ -1,0 +1,44 @@
+<h4>Kreiraj novi sertifikat:</h4>
+<br /><br />
+<form>
+  <table style="float: left;">
+    <tbody>
+      <tr>
+        <td>
+          <h5>Tip sertifikata &nbsp;</h5>
+        </td>
+        <td>
+          <select (change)="selectChangeHandler($event)" style="margin-left: -294px;">
+            <option *ngFor="let sert of sertVrste" [value]="sert">{{sert}}</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngIf="selected == 'APLIKACIJA'">
+      <app-aplikacija></app-aplikacija>
+    </tbody>
+    <tbody *ngIf="selected == 'DOMEN'">
+      <app-domen></app-domen>
+    </tbody>
+    <tbody *ngIf="selected == 'OPREMA'">
+      <app-oprema></app-oprema>
+    </tbody>
+    <tbody *ngIf="selected == 'ORGANIZACIJA'">
+      <app-organizacija></app-organizacija>
+    </tbody>
+    <tbody *ngIf="selected == 'OSOBA'">
+      <app-osoba></app-osoba>
+    </tbody>
+    <tbody *ngIf="selected == 'ROOT'">
+      <app-rootcert></app-rootcert>
+    </tbody>
+    <tbody *ngIf="selected == 'CA_APLIKACIJA' || selected == 'CA_DOMEN' || selected == 'CA_OPREMA' || selected == 'CA_ORGANIZACIJA' || selected == 'CA_OSOBA'">
+      <app-ca></app-ca>  
+    </tbody>
+  </table>
+</form>
+
+
+
+<app-listanje class="listanje"></app-listanje>
