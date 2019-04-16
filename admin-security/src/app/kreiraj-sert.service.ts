@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class KreirajSertService {
 
   private extractData(res: Response)
-  {
+  { 
     let body = res;
     return body || {};
   }
@@ -20,33 +20,14 @@ export class KreirajSertService {
 
   }
 
-  createCert(id, certifikat, datumPocetka, datumKraja, datumKreiranja, serijskiBroj,  tipCertifikata, nadcertifikat): Observable<any>
+  createCert(x500Name, serialNumber, startDate, endDate, publicKey, privateKey, rootSerialNumber, tipCertifikata): Observable<any>
   {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
     console.log(headers)
     return this.http.put('https://localhost:8443/api/certificate/create', {
-      headers,
-      id, 
-      certifikat,
-      datumPocetka,
-      datumKraja,
-      datumKreiranja,
-      serijskiBroj,
-      tipCertifikata,
-      nadcertifikat      
-    }).pipe(map(this.extractData))
+      x500Name, serialNumber, startDate, endDate, publicKey, privateKey, rootSerialNumber, tipCertifikata
+    }).pipe(map(this.extractData))  
   }
-
-  // getCertDetails()
-  // {
-  //   let headers: HttpHeaders = new HttpHeaders();
-  //   headers = headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-  //   console.log(headers)
-  //   return this.http.put('https://localhost:8443/api/certificate/create', {
-  //     headers
-  //   })
-  // }
-
 
 }
