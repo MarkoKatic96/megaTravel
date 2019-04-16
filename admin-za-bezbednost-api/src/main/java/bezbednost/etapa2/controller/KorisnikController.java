@@ -156,7 +156,7 @@ public class KorisnikController {
 	@RequestMapping(value = "api/createKorisnik", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> createKorisnik(@RequestBody KorisnikDTO dto, HttpServletRequest req){
 		
-		String token = jwtTokenUtils.resolveToken(req);
+		/*String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		Korisnik korisnik = korisnikService.findByEmail(email);
@@ -171,14 +171,14 @@ public class KorisnikController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/createKorisnik")) {
+			if(servis.getNaziv().equals("api/createKorisnik")) {*/
 				String username = dto.getUsername();
 				String password = dto.getPassword();
 				Korisnik k = korisnikService.createKorisnik(new Korisnik(username, password));
 				return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
-			}
+			/*}
 		}
-		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);*/
 	}
 	
 	@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
