@@ -28,8 +28,9 @@ import org.apache.log4j.BasicConfigurator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SSLMutualAuth {
-	private static final String filepathIdentity = "./files/repository/keystores/identity.jks";
-	private static final String filepathTrust = "./files/repository/keystores/myTrustStore.jks";
+	private static final String filepathIdentity = "./files/repository/keystores/userIdentityStore.jks";	//OK CERT
+	//private static final String filepathIdentity = "./files/repository/keystores/identity.jks";	//BAD CERT
+	private static final String filepathTrust = "./files/repository/keystores/userTrustStore.jks";
 	static {
 		  // Setup the trustStore location and password
 		  System.setProperty("javax.net.ssl.trustStore",filepathIdentity);

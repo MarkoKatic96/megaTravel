@@ -1,5 +1,7 @@
 package megatravel.agentlocal.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import megatravel.agentlocal.certificate.CertificateTrust;
 import megatravel.agentlocal.dto.AgentPrijavaDTO;
 import megatravel.agentlocal.dto.AgentRegistracijaDTO;
 import megatravel.agentlocal.model.AgentModel;
@@ -25,8 +28,13 @@ public class AgentController {
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "api/login", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> login(@RequestBody AgentPrijavaDTO agentPrijavaDTO) {
+	public ResponseEntity<String> login(@RequestBody AgentPrijavaDTO agentPrijavaDTO, HttpServletRequest req) {
 		System.out.println("GLOBAL: login()");
+		
+		CertificateTrust ct = new CertificateTrust();
+		if (!ct.checkValidityOfCertificate(req)) {
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+		}
 		
 		AgentModel korisnik = agentService.findByEmail(agentPrijavaDTO.getEmail());
 		if(korisnik == null) {
@@ -49,8 +57,13 @@ public class AgentController {
 	}
 	
 	@RequestMapping(value = "api/signup", method = RequestMethod.POST)
-	public ResponseEntity<String> signup(@RequestBody AgentRegistracijaDTO agentDTO) {
+	public ResponseEntity<String> signup(@RequestBody AgentRegistracijaDTO agentDTO, HttpServletRequest req) {
 		System.out.println("GLOBAL: signup()");
+		
+		CertificateTrust ct = new CertificateTrust();
+		if (!ct.checkValidityOfCertificate(req)) {
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+		}
 		
 		AgentModel tempKorisnik = agentService.findByEmail(agentDTO.getEmail());
 		if(tempKorisnik != null) {

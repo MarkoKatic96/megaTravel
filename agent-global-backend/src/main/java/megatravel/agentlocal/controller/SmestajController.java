@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import megatravel.agentlocal.certificate.CertificateTrust;
 import megatravel.agentlocal.dto.SmestajDTO;
 import megatravel.agentlocal.model.AgentModel;
 import megatravel.agentlocal.model.SmestajModel;
@@ -45,6 +46,11 @@ public class SmestajController {
 	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req) {
 		System.out.println("GLOBAL: getAllSmestaji()");
 		
+		CertificateTrust ct = new CertificateTrust();
+		if (!ct.checkValidityOfCertificate(req)) {
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+		}
+		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -68,9 +74,16 @@ public class SmestajController {
 		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
 	}
 	
+	
+
 	@RequestMapping(value = "api/smestaj/{id}", method = RequestMethod.GET)
 	public ResponseEntity<SmestajDTO> getSmestaj(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("GLOBAL: getSmestaj()");
+		
+		CertificateTrust ct = new CertificateTrust();
+		if (!ct.checkValidityOfCertificate(req)) {
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+		}
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -98,6 +111,11 @@ public class SmestajController {
 	public ResponseEntity<SmestajDTO> create(@RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("GLOBAL: create()");
 		
+		CertificateTrust ct = new CertificateTrust();
+		if (!ct.checkValidityOfCertificate(req)) {
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+		}
+		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -118,6 +136,11 @@ public class SmestajController {
 	@RequestMapping(value = "api/smestaj/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("GLOBAL: delete()");
+		
+		CertificateTrust ct = new CertificateTrust();
+		if (!ct.checkValidityOfCertificate(req)) {
+			return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+		}
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);

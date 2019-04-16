@@ -28,7 +28,7 @@ public class PostRequest {
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> execute(String path, String token, Object postData, Class<T> cls, boolean isList) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException, KeyManagementException, ServerNotActiveException, CredentialException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 		// Load CAs from an InputStream
-		InputStream certIs = new FileInputStream("resources/cert-chain.p12");
+		InputStream certIs = new FileInputStream("resources/user.pfx");
 		KeyStore ks = KeyStore.getInstance("PKCS12");
 		ks.load(certIs,"secretpassword".toCharArray());
 		Certificate ca = ks.getCertificate("1");

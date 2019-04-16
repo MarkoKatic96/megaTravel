@@ -25,7 +25,7 @@ public class GetRequest {
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> execute(String path, String token, Class<T> cls, boolean isList) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, InstantiationException, IllegalAccessException {
 		// Load CAs from an InputStream
-		InputStream certIs=new FileInputStream("resources/cert-chain.p12");
+		InputStream certIs=new FileInputStream("resources/user.pfx");
 		KeyStore ks=KeyStore.getInstance("PKCS12");
 		ks.load(certIs,"secretpassword".toCharArray());
 		Certificate ca = ks.getCertificate("1");
