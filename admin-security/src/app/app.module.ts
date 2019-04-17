@@ -28,6 +28,7 @@ import { OrganizacijaComponent } from './kreiraj-sertifikat/organizacija/organiz
 import { OsobaComponent } from './kreiraj-sertifikat/osoba/osoba.component';
 import { RootcertComponent } from './kreiraj-sertifikat/rootcert/rootcert.component';
 import { CaComponent } from './kreiraj-sertifikat/ca/ca.component';
+import { PovezaniSertifikatiComponent } from './komunikacija/povezani-sertifikati/povezani-sertifikati.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { CaComponent } from './kreiraj-sertifikat/ca/ca.component';
     OrganizacijaComponent,
     OsobaComponent,
     RootcertComponent,
-    CaComponent
+    CaComponent,
+    PovezaniSertifikatiComponent
   ],
   imports: [
     HttpClientModule, 

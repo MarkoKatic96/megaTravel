@@ -22,4 +22,14 @@ export class PoveziSertifikateService {
       id, serijskiBroj1, serijskiBroj2
     }).pipe(map(this.extractData))
   }
+
+  divorceCerts(id): Observable<any>
+  {
+    return this.http.delete('https://localhost:8443/api/communication/id/' + id).pipe(map(this.extractData));
+  }
+
+  allConnectedCerts(): Observable<any>
+  {
+    return this.http.get('https://localhost:8443/api/communication/all').pipe(map(this.extractData));
+  }
 }

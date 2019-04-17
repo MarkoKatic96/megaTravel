@@ -7,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PovuciSertifikatComponent } from './povuci-sertifikat/povuci-sertifikat.component';
 import { PostojeciSertifikatiComponent } from './postojeci-sertifikati/postojeci-sertifikati.component';
 import { RegisterComponent } from './register/register.component';
+import { PovezaniSertifikatiComponent } from './komunikacija/povezani-sertifikati/povezani-sertifikati.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'kreirajsert', pathMatch: 'full'},

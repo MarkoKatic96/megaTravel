@@ -1,0 +1,14 @@
+<table class="table" border="1">
+    <thead>
+      <th> ID </th>
+      <th> SERIJSKI BROJ SERTIFIKATA 1 </th>
+      <th> SERIJSKI BROJ SERTIFIKATA 2 </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cert of povezaniSertifikati" (click)="selectConnCert($event, cert)" [class.selected]="cert.flag === true">
+        <td>{{cert.id}}</td>
+        <td>{{cert.serijskiBroj1}}</td>
+        <td>{{cert.serijskiBroj2}}</td>
+      </tr>
+    </tbody>
+  </table>

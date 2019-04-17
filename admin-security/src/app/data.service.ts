@@ -15,6 +15,9 @@ export class DataService {
   private izaberiSert2 = new BehaviorSubject<number>(999);
   currIzaberiSert2 = this.izaberiSert2.asObservable();
 
+  private povezaniSert = new BehaviorSubject<number>(999);
+  currPovezaniSert = this.povezaniSert.asObservable();
+
   constructor() { }
 
   changeNads(nads: string)
@@ -30,6 +33,11 @@ export class DataService {
   changeSert2(sn: number)
   {
     this.izaberiSert2.next(sn);
+  }
+
+  changePovezaniSert(id: number)
+  {
+    this.povezaniSert.next(id);
   }
 
 }

@@ -36,12 +36,16 @@
       <td style="color: green;">Sertifikati uspesno povezani</td>
     </tr>
     <tr *ngIf="istiSerts">
-        <td style="color: red;">Izabrali ste dva ista sertifikata!</td>
-      </tr>
+      <td style="color: red;">Izabrali ste dva ista sertifikata!</td>
+    </tr>
+    <tr>
+    <tr *ngIf="razvezani">
+      <td style="color: green;">Sertifikati uspesno razvezani!</td>
+    </tr>
     <tr>
       <td>
         <button class="btn btn-outline-danger my-2 my-sm-0" (click)="poveziSert()">Povezi sertifikate</button> &nbsp;
-        <button class="btn btn-outline-danger my-2 my-sm-0">Razvezi sertifikate</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0" (click)="razveziSert()">Razvezi sertifikate</button>
 
       </td>
     </tr>
@@ -50,9 +54,8 @@
 </table>
 
 
-<app-tabela1 style="float: right; margin-right: 150px;">
+<app-tabela1 style="float: right; margin-right: 150px;"></app-tabela1>
 
-</app-tabela1>
-<app-tabela2 style="float: right; margin-right: 150px;">
+<app-tabela2 style="float: right; margin-right: 150px;"></app-tabela2>
 
-</app-tabela2>
+<app-povezani-sertifikati style="float: right; margin-right: 150px;"></app-povezani-sertifikati>
