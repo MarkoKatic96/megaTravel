@@ -10,11 +10,14 @@ import { IzlistajSertifikateService } from 'src/app/izlistaj-sertifikate.service
 export class Tabela2Component implements OnInit {
 
   sertifikati: any = [];
+  serijskiBrojS2: number;
+  
 
   constructor(private listService: IzlistajSertifikateService, private data: DataService) { }
 
   ngOnInit() {
     this.izlistajSertifikate()
+    this.data.currIzaberiSert2.subscribe(res => this.serijskiBrojS2 = res);
   }
 
   izlistajSertifikate()
@@ -26,6 +29,17 @@ export class Tabela2Component implements OnInit {
       console.log(data);
       this.sertifikati = data;
     })
+  }
+
+  public selectCert(event: any, cert: any)
+  {
+    cert.flag = !cert.flag;
+    this.sertifikati.forEach(element => {
+      if(cert.id == element.id)
+      {
+        this.data.changeSert2(element.serijskiBroj);
+      }
+    });
   }
 
 }

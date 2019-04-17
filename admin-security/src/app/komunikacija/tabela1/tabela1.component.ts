@@ -12,10 +12,14 @@ export class Tabela1Component implements OnInit {
 
   sertifikati: any = [];
 
+  serijskiBrojS1: number;
+  
+
   constructor(private listService: IzlistajSertifikateService, private data: DataService) { }
 
   ngOnInit() {
     this.izlistajSertifikate()
+    this.data.currIzaberiSert1.subscribe(res => this.serijskiBrojS1 = res);
   }
 
   izlistajSertifikate()
@@ -29,4 +33,15 @@ export class Tabela1Component implements OnInit {
     })
   }
 
+
+  public selectCert(event: any, cert: any)
+  {
+    cert.flag = !cert.flag;
+    this.sertifikati.forEach(element => {
+      if(cert.id == element.id)
+      {
+        this.data.changeSert1(element.serijskiBroj);
+      }
+    });
+  }
 }
