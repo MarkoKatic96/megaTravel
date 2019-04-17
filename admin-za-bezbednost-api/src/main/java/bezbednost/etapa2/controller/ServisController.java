@@ -54,7 +54,7 @@ public class ServisController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/getAllServices")) {
+			if(servis.getNaziv().equals("getAllServices")) {
 				return new ResponseEntity<List<Servis>>(servisService.getAllServices(), HttpStatus.OK);
 			}
 		}
@@ -63,7 +63,27 @@ public class ServisController {
 	
 	@RequestMapping("api/getAllServices/{id}")
 	public ResponseEntity<List<Servis>> getAllServicesRola(@PathVariable("id") Long id, HttpServletRequest req){
-		return new ResponseEntity<List<Servis>>(servisService.getAllServicesRole(id), HttpStatus.OK);
+		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());
+		}
+		
+		for (Servis servis : listaServisa) {
+			if(servis.getNaziv().equals("getAllServicesRola")) {
+				return new ResponseEntity<List<Servis>>(servisService.getAllServicesRole(id), HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping("api/getServiceById/{id}")
@@ -84,7 +104,7 @@ public class ServisController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/getServiceById/{id}")) {
+			if(servis.getNaziv().equals("getServiceById")) {
 				Servis s = servisService.getServisById(id);
 				return new ResponseEntity<Servis>(s, HttpStatus.OK);
 			}
@@ -110,7 +130,7 @@ public class ServisController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/deleteService/{id}")) {
+			if(servis.getNaziv().equals("deleteService")) {
 				String poruka = servisService.deleteServis(id);
 				return new ResponseEntity<String>(poruka, HttpStatus.OK);
 			}
@@ -136,7 +156,7 @@ public class ServisController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/createService")) {
+			if(servis.getNaziv().equals("createService")) {
 				String naziv = dto.getNaziv();
 				Servis s = servisService.createServis(new Servis(naziv));
 				return new ResponseEntity<Servis>(s, HttpStatus.OK);

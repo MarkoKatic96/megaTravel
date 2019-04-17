@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import bezbednost.etapa2.dto.KorisnikPrijavaDTO;
 import bezbednost.etapa2.model.Korisnik;
 import bezbednost.etapa2.model.Rola;
+import bezbednost.etapa2.model.SmestajModel;
 import bezbednost.etapa2.repository.KorisnikRepository;
 import bezbednost.etapa2.repository.RolaRepository;
 import bezbednost.etapa2.token.JwtTokenUtils;
@@ -44,7 +45,7 @@ public class KorisnikService {
 	}
 	
 	public Korisnik findByEmail(String email) {
-		List<Korisnik> lista = korisnikRepository.findAll();
+		List<Korisnik> lista = getAllUsers();
 		for (Korisnik korisnik : lista) {
 			if(korisnik.getUsername().equals(email)) {
 				return korisnik;
@@ -113,8 +114,11 @@ public class KorisnikService {
 		}
 	}
 	
-	public List<Rola> getRoleFromUser(String username){
-		Korisnik k = findByEmail(username);
+	public String rezervacija() {
+			return "Uspesno rezervisan smestaj.";
+	}
+	
+	public List<Rola> getRoleFromUser(Korisnik k){
 		if(k!=null) {
 			List<Rola> listaKorisnikovihRola = (List<Rola>) k.getRoles();
 			return listaKorisnikovihRola;

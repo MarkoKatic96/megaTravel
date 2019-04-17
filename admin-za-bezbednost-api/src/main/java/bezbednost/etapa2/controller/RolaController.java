@@ -41,8 +41,7 @@ public class RolaController {
 	public ResponseEntity<List<Rola>> getAllRoles(HttpServletRequest req){
 		
 		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
+		String email = jwtTokenUtils.getUsername(token);	
 		Korisnik korisnik = korisnikService.findByEmail(email);
 		if (korisnik == null) {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
@@ -54,7 +53,7 @@ public class RolaController {
 			listaServisa.addAll(rola.getServisi());//uzimamo sve servise svake role
 		}
 		for (Servis servis : listaServisa) {//prolazimo kroz servise i proveravamo da li ulogovani korisnik ima pravo da izvrsi dati servis
-			if(servis.getNaziv().equals("api/getAllRoles")) {
+			if(servis.getNaziv().equals("getAllRoles")) {
 				return new ResponseEntity<List<Rola>>(rolaService.getAllRoles(), HttpStatus.OK);
 			}
 		}
@@ -77,7 +76,7 @@ public class RolaController {
 			listaServisa.addAll(rola.getServisi());
 		}
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/getRoleById/{id}")) {
+			if(servis.getNaziv().equals("getRolaById")) {
 				Rola r = rolaService.getRolaById(id);
 				return new ResponseEntity<Rola>(r, HttpStatus.OK);
 			}
@@ -102,7 +101,7 @@ public class RolaController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/dodajServis/{rid}/{sid}")) {
+			if(servis.getNaziv().equals("dodajServis")) {
 				Rola r = rolaService.dodajServis(rolaId, servisId);
 				return new ResponseEntity<Rola>(r, HttpStatus.OK);
 			}
@@ -127,7 +126,7 @@ public class RolaController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/ukloniServis/{rid}/{sid}")) {
+			if(servis.getNaziv().equals("ukloniServis")) {
 				Rola r = rolaService.ukloniServis(rolaId, servisId);
 				return new ResponseEntity<Rola>(r, HttpStatus.OK);
 			}
@@ -152,7 +151,7 @@ public class RolaController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/deleteRole/{id}")) {
+			if(servis.getNaziv().equals("deleteRole")) {
 				String poruka = rolaService.deleteRola(id);
 				return new ResponseEntity<String>(poruka, HttpStatus.OK);
 			}
@@ -177,7 +176,7 @@ public class RolaController {
 		}
 		
 		for (Servis servis : listaServisa) {
-			if(servis.getNaziv().equals("api/createRole")) {
+			if(servis.getNaziv().equals("createRole")) {
 				String naziv = dto.getNaziv();
 				Rola r = rolaService.createRola(new Rola(naziv));
 				return new ResponseEntity<Rola>(r, HttpStatus.OK);
@@ -187,10 +186,28 @@ public class RolaController {
 	}
 	
 	@RequestMapping("api/getServiseRole/{rid}")
-	public ResponseEntity<List<Servis>> getServiseRole(@PathVariable("rid") Long rid){
-		List<Servis> lista = rolaService.getServiseRole(rid);
-		return new ResponseEntity<List<Servis>>(lista, HttpStatus.OK);
+	public ResponseEntity<List<Servis>> getServiseRole(@PathVariable("rid") Long rid, HttpServletRequest req){
 		
+		String token = jwtTokenUtils.resolveToken(req);
+		String email = jwtTokenUtils.getUsername(token);
+		Korisnik korisnik = korisnikService.findByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		
+		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();
+		List<Servis> listaServisa = new ArrayList<Servis>();
+		for (Rola rola : listaRola) {
+			listaServisa.addAll(rola.getServisi());
+		}
+		
+		for (Servis servis : listaServisa) {
+			if(servis.getNaziv().equals("getServiseRole")) {
+				List<Servis> lista = rolaService.getServiseRole(rid);
+				return new ResponseEntity<List<Servis>>(lista, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		
 	}
 	
