@@ -110,7 +110,7 @@ public class CertificateController {
 		return cert;
 	}
 	
-	@RequestMapping(value = "api/certificate/sn/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "api/certificate/sn/{id}", method = RequestMethod.GET, produces = {MediaType.ALL_VALUE})
 	public ResponseEntity<CertificateModel> getCertifikatBySN(@PathVariable BigInteger id, HttpServletRequest req) {
 		System.out.println("getCertifikatBySN()");
 		
@@ -231,8 +231,8 @@ public class CertificateController {
 		return new ResponseEntity<>(comm, headers, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "api/certificate/create", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/zip")
-	public ResponseEntity<X509Certificate> createCertificate(@RequestBody DataSum dataSum, HttpServletRequest req) throws CertificateEncodingException, IOException {
+	@RequestMapping(value = "api/certificate/create", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CertificateModel> createCertificate(@RequestBody DataSum dataSum, HttpServletRequest req) throws CertificateEncodingException, IOException {
 		System.out.println("createCertificate()");
 	
 		
@@ -340,7 +340,7 @@ public class CertificateController {
 		//...
 		saveCertificate(cert);
 		
-		return new ResponseEntity<>(cert, HttpStatus.OK);
+		return new ResponseEntity<>(newCert, HttpStatus.OK);
 	}
 
 	private TipCertifikata getTipCertifikata(TipCertifikata tipNadCertifikata) {

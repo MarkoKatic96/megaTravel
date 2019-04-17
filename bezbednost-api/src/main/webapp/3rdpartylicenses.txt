@@ -29,6 +29,9 @@ MIT
 @angular/core
 MIT
 
+@angular/http
+MIT
+
 @angular/platform-browser
 MIT
 
