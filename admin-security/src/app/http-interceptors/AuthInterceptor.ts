@@ -5,7 +5,6 @@ import {
 
 import { Observable } from 'rxjs';
 
-//za sad nista ne rade ovi interseptori, treba ih baciti u upotrebu
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

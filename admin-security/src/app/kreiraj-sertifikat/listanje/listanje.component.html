@@ -6,6 +6,7 @@
     <th> DATUM ZAVRSETKA </th>
     <th> SERIJSKI BROJ </th>
     <th> NADSERTIFIKAT </th>
+    <th> PREUZMI </th>
   </thead>
   <tbody>
     <tr *ngFor="let cert of sertifikati" (click)="selectCert($event, cert)" [class.selected]="cert.flag === true">
@@ -15,6 +16,7 @@
       <td>{{cert.datumKraja  | date: 'dd/MM/yyyy'}}</td>
       <td>{{cert.serijskiBroj}}</td>
       <td>{{cert.nadcertifikat}}</td>
+      <td><button class="btn btn-outline-danger my-2 my-sm-0" (click)="preuzmiSert(cert.serijskiBroj)">Preuzmi</button></td>
     </tr>
   </tbody>
 </table>

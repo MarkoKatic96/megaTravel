@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { RequestOptions, ResponseContentType } from '@angular/http';
 
 export interface Certs {
   
@@ -32,13 +33,14 @@ export class IzlistajSertifikateService {
     }).pipe(map(this.extractData))
   }
 
-  // setNadsertifikat(nadsert)
-  // {
-  //   return this.nadsertifikat = nadsert;
-  // }
-
-  // getNadsertifikat()
-  // {
-  //   return this.nadsertifikat;
-  // }
+  certBySn(id): Observable<Blob>
+  {
+    let options = new RequestOptions({responseType: ResponseContentType.Blob});
+    return this.http.get('https://localhost:8443/api/certificate/sn/' + id, {responseType: 'blob'}).pipe (
+      tap (
+        data => console.log('You received data'),
+        error => console.log(error)
+      )
+     );
+  }
 }

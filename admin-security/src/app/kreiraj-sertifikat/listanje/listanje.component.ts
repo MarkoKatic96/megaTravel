@@ -1,5 +1,6 @@
 import { DataService } from './../../data.service';
 import { Component, OnInit, Directive, Input, Renderer2 } from '@angular/core';
+import * as FileSaver from 'file-saver';
 import { IzlistajSertifikateService } from 'src/app/izlistaj-sertifikate.service';
 
 @Component({
@@ -43,6 +44,19 @@ export class ListanjeComponent implements OnInit {
         this.data.changeNads(cert.serijskiBroj);
       }
     });
+  }
+
+  downloadFile(data: any, serial: string) {
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    FileSaver.saveAs(blob, 'certificate' + serial + '.cer');
+  }
+
+  public preuzmiSert(id)
+  {
+    this.listService.certBySn(id).subscribe(resp =>
+      {
+        this.downloadFile(resp, id);
+      });
   }
 
 }

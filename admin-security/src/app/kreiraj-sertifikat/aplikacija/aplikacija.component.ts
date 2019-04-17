@@ -1,4 +1,3 @@
-import { FileSaver } from 'file-saver';
 import { DataService } from './../../data.service';
 import { KreirajSertService } from './../../kreiraj-sert.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -15,14 +14,6 @@ export class AplikacijaComponent implements OnInit {
   retVal: any = [];
 
   nadsertifikat: string;
-
-  type: string = 'application/zip';
-
-  downloadFile(data: any, type: string) {
-    const blob = new Blob([data], { type: 'application/zip' });
-    FileSaver.saveAs(blob, 'sertificate.ZIP');
-  }
-
   
   constructor(private createSert: KreirajSertService, private listaj: IzlistajSertifikateService, private data: DataService, private router: Router) { }
 
@@ -55,25 +46,16 @@ export class AplikacijaComponent implements OnInit {
     this.retVal = [];
     this.createSert.createCert("CN=NodeA,O=NodeA,L=London,C=UK", serijskibroj, pocetak, kraj, null, null, nadsertifikat, tip).subscribe((res: {}) =>
     {
-      //this.downloadFile(res, this.type)
-
       console.log("kreiranje..");
       console.log(res);
       this.retVal = res;
-
-
+      
       this.router.navigateByUrl('/postojecisert', {skipLocationChange: true}).then(()=>
       this.router.navigate(["/kreirajsert"])); 
-      //nakon kreiranja, izlistaj (izgleda ovo baca error)
-      //this.listaj.izlistajSertifikate();
     })
 
   }
 
-  uzmiNadsertifikat()
-  {
-    //this.nadsertifikat = this.listaj.getNadsertifikat();
-    console.log("POZIV IZ APLIKACIJE:" + this.nadsertifikat)
-  }
+  
 
 }
