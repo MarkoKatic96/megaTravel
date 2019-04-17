@@ -4,6 +4,13 @@ import java.math.BigInteger;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 
+import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.x509.AccessDescription;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -37,6 +44,22 @@ public CertificateGenerator() {}
 					subjectData.getEndDate(),
 					subjectData.getX500name(),
 					subjectData.getPublicKey());
+
+			//Authority Information Access
+			AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers,
+			        new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:8443/api/certificate/viability/" + subjectData.getSerialNumber())));
+			AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp,
+			        new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:8443/api/certificate/viability")));
+			 
+			ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
+			aia_ASN.add(caIssuers);
+			aia_ASN.add(ocsp);
+			
+			try {
+				certGen.addExtension(Extension.authorityInfoAccess, false, new DERSequence(aia_ASN));
+			} catch (CertIOException e) {
+			}
+			
 			//Generise se sertifikat
 			X509CertificateHolder certHolder = certGen.build(contentSigner);
 

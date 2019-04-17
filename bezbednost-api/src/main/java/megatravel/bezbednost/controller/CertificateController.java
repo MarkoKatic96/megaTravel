@@ -282,7 +282,7 @@ public class CertificateController {
 		GenerateCertificate gc = new GenerateCertificate();
 		X509Certificate nadcert = null;
 		X509Certificate cert = null;
-		
+	    
 		if (nadcertifikat!=null) {
 			try {
 				nadcert = getX509Certificate(nadcertifikat.getCertifikat());
@@ -328,6 +328,9 @@ public class CertificateController {
 		CertificateModel newCert = null;
 		try {
 			BigInteger sn = (nadcert==null) ? cert.getSerialNumber() : nadcertifikat.getSerijskiBroj();
+			
+			
+			
 			newCert = new CertificateModel(null, cert, tipCertifikata, sn);
 		} catch (CertificateEncodingException e) {
 			System.out.println("Pukao zbog kreiranja CertificateModel-a");
@@ -342,7 +345,7 @@ public class CertificateController {
 		
 		return new ResponseEntity<>(newCert, HttpStatus.OK);
 	}
-
+/*
 	private TipCertifikata getTipCertifikata(TipCertifikata tipNadCertifikata) {
 		switch (tipNadCertifikata) {
 			case CA_APLIKACIJA:
@@ -370,7 +373,7 @@ public class CertificateController {
 		
 		return null;
 	}
-	
+*/	
 	private String getRandomBigInteger() {
 		BigInteger bigInteger = new BigInteger("2000000000000");// uper limit
 	    BigInteger min = new BigInteger("1000000000");// lower limit

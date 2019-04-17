@@ -1,6 +1,7 @@
 package megatravel.bezbednost.controller;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import megatravel.bezbednost.dto.CertificateViabilityDTO;
 import megatravel.bezbednost.model.AdminModel;
 import megatravel.bezbednost.model.CertificateViabilityModel;
@@ -35,7 +37,7 @@ public class CertificateViabilityController {
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "/api/certificate/viability/{serijskiBroj}", method = RequestMethod.GET)
-	public ResponseEntity<String> getStatus(@PathVariable("serijskiBroj") BigInteger serijskiBroj, HttpServletRequest req){
+	public ResponseEntity<CertificateViabilityDTO> getStatus(@PathVariable("serijskiBroj") BigInteger serijskiBroj, HttpServletRequest req){
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -47,14 +49,14 @@ public class CertificateViabilityController {
 		
 		StatusCertifikata status = certificateViabilityService.getStatus(serijskiBroj);
 		if (status==null) {
-			return new ResponseEntity<String>("", HttpStatus.OK);
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(status.toString(), HttpStatus.OK);
+		return new ResponseEntity<>(new CertificateViabilityDTO(null, serijskiBroj, status), HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(value = "/api/certificate/viability/all", method = RequestMethod.GET)
-	public ResponseEntity<List<CertificateViabilityModel>> getAllStatus(HttpServletRequest req){
+	public ResponseEntity<List<CertificateViabilityDTO>> getAllStatus(HttpServletRequest req){
 		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -65,7 +67,12 @@ public class CertificateViabilityController {
 		}
 		
 		List<CertificateViabilityModel> statusi = certificateViabilityService.findAll();
-		return new ResponseEntity<List<CertificateViabilityModel>>(statusi, HttpStatus.OK);
+		
+		ArrayList<CertificateViabilityDTO> retVal = new ArrayList<>();
+		for (CertificateViabilityModel certificateViabilityModel : statusi) {
+			retVal.add(new CertificateViabilityDTO(certificateViabilityModel.getId(), certificateViabilityModel.getSerijskiBroj(), certificateViabilityModel.getStatus()));
+		}
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
 		
 	}
 	

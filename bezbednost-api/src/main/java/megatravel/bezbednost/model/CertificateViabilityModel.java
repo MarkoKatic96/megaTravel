@@ -1,6 +1,7 @@
 package megatravel.bezbednost.model;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,12 +25,14 @@ public class CertificateViabilityModel {
 	@NotNull
 	private StatusCertifikata status;
 	
-	
+	@NotNull
+	private LocalDateTime timestamp;
 
 	public CertificateViabilityModel(BigInteger serijskiBroj, StatusCertifikata status) {
 		super();
 		this.serijskiBroj = serijskiBroj;
 		this.status = status;
+		timestamp = LocalDateTime.now();
 	}
 
 	public CertificateViabilityModel() {
@@ -58,6 +61,7 @@ public class CertificateViabilityModel {
 
 	public void setStatus(StatusCertifikata status) {
 		this.status = status;
+		timestamp = LocalDateTime.now();
 	}
 	
 	

@@ -40,6 +40,8 @@ public class GenerateCertificate {
 	
 	public GenerateCertificate() {
 		Security.addProvider(new BouncyCastleProvider());
+		//OCSP
+		Security.setProperty("ocsp.enable", "true");
 	}
 	
 	public boolean verifyCertificate(X509Certificate certifikat, PublicKey publicKey) {
