@@ -100,7 +100,7 @@ public class CertificateCommunicationController {
 		return new ResponseEntity<>(app.toString(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "api/communication", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "api/communication", method = RequestMethod.PUT, consumes = MediaType.ALL_VALUE, produces = MediaType.ALL_VALUE)
 	public ResponseEntity<CertificateCommunicationDTO> setCommunication(@RequestBody CertificateCommunicationDTO commDTO, HttpServletRequest req) {
 		System.out.println("setCommunication()");
 		
