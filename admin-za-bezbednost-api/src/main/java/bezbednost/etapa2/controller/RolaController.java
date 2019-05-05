@@ -1,10 +1,14 @@
 package bezbednost.etapa2.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +41,9 @@ public class RolaController {
 	@Autowired
 	private JwtTokenUtils jwtTokenUtils;
 	
+	Logger logger = LogManager.getLogger(RolaController.class);
+	
+	
 	@RequestMapping("api/getAllRoles")
 	public ResponseEntity<List<Rola>> getAllRoles(HttpServletRequest req){
 		
@@ -46,6 +53,10 @@ public class RolaController {
 		if (korisnik == null) {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
+		
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());	
+		String ipAddress = req.getRemoteAddr();
+		logger.info("Metoda: getAllRoles (Dobijanje svih rola),  TimeStamp: "+ timeStamp + ",  Source: " + korisnik.getUsername() + ", IP Address: "+ ipAddress +", Success");
 		
 		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();//lista rola ulogovanog korisnika
 		List<Servis> listaServisa = new ArrayList<Servis>();

@@ -57,11 +57,10 @@ public class KorisnikService {
 	public Korisnik createKorisnik(Korisnik k) {
 		List<Korisnik> lista = korisnikRepository.findAll();
 		for (Korisnik korisnik : lista) {
-			if(korisnik.getUsername().equals(k.getUsername())) {
+			if(korisnik.getUsername().equals(k.getUsername()) || k.getPassword().length()<5) {
 				return null;
 			}
 		}
-		
 		return korisnikRepository.save(k);
 	}
 	
