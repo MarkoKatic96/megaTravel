@@ -148,7 +148,7 @@ public class KorisnikService {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.writeValueAsString(jwt);
 		}catch (Exception e) {
-			return "Nesto je poslo po zlu.";
+			return null;
 		}
 	}
 

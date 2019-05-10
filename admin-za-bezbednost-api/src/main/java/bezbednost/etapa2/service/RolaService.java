@@ -3,9 +3,12 @@ package bezbednost.etapa2.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bezbednost.etapa2.controller.RolaController;
 import bezbednost.etapa2.model.Rola;
 import bezbednost.etapa2.model.Servis;
 import bezbednost.etapa2.repository.RolaRepository;
@@ -19,6 +22,8 @@ public class RolaService {
 	
 	@Autowired
 	private ServisRepository servisRepository;
+	
+	Logger logger = LogManager.getLogger(RolaService.class);
 	
 	public List<Rola> getAllRoles(){
 		return rolaRepository.findAll();

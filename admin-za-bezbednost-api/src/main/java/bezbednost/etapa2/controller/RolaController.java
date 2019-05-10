@@ -26,6 +26,7 @@ import bezbednost.etapa2.model.Rola;
 import bezbednost.etapa2.model.Servis;
 import bezbednost.etapa2.service.KorisnikService;
 import bezbednost.etapa2.service.RolaService;
+import bezbednost.etapa2.service.ServisService;
 import bezbednost.etapa2.token.JwtTokenUtils;
 
 @RestController
@@ -37,6 +38,9 @@ public class RolaController {
 	
 	@Autowired
 	private KorisnikService korisnikService;
+	
+	@Autowired
+	private ServisService servisService;
 	
 	@Autowired
 	private JwtTokenUtils jwtTokenUtils;
@@ -54,9 +58,9 @@ public class RolaController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());	
+		/*String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());	
 		String ipAddress = req.getRemoteAddr();
-		logger.info("Metoda: getAllRoles (Dobijanje svih rola),  TimeStamp: "+ timeStamp + ",  Source: " + korisnik.getUsername() + ", IP Address: "+ ipAddress +", Success");
+		logger.info("TimeStamp: {}  Source: {}", timeStamp, ipAddress);*/
 		
 		List<Rola> listaRola = (List<Rola>) korisnik.getRoles();//lista rola ulogovanog korisnika
 		List<Servis> listaServisa = new ArrayList<Servis>();
@@ -102,6 +106,11 @@ public class RolaController {
 		String email = jwtTokenUtils.getUsername(token);
 		Korisnik korisnik = korisnikService.findByEmail(email);
 		if (korisnik == null) {
+			if(req.getHeader("X-FORWARDED-FOR")==null)
+				logger.error("Failed - ProcessID: {} - IPAddress: {} - Type: {} - Dodati servis {} na rolu {}", servisService.getServisByName("dodajServis"), req.getRemoteAddr(), req.getMethod(), servisId, rolaId);
+			else
+				logger.error("Failed - ProcessID: {} - IPAddress: {} - Type: {} - Dodati servis {} na rolu {}", servisService.getServisByName("dodajServis"), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), servisId, rolaId);
+
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
@@ -114,9 +123,21 @@ public class RolaController {
 		for (Servis servis : listaServisa) {
 			if(servis.getNaziv().equals("dodajServis")) {
 				Rola r = rolaService.dodajServis(rolaId, servisId);
+				if(r!=null) {
+					if(req.getHeader("X-FORWARDED-FOR")==null)
+						logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Dodati servis {} na rolu {}", servis.getId(), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), servisId, rolaId);
+					else
+						logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Dodati servis {} na rolu {}", servis.getId(), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), servisId, rolaId);
+
+				}
 				return new ResponseEntity<Rola>(r, HttpStatus.OK);
 			}
 		}
+		if(req.getHeader("X-FORWARDED-FOR")==null)
+			logger.error("Failed - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Dodati servis {} na rolu {}", servisService.getServisByName("dodajServis"), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), servisId, rolaId);
+		else
+			logger.error("Failed - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Dodati servis {} na rolu {}", servisService.getServisByName("dodajServis"), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), servisId, rolaId);
+
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
@@ -127,6 +148,11 @@ public class RolaController {
 		String email = jwtTokenUtils.getUsername(token);
 		Korisnik korisnik = korisnikService.findByEmail(email);
 		if (korisnik == null) {
+			if(req.getHeader("X-FORWARDED-FOR")==null)
+				logger.error("Failed - ProcessID: {} - Ukloniti servis {} iz role {}", servisService.getServisByName("ukloniServis"), req.getRemoteAddr(), req.getMethod(), servisId, rolaId);
+			else
+				logger.error("Failed - ProcessID: {} - Ukloniti servis {} iz role {}", servisService.getServisByName("ukloniServis"), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), servisId, rolaId);
+
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
@@ -139,9 +165,19 @@ public class RolaController {
 		for (Servis servis : listaServisa) {
 			if(servis.getNaziv().equals("ukloniServis")) {
 				Rola r = rolaService.ukloniServis(rolaId, servisId);
+				if(req.getHeader("X-FORWARDED-FOR")==null)
+					logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti servis {} iz role {}", servis.getId(), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), servisId, rolaId);
+				else
+					logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti servis {} iz role {}", servis.getId(), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), servisId, rolaId);
+
 				return new ResponseEntity<Rola>(r, HttpStatus.OK);
 			}
 		}
+		if(req.getHeader("X-FORWARDED-FOR")==null)
+			logger.error("Failed - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti servis {} iz role {}", servisService.getServisByName("ukloniServis"), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), servisId, rolaId);
+		else
+			logger.error("Failed - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti servis {} iz role {}", servisService.getServisByName("ukloniServis"), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), servisId, rolaId);
+
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
@@ -152,6 +188,11 @@ public class RolaController {
 		String email = jwtTokenUtils.getUsername(token);
 		Korisnik korisnik = korisnikService.findByEmail(email);
 		if (korisnik == null) {
+			if(req.getHeader("X-FORWARDED-FOR")==null)
+				logger.error("Failed - ProcessID: {} - IPAddress: {} - Type: {} - Ukloniti rolu {}", servisService.getServisByName("deleteRola"), req.getRemoteAddr(), req.getMethod(), id);
+			else
+				logger.error("Failed - ProcessID: {} - IPAddress: {} - Type: {} - Ukloniti rolu {}", servisService.getServisByName("deleteRola"), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), id);
+
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
@@ -164,9 +205,19 @@ public class RolaController {
 		for (Servis servis : listaServisa) {
 			if(servis.getNaziv().equals("deleteRole")) {
 				String poruka = rolaService.deleteRola(id);
+				if(req.getHeader("X-FORWARDED-FOR")==null)
+					logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti rolu {}", servis.getId(), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), id);
+				else
+					logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti rolu {}", servis.getId(), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), id);
+
 				return new ResponseEntity<String>(poruka, HttpStatus.OK);
 			}
 		}
+		if(req.getHeader("X-FORWARDED-FOR")==null)
+			logger.error("Failed - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti rolu {}", servisService.getServisByName("deleteRola"), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), id);
+		else
+			logger.error("Failed - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Ukloniti rolu {}", servisService.getServisByName("deleteRola"), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), id);
+
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
@@ -177,6 +228,11 @@ public class RolaController {
 		String email = jwtTokenUtils.getUsername(token);
 		Korisnik korisnik = korisnikService.findByEmail(email);
 		if (korisnik == null) {
+			if(req.getHeader("X-FORWARDED-FOR")==null)
+				logger.error("Success - ProcessID: {} - IPAddress: {} - Type: {} - Kreirati rolu {}", servisService.getServisByName("createRole"), req.getRemoteAddr(), req.getMethod(), dto.getNaziv());
+			else
+				logger.error("Success - ProcessID: {} - IPAddress: {} - Type: {} - Kreirati rolu {}", servisService.getServisByName("createRole"), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), dto.getNaziv());
+
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
@@ -190,9 +246,19 @@ public class RolaController {
 			if(servis.getNaziv().equals("createRole")) {
 				String naziv = dto.getNaziv();
 				Rola r = rolaService.createRola(new Rola(naziv));
+				if(req.getHeader("X-FORWARDED-FOR")==null)
+					logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Kreirati rolu {}", servis.getId(), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), dto.getNaziv());
+				else
+					logger.info("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Kreirati rolu {}", servis.getId(), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), dto.getNaziv());
+
 				return new ResponseEntity<Rola>(r, HttpStatus.OK);
 			}
 		}
+		if(req.getHeader("X-FORWARDED-FOR")==null)
+			logger.error("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Kreirati rolu {}", servisService.getServisByName("createRole"), korisnik.getUsername(), req.getRemoteAddr(), req.getMethod(), dto.getNaziv());
+		else
+			logger.error("Success - ProcessID: {} - UserID: {} - IPAddress: {} - Type: {} - Kreirati rolu {}", servisService.getServisByName("createRole"), korisnik.getUsername(), req.getHeader("X-FORWARDED-FOR"), req.getMethod(), dto.getNaziv());
+
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	

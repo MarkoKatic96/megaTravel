@@ -41,6 +41,16 @@ public class ServisService {
 		}
 	}
 	
+	public Long getServisByName(String name) {
+		List<Servis> lista = servisRepository.findAll();
+		for (Servis servis : lista) {
+			if(servis.getNaziv().equals(name)) {
+				return servis.getId();
+			}
+		}
+		return null;
+	}
+	
 	public String deleteServis(Long id) {
 		Servis s = servisRepository.findOne(id);
 		if(s!=null) {
