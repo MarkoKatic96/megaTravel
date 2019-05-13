@@ -66,21 +66,22 @@ public class OsnovnaPretraga {
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
     private Date datumPolaska;
-    /*@XmlElement(required = true)
-    private float cena;*/
     @XmlElement(required = true)
     private float cena;
+    @XmlElement(required = true)
+    private int brojOsoba;
 
     public OsnovnaPretraga() {
 
   	}
     
-    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena) {
+    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena, int brojOsoba) {
 		super();
 		this.mesto = mesto;
 		this.datumDolaska = datumDolaska;
 		this.datumPolaska = datumPolaska;
 		this.cena = cena;
+		this.brojOsoba = brojOsoba;
 	}
 
 	/**
@@ -163,8 +164,8 @@ public class OsnovnaPretraga {
      *     {@link float }
      *     
      */
-    public float getBrojOsoba() {
-        return cena;
+    public int getBrojOsoba() {
+        return brojOsoba;
     }
 
     /**
@@ -175,8 +176,18 @@ public class OsnovnaPretraga {
      *     {@link float }
      *     
      */
-    public void setBrojOsoba(float value) {
-        this.cena = value;
+    public void setBrojOsoba(int value) {
+        this.brojOsoba = value;
     }
+
+	public float getCena() {
+		return cena;
+	}
+
+	public void setCena(float cena) {
+		this.cena = cena;
+	}
+    
+    
 
 }

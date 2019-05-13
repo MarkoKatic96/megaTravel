@@ -27,19 +27,10 @@ public class OsnovnaPretragaController {
 	private RestTemplate restTemplate;
 	
 	@RequestMapping(value = "/pretraga", method = RequestMethod.POST, consumes = "application/json")
-	public List<Smestaj> getFilteredSmestaj(@RequestBody OsnovnaPretraga op){
-		
-		List<Smestaj> lista = new ArrayList<Smestaj>();
-		List<Smestaj> returnLista = new ArrayList<Smestaj>();
-		
+	public List<Smestaj> getFilteredSmestaj(@RequestBody OsnovnaPretraga op){	
 		//uzimam sve smestaje iz korisnik-api
 		SmestajiRestTemplate srt = restTemplate.getForObject("http://korisnik-service/api/smestaji", SmestajiRestTemplate.class);
-		lista = srt.getSmestajiList();
-		for (Smestaj smestaj : lista) {
-			returnLista.add(smestaj);
-		}
-		
-		return returnLista;
+		return osnovnaPretragaService.osnovnaPretragaSmestaji(op, srt);
 	}
 	
 }
