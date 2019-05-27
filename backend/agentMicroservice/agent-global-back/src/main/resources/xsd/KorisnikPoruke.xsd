@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://github.com/MarkoKatic96/megaTravel/porukekorinik"
+    xmlns="https://github.com/MarkoKatic96/megaTravel/porukekorinik"
+    xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+    xmlns:korisnik="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
+    xmlns:backend="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
+    xmlns:rejting="https://github.com/MarkoKatic96/megaTravel/xmlrejting">
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlrejting"
+        schemaLocation="RejtingShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlkorisnik"
+        schemaLocation="KorisnikShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
+        schemaLocation="BackendShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+        schemaLocation="AgentShema.xsd"/>
+    <xs:element name="login">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="backend:Login"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="signup">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="backend:Signup"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getAllSmestaj">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="Smestaj">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="idSmestaja">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:long">
+                                        <xs:minExclusive value="-1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="adresa" type="agent:TAdresa"/>
+                            <xs:element name="koordinate" type="agent:TKoordinate"/>
+                            <xs:element name="tipSmestaja" type="agent:TipSmestaja"> </xs:element>
+                            <xs:element default="no star" form="qualified" name="kategorijaSmestaja"
+                                type="agent:TKategorijaSmestaja"> </xs:element>
+                            <xs:element name="opis">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="500"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="maxOsoba">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:positiveInteger">
+                                        <xs:minExclusive value="1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="maxDanaZaOtkazivanje">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger">
+                                        <xs:minInclusive value="0"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="cenaTrenutna">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="ocenaProsecna">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:float">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="5"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="udaljenostOdTrazene">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element maxOccurs="1" minOccurs="1" name="listaDodatnihUsluga">
+                                <xs:simpleType>
+                                    <xs:list itemType="agent:DodatneUsluge"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="1" name="listaSlika">
+                                <xs:complexType>
+                                    <xs:sequence maxOccurs="unbounded" minOccurs="1">
+                                        <xs:element maxOccurs="1" name="slika" type="agent:TImage">
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="pretraziSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="korisnik:OsnovnaPretraga"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rezultatPretrageSmestaja">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="Smestaj">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="idSmestaja">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:long">
+                                        <xs:minExclusive value="-1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="adresa" type="agent:TAdresa"/>
+                            <xs:element name="koordinate" type="agent:TKoordinate"/>
+                            <xs:element name="tipSmestaja" type="agent:TipSmestaja"> </xs:element>
+                            <xs:element default="no star" form="qualified" name="kategorijaSmestaja"
+                                type="agent:TKategorijaSmestaja"> </xs:element>
+                            <xs:element name="opis">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="500"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="maxOsoba">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:positiveInteger">
+                                        <xs:minExclusive value="1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="maxDanaZaOtkazivanje">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger">
+                                        <xs:minInclusive value="0"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="cenaTrenutna">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="ocenaProsecna">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:float">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="5"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="udaljenostOdTrazene">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element maxOccurs="1" minOccurs="1" name="listaDodatnihUsluga">
+                                <xs:simpleType>
+                                    <xs:list itemType="agent:DodatneUsluge"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="1" name="listaSlika">
+                                <xs:complexType>
+                                    <xs:sequence maxOccurs="unbounded" minOccurs="1">
+                                        <xs:element maxOccurs="1" name="slika" type="agent:TImage">
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="pretraziSmestajNapredno">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="korisnik:NaprednaPretraga"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rezultatPretrageSmestajaNapredno">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="Smestaj">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="idSmestaja">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:long">
+                                        <xs:minExclusive value="-1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="adresa" type="agent:TAdresa"/>
+                            <xs:element name="koordinate" type="agent:TKoordinate"/>
+                            <xs:element name="tipSmestaja" type="agent:TipSmestaja"> </xs:element>
+                            <xs:element default="no star" form="qualified" name="kategorijaSmestaja"
+                                type="agent:TKategorijaSmestaja"> </xs:element>
+                            <xs:element name="opis">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="500"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="maxOsoba">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:positiveInteger">
+                                        <xs:minExclusive value="1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="maxDanaZaOtkazivanje">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger">
+                                        <xs:minInclusive value="0"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="cenaTrenutna">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="ocenaProsecna">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:float">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="5"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="udaljenostOdTrazene">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:nonNegativeInteger"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element maxOccurs="1" minOccurs="1" name="listaDodatnihUsluga">
+                                <xs:simpleType>
+                                    <xs:list itemType="agent:DodatneUsluge"/>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="1" name="listaSlika">
+                                <xs:complexType>
+                                    <xs:sequence maxOccurs="unbounded" minOccurs="1">
+                                        <xs:element maxOccurs="1" name="slika" type="agent:TImage">
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rezervisiSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="korisnikId" type="xs:long"/>
+                <xs:element name="smestajId" type="xs:long"/>
+                <xs:element name="od" type="xs:dateTime"/>
+                <xs:element name="do" type="xs:dateTime"/>
+                <xs:element name="timestamp" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getNeprocitanePoruke">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="backend:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getPorukeFromAgent">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="backend:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="sendPorukaToAgent">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="backend:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rateSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="rejting:Ocena"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="commentSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="rejting:Komentar"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="otkaziSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="idRezervacije" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
