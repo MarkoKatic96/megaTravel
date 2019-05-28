@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: com.hrboot.hrsupport.HrsupportApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.223 s <<< FAILURE! - in com.hrboot.hrsupport.HrsupportApplicationTests
+initializationError(com.hrboot.hrsupport.HrsupportApplicationTests)  Time elapsed: 0.014 s  <<< ERROR!
+java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test
+
