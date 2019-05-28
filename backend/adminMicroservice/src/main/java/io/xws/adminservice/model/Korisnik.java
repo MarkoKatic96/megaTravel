@@ -40,6 +40,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Korisnik {
 
+    @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long idKorisnik;
     @XmlElement(required = true)
     protected String email;
