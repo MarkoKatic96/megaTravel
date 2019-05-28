@@ -8,7 +8,7 @@
 
 package io.webxml.pretragaservice.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,35 +19,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 
-/**
- * <p>Java class for anonymous complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType>
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="mesto">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;minLength value="1"/>
- *               &lt;maxLength value="60"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="datumDolaska" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="datumPolaska" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="cena" type="{http://www.w3.org/2001/XMLSchema}integer"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
+/*
+  {
+  	"mesto": "string",
+  	"datumDolaska": "string",
+  	"datumPolaska": "string",
+  	"brojOsoba:": "broj"
+  }
  * 
  * 
- */
+ * 
+ * */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "mesto",

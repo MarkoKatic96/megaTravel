@@ -10,12 +10,18 @@ package io.webxml.korisnikservice.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,113 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-
-
-/**
- * <p>Java class for anonymous complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType>
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="idSmestaja">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}long">
- *               &lt;minExclusive value="-1"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="adresa" type="{https://github.com/MarkoKatic96/megaTravel/xmlagent}String"/>
- *         &lt;element name="koordinate" type="{https://github.com/MarkoKatic96/megaTravel/xmlagent}String"/>
- *         &lt;element name="tipSmestaja" type="{https://github.com/MarkoKatic96/megaTravel/xmlagent}String"/>
- *         &lt;element name="kategorijaSmestaja" type="{https://github.com/MarkoKatic96/megaTravel/xmlagent}TKategorijaSmestaja" form="qualified"/>
- *         &lt;element name="opis">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="500"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="maxOsoba">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}positiveInteger">
- *               &lt;minExclusive value="1"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="maxDanaZaOtkazivanje">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}nonNegativeInteger">
- *               &lt;minInclusive value="0"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="cenaProlece">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}decimal">
- *               &lt;minInclusive value="0"/>
- *               &lt;fractionDigits value="2"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="cenaLeto">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}decimal">
- *               &lt;minInclusive value="0"/>
- *               &lt;fractionDigits value="2"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="cenaJesen">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}decimal">
- *               &lt;minInclusive value="0"/>
- *               &lt;fractionDigits value="2"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="cenaZima">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}decimal">
- *               &lt;minInclusive value="0"/>
- *               &lt;fractionDigits value="2"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="vlasnik">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}long">
- *               &lt;pattern value="[\-+]?[0-9]+"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="listaDodatnihUsluga">
- *           &lt;simpleType>
- *             &lt;list itemType="{https://github.com/MarkoKatic96/megaTravel/xmlagent}String" />
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="listaSlika">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence maxOccurs="unbounded">
- *                   &lt;element name="slika" type="{https://github.com/MarkoKatic96/megaTravel/xmlagent}TImage"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -159,9 +58,13 @@ public class Smestaj {
     @XmlElement(required = true)
     protected String adresa;
     @XmlElement(required = true)
-    protected String koordinate;
+    protected BigDecimal latitude;
     @XmlElement(required = true)
-    protected String tipSmestaja;
+    protected BigDecimal longitude;
+    /*@XmlElement(required = true)
+    @ManyToOne
+	@JoinColumn (name="tipSmestaja", nullable = false)
+    protected TipSmestaja tipSmestaja;*/
     @XmlElement(required = true, defaultValue = "no star")
     protected String kategorijaSmestaja;
     @XmlElement(required = true)
@@ -179,9 +82,10 @@ public class Smestaj {
     @XmlElement(required = true)
     protected BigDecimal cenaZima;
     protected long vlasnik;
-    /*@XmlList
+    @XmlList
     @XmlElement(required = true)
-    protected List<String> listaDodatnihUsluga;*/
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
+    protected Set<DodatneUsluge> listaDodatnihUsluga = new HashSet();
     /*@XmlElement(required = true)
     protected Smestaj.ListaSlika listaSlika;*/
     
@@ -189,15 +93,15 @@ public class Smestaj {
 
 	}
 
-    public Smestaj(long idSmestaja, String adresa, String koordinate, String tipSmestaja,
+    public Smestaj(long idSmestaja, String adresa, BigDecimal latitude, BigDecimal longitude, /*TipSmestaja tipSmestaja,*/
 			String kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje,
-			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, long vlasnik/*,
-			List<String> listaDodatnihUsluga, ListaSlika listaSlika*/) {
+			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga) {
 		super();
 		this.idSmestaja = idSmestaja;
 		this.adresa = adresa;
-		this.koordinate = koordinate;
-		this.tipSmestaja = tipSmestaja;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		//this.tipSmestaja = tipSmestaja;
 		this.kategorijaSmestaja = kategorijaSmestaja;
 		this.opis = opis;
 		this.maxOsoba = maxOsoba;
@@ -207,7 +111,7 @@ public class Smestaj {
 		this.cenaJesen = cenaJesen;
 		this.cenaZima = cenaZima;
 		this.vlasnik = vlasnik;
-		//this.listaDodatnihUsluga = listaDodatnihUsluga;
+		this.listaDodatnihUsluga = listaDodatnihUsluga;
 		//this.listaSlika = listaSlika;
 	}
 
@@ -259,21 +163,7 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    public String getKoordinate() {
-        return koordinate;
-    }
-
-    /**
-     * Sets the value of the koordinate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setKoordinate(String value) {
-        this.koordinate = value;
-    }
+    
 
     /**
      * Gets the value of the tipSmestaja property.
@@ -283,11 +173,35 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    public String getString() {
+    /*public TipSmestaja getString() {
         return tipSmestaja;
-    }
+    }*/
 
-    /**
+    public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	/*public TipSmestaja getTipSmestaja() {
+		return tipSmestaja;
+	}
+
+	public void setTipSmestaja(TipSmestaja tipSmestaja) {
+		this.tipSmestaja = tipSmestaja;
+	}*/
+
+	/**
      * Sets the value of the tipSmestaja property.
      * 
      * @param value
@@ -295,9 +209,9 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    public void setString(String value) {
+    /*public void setString(TipSmestaja value) {
         this.tipSmestaja = value;
-    }
+    }*/
 
     /**
      * Gets the value of the kategorijaSmestaja property.
@@ -529,12 +443,16 @@ public class Smestaj {
      * 
      * 
      */
-    /*public List<String> getListaDodatnihUsluga() {
+    public Set<DodatneUsluge> getListaDodatnihUsluga() {
         if (listaDodatnihUsluga == null) {
-            listaDodatnihUsluga = new ArrayList<String>();
+            listaDodatnihUsluga = new HashSet<DodatneUsluge>();
         }
         return this.listaDodatnihUsluga;
-    }*/
+    }
+    
+    public void setListaDodatnihUsluga(Set<DodatneUsluge> listaDodatnihUsluga) {
+		this.listaDodatnihUsluga = listaDodatnihUsluga;
+	}
 
     /**
      * Gets the value of the listaSlika property.
