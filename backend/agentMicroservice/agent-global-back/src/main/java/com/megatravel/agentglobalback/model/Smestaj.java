@@ -20,6 +20,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -59,19 +63,24 @@ public class Smestaj {
 	
     @XmlElement(required = true)
     @OneToOne
+    @JoinColumn(name = "adresa_id")
     protected TAdresa adresa;
     
     @XmlElement(required = true)
     @OneToOne
+    @JoinColumn(name = "koordinate_id")
     protected TKoordinate koordinate;
     
     @XmlElement(required = true)
     @Enumerated(EnumType.STRING)
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="tipsmestaja_id", nullable = false)
     protected TipSmestaja tipSmestaja;
     
-    @XmlElement(required = true, defaultValue = "no star")
-    protected String kategorijaSmestaja;
+    @XmlElement(required = true)
+    @ManyToOne
+    @JoinColumn(name="kategorijasmestaja_id", nullable = false)
+    protected KategorijaSmestaja kategorijaSmestaja;
     
     @XmlElement(required = true)
     protected String opis;
@@ -99,7 +108,8 @@ public class Smestaj {
     
     @XmlList
     @XmlElement(required = true)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="tipsmestaja_id"))
     protected Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     
     @XmlList
@@ -111,7 +121,7 @@ public class Smestaj {
 	}
 
 	public Smestaj(Long idSmestaja, TAdresa adresa, TKoordinate koordinate, TipSmestaja tipSmestaja,
-			String kategorijaSmestaja, String opis, BigInteger maxOsoba, BigInteger maxDanaZaOtkazivanje,
+			KategorijaSmestaja kategorijaSmestaja, String opis, BigInteger maxOsoba, BigInteger maxDanaZaOtkazivanje,
 			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima,
 			@NotNull Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
 		super();
@@ -246,7 +256,7 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    public String getKategorijaSmestaja() {
+    public KategorijaSmestaja getKategorijaSmestaja() {
         return kategorijaSmestaja;
     }
 
@@ -258,7 +268,7 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    public void setKategorijaSmestaja(String value) {
+    public void setKategorijaSmestaja(KategorijaSmestaja value) {
         this.kategorijaSmestaja = value;
     }
 

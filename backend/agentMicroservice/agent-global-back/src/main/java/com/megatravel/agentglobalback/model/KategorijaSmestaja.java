@@ -17,16 +17,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TipSmestaja 
+public class KategorijaSmestaja 
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long idTipaSmestaja;
+    protected long idKategorijeSmestaja;
     
     @XmlElement(required = true)
     protected String naziv;
     
-    @OneToMany(mappedBy="tipSmestaja")
+    @OneToMany(mappedBy="kategorijaSmestaja")
     protected List<Smestaj> listaSmestaja;
-    
 }

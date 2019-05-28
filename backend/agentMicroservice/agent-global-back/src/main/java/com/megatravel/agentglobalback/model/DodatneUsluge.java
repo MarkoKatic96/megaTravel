@@ -8,11 +8,14 @@
 
 package com.megatravel.agentglobalback.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlType;
 
@@ -28,13 +31,14 @@ public class DodatneUsluge {
 	@NotNull
 	private String dodatnaUsluga;
 	
-	@ManyToOne
-	private Smestaj smestaj;
-
+	@ManyToMany(mappedBy = "listaDodatnihUsluga")
+	private List<Smestaj> listaSmestaja;
+	
 	public DodatneUsluge(Long id, @NotNull String dodatnaUsluga) {
 		super();
 		this.id = id;
 		this.dodatnaUsluga = dodatnaUsluga;
+		listaSmestaja = new ArrayList<>();
 	}
 	
 	public DodatneUsluge() {
@@ -55,8 +59,14 @@ public class DodatneUsluge {
 	public void setDodatnaUsluga(String dodatnaUsluga) {
 		this.dodatnaUsluga = dodatnaUsluga;
 	}
-	
-	
+
+	public List<Smestaj> getListaSmestaja() {
+		return listaSmestaja;
+	}
+
+	public void setListaSmestaja(List<Smestaj> listaSmestaja) {
+		this.listaSmestaja = listaSmestaja;
+	}
 	
 	/*
     @XmlEnumValue("Parking")

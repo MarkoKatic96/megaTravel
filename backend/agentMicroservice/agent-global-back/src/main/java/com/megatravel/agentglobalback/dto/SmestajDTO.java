@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.megatravel.agentglobalback.model.DodatneUsluge;
+import com.megatravel.agentglobalback.model.KategorijaSmestaja;
 import com.megatravel.agentglobalback.model.Smestaj;
 import com.megatravel.agentglobalback.model.TAdresa;
 import com.megatravel.agentglobalback.model.TImage;
@@ -18,7 +19,7 @@ public class SmestajDTO {
     protected TAdresa adresa;
     protected TKoordinate koordinate;
     protected TipSmestaja tipSmestaja;
-    protected String kategorijaSmestaja;
+    protected KategorijaSmestaja kategorijaSmestaja;
     protected String opis;
     protected BigInteger maxOsoba;
     protected BigInteger maxDanaZaOtkazivanje;
@@ -53,7 +54,7 @@ public class SmestajDTO {
 	}
     
 	public SmestajDTO(Long idSmestaja, TAdresa adresa, TKoordinate koordinate, TipSmestaja tipSmestaja,
-			String kategorijaSmestaja, String opis, BigInteger maxOsoba, BigInteger maxDanaZaOtkazivanje,
+			KategorijaSmestaja kategorijaSmestaja, String opis, BigInteger maxOsoba, BigInteger maxDanaZaOtkazivanje,
 			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, Long vlasnik,
 			Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
 		super();
@@ -109,11 +110,11 @@ public class SmestajDTO {
 		this.tipSmestaja = tipSmestaja;
 	}
 
-	public String getKategorijaSmestaja() {
+	public KategorijaSmestaja getKategorijaSmestaja() {
 		return kategorijaSmestaja;
 	}
 
-	public void setKategorijaSmestaja(String kategorijaSmestaja) {
+	public void setKategorijaSmestaja(KategorijaSmestaja kategorijaSmestaja) {
 		this.kategorijaSmestaja = kategorijaSmestaja;
 	}
 
