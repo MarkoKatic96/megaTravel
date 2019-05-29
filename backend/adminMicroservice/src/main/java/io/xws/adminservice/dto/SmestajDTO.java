@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-import io.xws.adminservice.model.DodatneUsluge;
-import io.xws.adminservice.model.KategorijaSmestaja;
 import lombok.Data;
 
 @Data

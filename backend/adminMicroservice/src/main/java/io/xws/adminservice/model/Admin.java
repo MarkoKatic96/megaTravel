@@ -52,12 +52,10 @@ public class Admin
     
     @XmlElement(required = true)
     protected String prezime;
-    
-    protected long poslovniMaticniBroj;
-    
-    @XmlElement(required = true)
-    @XmlSchemaType(name = "date")
-    protected Date datumClanstva;
+//    
+//    @XmlElement(required = true)
+//    @XmlSchemaType(name = "date")
+//    protected Date datumClanstva;
     
     @XmlElement(required = true)
     protected String email;
