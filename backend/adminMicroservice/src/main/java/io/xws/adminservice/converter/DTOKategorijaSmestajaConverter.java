@@ -3,9 +3,7 @@ package io.xws.adminservice.converter;
 import org.springframework.stereotype.Component;
 
 import io.xws.adminservice.dto.KategorijaSmestajaDTO;
-import io.xws.adminservice.dto.TipSmestajaDTO;
 import io.xws.adminservice.model.KategorijaSmestaja;
-import io.xws.adminservice.model.TipSmestaja;
 
 @Component
 public class DTOKategorijaSmestajaConverter 

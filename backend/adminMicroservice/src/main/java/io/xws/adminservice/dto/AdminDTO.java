@@ -10,7 +10,6 @@ public class AdminDTO
 	protected long idAdmina;
     protected String ime;
     protected String prezime;
-    protected Date datumClanstva;
     protected String email;
     protected String lozinka;
 }
