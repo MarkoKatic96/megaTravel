@@ -53,6 +53,12 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- Eureka Client -->
+		<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+   		</dependency>
+		
 		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

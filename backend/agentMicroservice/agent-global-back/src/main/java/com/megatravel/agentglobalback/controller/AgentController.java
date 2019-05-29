@@ -17,14 +17,19 @@ import com.megatravel.agentglobalback.dto.AgentPrijavaDTO;
 import com.megatravel.agentglobalback.dto.AgentRegistracijaDTO;
 import com.megatravel.agentglobalback.jwt.JwtTokenUtils;
 import com.megatravel.agentglobalback.model.Agent;
+import com.megatravel.agentglobalback.model.NeaktiviranAgent;
 import com.megatravel.agentglobalback.model.RevokedTokens;
 import com.megatravel.agentglobalback.repository.RevokedTokensRepository;
 import com.megatravel.agentglobalback.service.AgentService;
+import com.megatravel.agentglobalback.service.NeaktiviranAgentService;
 
 @RestController
 @RequestMapping("/agent")
 public class AgentController {
 	
+	@Autowired
+	NeaktiviranAgentService neaktiviranAgentService;
+
 	@Autowired
 	AgentService agentService;
 	
@@ -66,14 +71,10 @@ public class AgentController {
 		}
 	}
 	
-	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ResponseEntity<AgentDTO> signup(@RequestBody AgentRegistracijaDTO agentRegistracijaDTO) {
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<NeaktiviranAgent> signup(@RequestBody AgentRegistracijaDTO agentRegistracijaDTO) {
 		System.out.println("signup()");
-		
-		if (!agentRegistracijaDTO.getPotvrdaLozinke().equals(agentRegistracijaDTO.getLozinka())) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		
+
 		Agent tempKorisnik = agentService.findByEmail(agentRegistracijaDTO.getEmail());
 		if(tempKorisnik != null) {
 			//mora biti jedinstveni mail za korisnika
@@ -86,17 +87,22 @@ public class AgentController {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
-		Agent agent = new Agent(null, agentRegistracijaDTO.getIme(), agentRegistracijaDTO.getPrezime(), agentRegistracijaDTO.getPoslovniMaticniBroj(), agentRegistracijaDTO.getEmail(), agentRegistracijaDTO.getLozinka());
-		Agent retValue = agentService.signup(agent);
-		/*
-		try {
-			emailService.sendNotificaitionAsync(retValue);
-		} catch (MailException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-		return new ResponseEntity<>(new AgentDTO(retValue), HttpStatus.CREATED);
+		NeaktiviranAgent tempKorisnik2 = neaktiviranAgentService.findByEmail(agentRegistracijaDTO.getEmail());
+		if(tempKorisnik2 != null) {
+			//mora biti jedinstveni mail za korisnika
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		
+		tempKorisnik2 = neaktiviranAgentService.findByPMB(agentRegistracijaDTO.getPoslovniMaticniBroj());
+		if(tempKorisnik2 != null) {
+			//mora biti jedinstveni PIM za korisnika
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		
+		NeaktiviranAgent agent = new NeaktiviranAgent(null, agentRegistracijaDTO.getIme(), agentRegistracijaDTO.getPrezime(), agentRegistracijaDTO.getPoslovniMaticniBroj(), agentRegistracijaDTO.getEmail());
+		NeaktiviranAgent retValue = neaktiviranAgentService.save(agent);
+
+		return new ResponseEntity<>(retValue, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)

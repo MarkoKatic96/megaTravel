@@ -7,8 +7,8 @@ public class AgentRegistracijaDTO {
     protected String prezime;
     protected Long poslovniMaticniBroj;
     protected String email;
-    protected String lozinka;
-    protected String potvrdaLozinke;
+    //protected String lozinka;
+    //protected String potvrdaLozinke;
     	
     public AgentRegistracijaDTO() {
 	
@@ -54,7 +54,7 @@ public class AgentRegistracijaDTO {
 		this.email = email;
 	}
 
-	public String getLozinka() {
+	/*public String getLozinka() {
 		return lozinka;
 	}
 
@@ -69,6 +69,6 @@ public class AgentRegistracijaDTO {
 	public void setPotvrdaLozinke(String potvrdaLozinke) {
 		this.potvrdaLozinke = potvrdaLozinke;
 	}
-	
+	*/
 	
 }
