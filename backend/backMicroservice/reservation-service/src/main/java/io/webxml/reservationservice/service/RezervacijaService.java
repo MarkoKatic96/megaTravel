@@ -77,14 +77,9 @@ public class RezervacijaService {
 	
 	public Rezervacija otkaziRezervaciju(Long id) {
 		Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
-		Optional<List<Rezervacija>> rezervacije = Optional.of(rezervacijaRepository.findAll());
-		if(rezervacija.isPresent() && rezervacije.isPresent()) {
-			for (Rezervacija rezervacija1 : rezervacije.get()) {
-				if(rezervacija1.getRezervacijaId()==id) {
-					rezervacijaRepository.delete(rezervacija1);
-					return rezervacija1;
-				}
-			}
+		if(rezervacija.isPresent()) {
+			rezervacijaRepository.deleteById(id);
+			return rezervacija.get();
 		}
 		return null;
 	}

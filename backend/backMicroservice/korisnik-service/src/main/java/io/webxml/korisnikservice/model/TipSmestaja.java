@@ -4,19 +4,22 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-//@Entity
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity
 public class TipSmestaja {
 	
-	/*@Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idTipaSmestaja;
 	private String nazivTipaSmestaja;
-	@OneToMany (mappedBy="tipSmestaja", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="tipSmestaja", cascade=CascadeType.ALL)
 	private List<Smestaj> smestaji;
 	
 	public TipSmestaja() {}
@@ -51,7 +54,6 @@ public class TipSmestaja {
 	public void setSmestaji(List<Smestaj> smestaji) {
 		this.smestaji = smestaji;
 	}
-	*/
 	
 
 }

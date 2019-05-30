@@ -29,6 +29,10 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -61,12 +65,14 @@ public class Smestaj {
     protected BigDecimal latitude;
     @XmlElement(required = true)
     protected BigDecimal longitude;
-    /*@XmlElement(required = true)
-    @ManyToOne
+    @XmlElement(required = true)
+    @ManyToOne()
 	@JoinColumn (name="tipSmestaja", nullable = false)
-    protected TipSmestaja tipSmestaja;*/
-    @XmlElement(required = true, defaultValue = "no star")
-    protected String kategorijaSmestaja;
+    private TipSmestaja tipSmestaja;
+    @XmlElement(required = true)
+    @ManyToOne()
+	@JoinColumn (name="kategorijaSmestaja", nullable = false)
+    private KategorijaSmestaja kategorijaSmestaja;
     @XmlElement(required = true)
     protected String opis;
     @XmlElement(required = true)
@@ -93,15 +99,15 @@ public class Smestaj {
 
 	}
 
-    public Smestaj(long idSmestaja, String adresa, BigDecimal latitude, BigDecimal longitude, /*TipSmestaja tipSmestaja,*/
-			String kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje,
+    public Smestaj(long idSmestaja, String adresa, BigDecimal latitude, BigDecimal longitude, TipSmestaja tipSmestaja,
+    		KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje,
 			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga) {
 		super();
 		this.idSmestaja = idSmestaja;
 		this.adresa = adresa;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		//this.tipSmestaja = tipSmestaja;
+		this.tipSmestaja = tipSmestaja;
 		this.kategorijaSmestaja = kategorijaSmestaja;
 		this.opis = opis;
 		this.maxOsoba = maxOsoba;
@@ -173,9 +179,6 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    /*public TipSmestaja getString() {
-        return tipSmestaja;
-    }*/
 
     public BigDecimal getLatitude() {
 		return latitude;
@@ -192,14 +195,19 @@ public class Smestaj {
 	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
 	}
+	
+    public Long getTip_id(){
+        return tipSmestaja.getIdTipaSmestaja();
+    }
 
-	/*public TipSmestaja getTipSmestaja() {
+	@JsonIgnore
+	public TipSmestaja getTipSmestaja() {
 		return tipSmestaja;
 	}
-
+	@JsonIgnore
 	public void setTipSmestaja(TipSmestaja tipSmestaja) {
 		this.tipSmestaja = tipSmestaja;
-	}*/
+	}
 
 	/**
      * Sets the value of the tipSmestaja property.
@@ -209,9 +217,6 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    /*public void setString(TipSmestaja value) {
-        this.tipSmestaja = value;
-    }*/
 
     /**
      * Gets the value of the kategorijaSmestaja property.
@@ -221,7 +226,8 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    public String getKategorijaSmestaja() {
+	@JsonIgnore
+    public KategorijaSmestaja getKategorijaSmestaja() {
         return kategorijaSmestaja;
     }
 
@@ -233,7 +239,8 @@ public class Smestaj {
      *     {@link String }
      *     
      */
-    public void setKategorijaSmestaja(String value) {
+	@JsonIgnore
+    public void setKategorijaSmestaja(KategorijaSmestaja value) {
         this.kategorijaSmestaja = value;
     }
 

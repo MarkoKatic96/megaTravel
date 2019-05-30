@@ -106,6 +106,8 @@ public class Korisnik {
     private Date datumClanstva;
     @XmlElement(defaultValue = "false")
     private boolean registrovan;
+    @XmlElement(defaultValue = "KORISNIK")
+    private String rola;
     /*@XmlList
     @XmlElement(type = Long.class)
     private List<Long> listaRezervacija;*/
@@ -262,6 +264,14 @@ public class Korisnik {
         this.registrovan = value;
     }
 
+	public String getRola() {
+		return rola;
+	}
+
+	public void setRola(String rola) {
+		this.rola = rola;
+	}
+
     /**
      * Gets the value of the listaRezervacija property.
      * 
@@ -284,6 +294,9 @@ public class Korisnik {
      * 
      * 
      */
+    
+    
+    
     /*public List<Long> getListaRezervacija() {
         if (listaRezervacija == null) {
             listaRezervacija = new ArrayList<Long>();

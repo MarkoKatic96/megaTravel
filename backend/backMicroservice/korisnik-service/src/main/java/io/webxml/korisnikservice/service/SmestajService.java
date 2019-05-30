@@ -20,4 +20,14 @@ public class SmestajService {
 		return lista;
 	}
 	
+	public List<Smestaj> getSmestajiOdredjenogTipa(Long id){
+		List<Smestaj> lista = smestajRepository.findAllSmestajWithType(id);
+		return lista;
+	}
+	
+	public List<Smestaj> getSmestajiOdredjeneKategorije(Long id){
+		List<Smestaj> lista = smestajRepository.findAllSmestajWithCategory(id);
+		return lista;
+	}
+	
 }

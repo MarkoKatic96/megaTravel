@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlType;
   	"mesto": "string",
   	"datumDolaska": "string",
   	"datumPolaska": "string",
-  	"brojOsoba:": "broj"
+  	"brojOsoba": "broj",
+  	"tip_id": "zove se ovako zbog onog gettera dole"
   }
  * 
  * 
@@ -52,18 +53,24 @@ public class OsnovnaPretraga {
     private float cena;
     @XmlElement(required = true)
     private int brojOsoba;
-
+    @XmlElement(required = true)
+    private Long tipSmestaja;
+    @XmlElement(required = true)
+    private Long kategorijaSmestaja;
+    
     public OsnovnaPretraga() {
 
   	}
     
-    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena, int brojOsoba) {
+    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena, int brojOsoba, Long tipSmestaja, Long kategorijaSmestaja) {
 		super();
 		this.mesto = mesto;
 		this.datumDolaska = datumDolaska;
 		this.datumPolaska = datumPolaska;
 		this.cena = cena;
 		this.brojOsoba = brojOsoba;
+		this.tipSmestaja = tipSmestaja;
+		this.kategorijaSmestaja = kategorijaSmestaja;
 	}
 
 	/**
@@ -168,6 +175,22 @@ public class OsnovnaPretraga {
 
 	public void setCena(float cena) {
 		this.cena = cena;
+	}
+
+	public Long getTipSmestaja() {
+		return tipSmestaja;
+	}
+
+	public void setTipSmestaja(Long tipSmestaja) {
+		this.tipSmestaja = tipSmestaja;
+	}
+
+	public Long getKategorijaSmestaja() {
+		return kategorijaSmestaja;
+	}
+
+	public void setKategorijaSmestaja(Long kategorijaSmestaja) {
+		this.kategorijaSmestaja = kategorijaSmestaja;
 	}
     
     

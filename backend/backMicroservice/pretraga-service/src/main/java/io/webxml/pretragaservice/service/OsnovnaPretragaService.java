@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import io.webxml.pretragaservice.model.OsnovnaPretraga;
 import io.webxml.pretragaservice.model.Rezervacija;
@@ -16,11 +17,13 @@ import io.webxml.pretragaservice.model.SmestajiRestTemplate;
 @Service
 public class OsnovnaPretragaService {
 	
+	@Autowired
+	private RestTemplate restTemplate;
+	
 	public List<Smestaj> osnovnaPretragaSmestaji(OsnovnaPretraga op, SmestajiRestTemplate srt, RezervacijeRestTemplate rrt){
 		List<Smestaj> lista = new ArrayList<Smestaj>();
 		List<Smestaj> listaSmestaja = new ArrayList<Smestaj>();
 		List<Smestaj> returnLista = new ArrayList<Smestaj>();
-		List<Rezervacija> rezervacijeSaId = new ArrayList<Rezervacija>();
 		List<Rezervacija> rezervacije = new ArrayList<Rezervacija>();
 		rezervacije = rrt.getRezervacijaList();//sve rezervacije
 		lista = srt.getSmestajiList(); //svi smestaji
@@ -54,7 +57,6 @@ public class OsnovnaPretragaService {
 		
 		if(op.getDatumDolaska()!=null && op.getDatumPolaska()!=null && op.getDatumDolaska().before(op.getDatumPolaska())) {
 			int zauzeto=0;
-			List<Smestaj> listaZauzetihSmestaja = new ArrayList<Smestaj>();
 			for (Smestaj smestaj : returnLista) {
 				for (Rezervacija rezervacija1 : rezervacije) {
 					if(rezervacija1.getSmestajId()==smestaj.getIdSmestaja()) {
@@ -78,6 +80,40 @@ public class OsnovnaPretragaService {
 			returnLista.addAll(listaSmestaja);
 			listaSmestaja.clear();
 			
+		}
+		
+		if(op.getTipSmestaja()!=null) {
+			List<Smestaj> sst = new ArrayList<Smestaj>();
+			Long tipSmestaja = op.getTipSmestaja();
+			SmestajiRestTemplate smestajiSaTipom = restTemplate.getForObject("http://korisnik-service/api/smestajiTipa/" + tipSmestaja, SmestajiRestTemplate.class);
+			sst = smestajiSaTipom.getSmestajiList();
+			for (Smestaj smestaj : sst) {
+				for(Smestaj smestaj2 : returnLista) {
+					if(smestaj.getIdSmestaja()==smestaj2.getIdSmestaja()) {
+						listaSmestaja.add(smestaj2);
+					}
+				}
+			}			
+			returnLista.clear();
+			returnLista.addAll(listaSmestaja);
+			listaSmestaja.clear();
+		}
+		
+		if(op.getKategorijaSmestaja()!=null) {
+			List<Smestaj> ssk = new ArrayList<Smestaj>();
+			Long kategorijaSmestaja = op.getKategorijaSmestaja();
+			SmestajiRestTemplate smestajiSaKategorijom = restTemplate.getForObject("http://korisnik-service/api/smestajiKategorije/" + kategorijaSmestaja, SmestajiRestTemplate.class);
+			ssk = smestajiSaKategorijom.getSmestajiList();
+			for (Smestaj smestaj : ssk) {
+				for(Smestaj smestaj2 : returnLista) {
+					if(smestaj.getIdSmestaja()==smestaj2.getIdSmestaja()) {
+						listaSmestaja.add(smestaj2);
+					}
+				}
+			}			
+			returnLista.clear();
+			returnLista.addAll(listaSmestaja);
+			listaSmestaja.clear();
 		}
 		
 		return returnLista;

@@ -33,6 +33,7 @@ public class OsnovnaPretragaController {
 	public List<Smestaj> getFilteredSmestaj(@RequestBody OsnovnaPretraga op){	
 		//uzimam sve smestaje iz korisnik-api
 		SmestajiRestTemplate srt = restTemplate.getForObject("http://korisnik-service/api/smestaji", SmestajiRestTemplate.class);
+		//System.out.println("EO ME " + srt.getSmestajiList().get(0).getTip_id());
 		RezervacijeRestTemplate rrt = restTemplate.getForObject("http://reservation-service/rezervacije", RezervacijeRestTemplate.class);
 		return osnovnaPretragaService.osnovnaPretragaSmestaji(op, srt, rrt);
 	}
