@@ -42,4 +42,5 @@ public class SmestajController {
 		srt.setSmestajiList(lista);
 		return new ResponseEntity<SmestajiRestTemplate>(srt, HttpStatus.OK);
 	}
+	
 }

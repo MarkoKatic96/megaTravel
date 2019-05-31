@@ -14,17 +14,17 @@ public class DodatneUsluge {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idDodatneUsluge;
 	private String nazivDodatneUsluge;
-	@ManyToOne
-	private Smestaj smestaj;
+	/*@ManyToOne
+	private Smestaj smestaj;*/
 	
 	
 	public DodatneUsluge() {}
 	
-	public DodatneUsluge(long idDodatneUsluge, String nazivDodatneUsluge, Smestaj smestaj) {
+	public DodatneUsluge(long idDodatneUsluge, String nazivDodatneUsluge/*, Smestaj smestaj*/) {
 		super();
 		this.idDodatneUsluge = idDodatneUsluge;
 		this.nazivDodatneUsluge = nazivDodatneUsluge;
-		this.smestaj = smestaj;
+		//this.smestaj = smestaj;
 	}
 
 	public long getIdDodatneUsluge() {
@@ -43,13 +43,13 @@ public class DodatneUsluge {
 		this.nazivDodatneUsluge = nazivDodatneUsluge;
 	}
 
-	public Smestaj getSmestaj() {
+	/*public Smestaj getSmestaj() {
 		return smestaj;
 	}
 
 	public void setSmestaj(Smestaj smestaj) {
 		this.smestaj = smestaj;
-	}
+	}*/
 	
 	
 	

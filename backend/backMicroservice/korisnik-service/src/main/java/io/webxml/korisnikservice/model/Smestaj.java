@@ -20,6 +20,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,7 +34,6 @@ import javax.xml.bind.annotation.XmlType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -90,8 +91,14 @@ public class Smestaj {
     protected long vlasnik;
     @XmlList
     @XmlElement(required = true)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
-    protected Set<DodatneUsluge> listaDodatnihUsluga = new HashSet();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable( 
+            name = "usluge_smestaja", 
+            joinColumns = @JoinColumn(
+              name = "smestaj_id", referencedColumnName = "idSmestaja"), 
+            inverseJoinColumns = @JoinColumn(
+              name = "dodatne_usluge_id", referencedColumnName = "idDodatneUsluge"))
+    protected List<DodatneUsluge> listaDodatnihUsluga;
     /*@XmlElement(required = true)
     protected Smestaj.ListaSlika listaSlika;*/
     
@@ -101,7 +108,7 @@ public class Smestaj {
 
     public Smestaj(long idSmestaja, String adresa, BigDecimal latitude, BigDecimal longitude, TipSmestaja tipSmestaja,
     		KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje,
-			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga) {
+			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, long vlasnik, List<DodatneUsluge> listaDodatnihUsluga) {
 		super();
 		this.idSmestaja = idSmestaja;
 		this.adresa = adresa;
@@ -450,14 +457,14 @@ public class Smestaj {
      * 
      * 
      */
-    public Set<DodatneUsluge> getListaDodatnihUsluga() {
+    public List<DodatneUsluge> getListaDodatnihUsluga() {
         if (listaDodatnihUsluga == null) {
-            listaDodatnihUsluga = new HashSet<DodatneUsluge>();
+            listaDodatnihUsluga = new ArrayList<DodatneUsluge>();
         }
         return this.listaDodatnihUsluga;
     }
     
-    public void setListaDodatnihUsluga(Set<DodatneUsluge> listaDodatnihUsluga) {
+    public void setListaDodatnihUsluga(List<DodatneUsluge> listaDodatnihUsluga) {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 	}
 

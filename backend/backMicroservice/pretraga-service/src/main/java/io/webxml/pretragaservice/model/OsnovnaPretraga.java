@@ -9,6 +9,7 @@
 package io.webxml.pretragaservice.model;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -21,11 +22,15 @@ import javax.xml.bind.annotation.XmlType;
 
 /*
   {
-  	"mesto": "string",
-  	"datumDolaska": "string",
-  	"datumPolaska": "string",
-  	"brojOsoba": "broj",
-  	"tip_id": "zove se ovako zbog onog gettera dole"
+  	"mesto": "",
+  	"datumDolaska": "",
+  	"datumPolaska": "",
+  	"brojOsoba": "",
+  	"tipSmestaja": "",
+  	"kategorijaSmestaja": "",
+  	dodatneUsluge: [
+  		{....}
+  	]
   }
  * 
  * 
@@ -57,12 +62,13 @@ public class OsnovnaPretraga {
     private Long tipSmestaja;
     @XmlElement(required = true)
     private Long kategorijaSmestaja;
+    private List<Long> dodatneUsluge;
     
     public OsnovnaPretraga() {
 
   	}
     
-    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena, int brojOsoba, Long tipSmestaja, Long kategorijaSmestaja) {
+    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena, int brojOsoba, Long tipSmestaja, Long kategorijaSmestaja, List<Long> dodatneUsluge) {
 		super();
 		this.mesto = mesto;
 		this.datumDolaska = datumDolaska;
@@ -71,6 +77,7 @@ public class OsnovnaPretraga {
 		this.brojOsoba = brojOsoba;
 		this.tipSmestaja = tipSmestaja;
 		this.kategorijaSmestaja = kategorijaSmestaja;
+		this.dodatneUsluge = dodatneUsluge;
 	}
 
 	/**
@@ -191,6 +198,14 @@ public class OsnovnaPretraga {
 
 	public void setKategorijaSmestaja(Long kategorijaSmestaja) {
 		this.kategorijaSmestaja = kategorijaSmestaja;
+	}
+
+	public List<Long> getDodatneUsluge() {
+		return dodatneUsluge;
+	}
+
+	public void setDodatneUsluge(List<Long> dodatneUsluge) {
+		this.dodatneUsluge = dodatneUsluge;
 	}
     
     

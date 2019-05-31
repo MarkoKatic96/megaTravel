@@ -75,7 +75,7 @@ public class Smestaj {
     protected long vlasnik;
     @XmlList
     @XmlElement(required = true)
-    protected Set<DodatneUsluge> listaDodatnihUsluga = new HashSet();
+    protected List<DodatneUsluge> listaDodatnihUsluga;
     /*@XmlElement(required = true)
     protected Smestaj.ListaSlika listaSlika;*/
     
@@ -85,7 +85,7 @@ public class Smestaj {
 
     public Smestaj(long idSmestaja, String adresa, BigDecimal latitude, BigDecimal longitude, TipSmestaja tipSmestaja,
     		KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje,
-			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga) {
+			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, long vlasnik, List<DodatneUsluge> listaDodatnihUsluga) {
 		super();
 		this.idSmestaja = idSmestaja;
 		this.adresa = adresa;
@@ -432,14 +432,14 @@ public class Smestaj {
      * 
      * 
      */
-    public Set<DodatneUsluge> getListaDodatnihUsluga() {
+    public List<DodatneUsluge> getListaDodatnihUsluga() {
         if (listaDodatnihUsluga == null) {
-            listaDodatnihUsluga = new HashSet<DodatneUsluge>();
+            listaDodatnihUsluga = new ArrayList<DodatneUsluge>();
         }
         return this.listaDodatnihUsluga;
     }
     
-    public void setListaDodatnihUsluga(Set<DodatneUsluge> listaDodatnihUsluga) {
+    public void setListaDodatnihUsluga(List<DodatneUsluge> listaDodatnihUsluga) {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 	}
 

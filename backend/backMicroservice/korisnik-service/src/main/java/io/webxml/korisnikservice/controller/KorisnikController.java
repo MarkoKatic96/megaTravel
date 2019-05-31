@@ -65,4 +65,10 @@ public class KorisnikController {
 		return (jwt!=null) ? new ResponseEntity<String>(jwt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	/*@RequestMapping(value = "/getKorisnikByToken/{token}")
+	public ResponseEntity<Korisnik> getKorisnikByToken(@PathVariable("token") HttpServletRequest token, @PathVariable("lozinka") String lozinka){
+		String jwt = korisnikService.login(email, lozinka);
+		return (jwt!=null) ? new ResponseEntity<Korisnik>(jwt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}*/
+	
 }
