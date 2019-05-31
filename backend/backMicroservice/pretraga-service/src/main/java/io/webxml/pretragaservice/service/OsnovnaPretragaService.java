@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import io.webxml.pretragaservice.model.DodatneUsluge;
 import io.webxml.pretragaservice.model.OsnovnaPretraga;
 import io.webxml.pretragaservice.model.Rezervacija;
 import io.webxml.pretragaservice.model.RezervacijeRestTemplate;
@@ -114,6 +115,23 @@ public class OsnovnaPretragaService {
 			returnLista.clear();
 			returnLista.addAll(listaSmestaja);
 			listaSmestaja.clear();
+		}
+		
+		//nije jos testirano da li radi
+		if(!op.getDodatneUsluge().isEmpty()) {
+			for(int i = 0; i<op.getDodatneUsluge().size(); i++) { 
+				for (Smestaj smestaj : returnLista) { 
+					for(int g = 0; g<smestaj.getListaDodatnihUsluga().size(); g++) { 
+						if(op.getDodatneUsluge().get(i) == ((List<DodatneUsluge>) smestaj.getListaDodatnihUsluga()).get(g).getIdDodatneUsluge()) {
+							listaSmestaja.add(smestaj);
+							break;
+						}
+					}
+				}
+				returnLista.clear();
+				returnLista.addAll(listaSmestaja);
+				listaSmestaja.clear();
+			}
 		}
 		
 		return returnLista;

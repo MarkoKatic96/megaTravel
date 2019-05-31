@@ -57,5 +57,4 @@ public class DodatneUsluge {
 	public void setListaSmestaja(List<Smestaj> listaSmestaja) {
 		this.listaSmestaja = listaSmestaja;
 	}
-	
 }

@@ -1,7 +1,6 @@
 package com.megatravel.agentglobalback.dto;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,12 +20,12 @@ public class SmestajDTO {
     private TipSmestaja tipSmestaja;
     private KategorijaSmestaja kategorijaSmestaja;
     private String opis;
-    private BigInteger maxOsoba;
-    private BigInteger maxDanaZaOtkazivanje;
-    private BigDecimal cenaProlece;
-    private BigDecimal cenaLeto;
-    private BigDecimal cenaJesen;
-    private BigDecimal cenaZima;
+    private int maxOsoba;
+    private int maxDanaZaOtkazivanje;
+    private float cenaProlece;
+    private float cenaLeto;
+    private float cenaJesen;
+    private float cenaZima;
     private Long vlasnik;
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     private Set<TImage> listaSlika = new HashSet<>();
@@ -55,9 +54,9 @@ public class SmestajDTO {
 	}
  
 	public SmestajDTO(Long idSmestaja, TAdresa adresa, BigDecimal latitude, BigDecimal longitude,
-			TipSmestaja tipSmestaja, KategorijaSmestaja kategorijaSmestaja, String opis, BigInteger maxOsoba,
-			BigInteger maxDanaZaOtkazivanje, BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen,
-			BigDecimal cenaZima, Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
+			TipSmestaja tipSmestaja, KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba,
+			int maxDanaZaOtkazivanje, float cenaProlece, float cenaLeto, float cenaJesen,
+			float cenaZima, Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
 		super();
 		this.idSmestaja = idSmestaja;
 		this.adresa = adresa;
@@ -133,51 +132,51 @@ public class SmestajDTO {
 		this.opis = opis;
 	}
 
-	public BigInteger getMaxOsoba() {
+	public int getMaxOsoba() {
 		return maxOsoba;
 	}
 
-	public void setMaxOsoba(BigInteger maxOsoba) {
+	public void setMaxOsoba(int maxOsoba) {
 		this.maxOsoba = maxOsoba;
 	}
 
-	public BigInteger getMaxDanaZaOtkazivanje() {
+	public int getMaxDanaZaOtkazivanje() {
 		return maxDanaZaOtkazivanje;
 	}
 
-	public void setMaxDanaZaOtkazivanje(BigInteger maxDanaZaOtkazivanje) {
+	public void setMaxDanaZaOtkazivanje(int maxDanaZaOtkazivanje) {
 		this.maxDanaZaOtkazivanje = maxDanaZaOtkazivanje;
 	}
 
-	public BigDecimal getCenaProlece() {
+	public float getCenaProlece() {
 		return cenaProlece;
 	}
 
-	public void setCenaProlece(BigDecimal cenaProlece) {
+	public void setCenaProlece(float cenaProlece) {
 		this.cenaProlece = cenaProlece;
 	}
 
-	public BigDecimal getCenaLeto() {
+	public float getCenaLeto() {
 		return cenaLeto;
 	}
 
-	public void setCenaLeto(BigDecimal cenaLeto) {
+	public void setCenaLeto(float cenaLeto) {
 		this.cenaLeto = cenaLeto;
 	}
 
-	public BigDecimal getCenaJesen() {
+	public float getCenaJesen() {
 		return cenaJesen;
 	}
 
-	public void setCenaJesen(BigDecimal cenaJesen) {
+	public void setCenaJesen(float cenaJesen) {
 		this.cenaJesen = cenaJesen;
 	}
 
-	public BigDecimal getCenaZima() {
+	public float getCenaZima() {
 		return cenaZima;
 	}
 
-	public void setCenaZima(BigDecimal cenaZima) {
+	public void setCenaZima(float cenaZima) {
 		this.cenaZima = cenaZima;
 	}
 

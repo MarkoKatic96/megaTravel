@@ -27,9 +27,9 @@ public class DodatneUsluge {
 	
 	}
 	
-	public DodatneUsluge(Long id, @NotNull String nazivDodatneUsluge) {
+	public DodatneUsluge(long idDodatneUsluge, String nazivDodatneUsluge) {
 		super();
-		this.idDodatneUsluge = id;
+		this.idDodatneUsluge = idDodatneUsluge;
 		this.nazivDodatneUsluge = nazivDodatneUsluge;
 		listaSmestaja = new ArrayList<>();
 	}
@@ -56,6 +56,5 @@ public class DodatneUsluge {
 
 	public void setListaSmestaja(List<Smestaj> listaSmestaja) {
 		this.listaSmestaja = listaSmestaja;
-	}
-	
+	}	
 }

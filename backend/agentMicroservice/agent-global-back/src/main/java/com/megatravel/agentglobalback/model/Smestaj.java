@@ -1,7 +1,6 @@
 package com.megatravel.agentglobalback.model;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -79,22 +78,22 @@ public class Smestaj {
     private String opis;
     
     @XmlElement(required = true)
-    private BigInteger maxOsoba;
+    private int maxOsoba;
     
     @XmlElement(required = true)
-    private BigInteger maxDanaZaOtkazivanje;
+    private int maxDanaZaOtkazivanje;
     
     @XmlElement(required = true)
-    private BigDecimal cenaProlece;
+    private float cenaProlece;
     
     @XmlElement(required = true)
-    private BigDecimal cenaLeto;
+    private float cenaLeto;
     
     @XmlElement(required = true)
-    private BigDecimal cenaJesen;
+    private float cenaJesen;
     
     @XmlElement(required = true)
-    private BigDecimal cenaZima;
+    private float cenaZima;
     
     @NotNull
     private Long vlasnik;
@@ -114,9 +113,9 @@ public class Smestaj {
 	}
 
 	public Smestaj(Long idSmestaja, TAdresa adresa, BigDecimal latitude, BigDecimal longitude, TipSmestaja tipSmestaja,
-			KategorijaSmestaja kategorijaSmestaja, String opis, BigInteger maxOsoba, BigInteger maxDanaZaOtkazivanje,
-			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima,
-			@NotNull Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
+			KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje, int cenaProlece,
+			int cenaLeto, int cenaJesen, int cenaZima, @NotNull Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga,
+			Set<TImage> listaSlika) {
 		super();
 		this.idSmestaja = idSmestaja;
 		this.adresa = adresa;
@@ -135,48 +134,24 @@ public class Smestaj {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 		this.listaSlika = listaSlika;
 	}
-	
-	/**
-     * Gets the value of the idSmestaja property.
-     * 
-     */
-    public Long getIdSmestaja() {
-        return idSmestaja;
-    }
 
-    /**
-     * Sets the value of the idSmestaja property.
-     * 
-     */
-    public void setIdSmestaja(Long value) {
-        this.idSmestaja = value;
-    }
+	public Long getIdSmestaja() {
+		return idSmestaja;
+	}
 
-    /**
-     * Gets the value of the adresa property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TAdresa }
-     *     
-     */
-    public TAdresa getAdresa() {
-        return adresa;
-    }
+	public void setIdSmestaja(Long idSmestaja) {
+		this.idSmestaja = idSmestaja;
+	}
 
-    /**
-     * Sets the value of the adresa property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TAdresa }
-     *     
-     */
-    public void setAdresa(TAdresa value) {
-        this.adresa = value;
-    }
+	public TAdresa getAdresa() {
+		return adresa;
+	}
 
-    public BigDecimal getLatitude() {
+	public void setAdresa(TAdresa adresa) {
+		this.adresa = adresa;
+	}
+
+	public BigDecimal getLatitude() {
 		return latitude;
 	}
 
@@ -192,223 +167,79 @@ public class Smestaj {
 		this.longitude = longitude;
 	}
 
+	public TipSmestaja getTipSmestaja() {
+		return tipSmestaja;
+	}
+
+	public void setTipSmestaja(TipSmestaja tipSmestaja) {
+		this.tipSmestaja = tipSmestaja;
+	}
+
+	public KategorijaSmestaja getKategorijaSmestaja() {
+		return kategorijaSmestaja;
+	}
+
+	public void setKategorijaSmestaja(KategorijaSmestaja kategorijaSmestaja) {
+		this.kategorijaSmestaja = kategorijaSmestaja;
+	}
+
+	public String getOpis() {
+		return opis;
+	}
+
+	public void setOpis(String opis) {
+		this.opis = opis;
+	}
+
+	public int getMaxOsoba() {
+		return maxOsoba;
+	}
+
+	public void setMaxOsoba(int maxOsoba) {
+		this.maxOsoba = maxOsoba;
+	}
+
+	public int getMaxDanaZaOtkazivanje() {
+		return maxDanaZaOtkazivanje;
+	}
+
+	public void setMaxDanaZaOtkazivanje(int maxDanaZaOtkazivanje) {
+		this.maxDanaZaOtkazivanje = maxDanaZaOtkazivanje;
+	}
+
+	public float getCenaProlece() {
+		return cenaProlece;
+	}
+
+	public void setCenaProlece(float cenaProlece) {
+		this.cenaProlece = cenaProlece;
+	}
+
+	public float getCenaLeto() {
+		return cenaLeto;
+	}
+
+	public void setCenaLeto(float cenaLeto) {
+		this.cenaLeto = cenaLeto;
+	}
+
+	public float getCenaJesen() {
+		return cenaJesen;
+	}
+
+	public void setCenaJesen(float cenaJesen) {
+		this.cenaJesen = cenaJesen;
+	}
+
+	public float getCenaZima() {
+		return cenaZima;
+	}
+
+	public void setCenaZima(float cenaZima) {
+		this.cenaZima = cenaZima;
+	}
+
 	/**
-     * Gets the value of the tipSmestaja property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TipSmestaja }
-     *     
-     */
-    public TipSmestaja getTipSmestaja() {
-        return tipSmestaja;
-    }
-
-    /**
-     * Sets the value of the tipSmestaja property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TipSmestaja }
-     *     
-     */
-    public void setTipSmestaja(TipSmestaja value) {
-        this.tipSmestaja = value;
-    }
-
-    /**
-     * Gets the value of the kategorijaSmestaja property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public KategorijaSmestaja getKategorijaSmestaja() {
-        return kategorijaSmestaja;
-    }
-
-    /**
-     * Sets the value of the kategorijaSmestaja property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setKategorijaSmestaja(KategorijaSmestaja value) {
-        this.kategorijaSmestaja = value;
-    }
-
-    /**
-     * Gets the value of the opis property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getOpis() {
-        return opis;
-    }
-
-    /**
-     * Sets the value of the opis property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setOpis(String value) {
-        this.opis = value;
-    }
-
-    /**
-     * Gets the value of the maxOsoba property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getMaxOsoba() {
-        return maxOsoba;
-    }
-
-    /**
-     * Sets the value of the maxOsoba property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setMaxOsoba(BigInteger value) {
-        this.maxOsoba = value;
-    }
-
-    /**
-     * Gets the value of the maxDanaZaOtkazivanje property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getMaxDanaZaOtkazivanje() {
-        return maxDanaZaOtkazivanje;
-    }
-
-    /**
-     * Sets the value of the maxDanaZaOtkazivanje property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setMaxDanaZaOtkazivanje(BigInteger value) {
-        this.maxDanaZaOtkazivanje = value;
-    }
-
-    /**
-     * Gets the value of the cenaProlece property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getCenaProlece() {
-        return cenaProlece;
-    }
-
-    /**
-     * Sets the value of the cenaProlece property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setCenaProlece(BigDecimal value) {
-        this.cenaProlece = value;
-    }
-
-    /**
-     * Gets the value of the cenaLeto property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getCenaLeto() {
-        return cenaLeto;
-    }
-
-    /**
-     * Sets the value of the cenaLeto property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setCenaLeto(BigDecimal value) {
-        this.cenaLeto = value;
-    }
-
-    /**
-     * Gets the value of the cenaJesen property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getCenaJesen() {
-        return cenaJesen;
-    }
-
-    /**
-     * Sets the value of the cenaJesen property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setCenaJesen(BigDecimal value) {
-        this.cenaJesen = value;
-    }
-
-    /**
-     * Gets the value of the cenaZima property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getCenaZima() {
-        return cenaZima;
-    }
-
-    /**
-     * Sets the value of the cenaZima property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setCenaZima(BigDecimal value) {
-        this.cenaZima = value;
-    }
-
-    /**
      * Gets the value of the vlasnik property.
      * 
      */
