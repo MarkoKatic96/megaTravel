@@ -38,26 +38,26 @@ import org.hibernate.annotations.CreationTimestamp;
 public class SamostalnaRezervacija {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long samostalnaRezervacijaId;
+    private Long samostalnaRezervacijaId;
 	
 	@NotNull
-    protected Long smestajId;
+    private Long smestajId;
 	
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
     @NotNull
-    protected Date odDatuma;
+    private Date odDatuma;
     
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
     @NotNull
-    protected Date doDatuma;
+    private Date doDatuma;
     
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
     @NotNull
     @CreationTimestamp
-    protected Date timestamp;
+    private Date timestamp;
 
     public SamostalnaRezervacija() {
 	}

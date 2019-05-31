@@ -10,26 +10,26 @@ import com.megatravel.agentglobalback.model.KategorijaSmestaja;
 import com.megatravel.agentglobalback.model.Smestaj;
 import com.megatravel.agentglobalback.model.TAdresa;
 import com.megatravel.agentglobalback.model.TImage;
-import com.megatravel.agentglobalback.model.TKoordinate;
 import com.megatravel.agentglobalback.model.TipSmestaja;
 
 public class SmestajDTO {
 	
-	protected Long idSmestaja;
-    protected TAdresa adresa;
-    protected TKoordinate koordinate;
-    protected TipSmestaja tipSmestaja;
-    protected KategorijaSmestaja kategorijaSmestaja;
-    protected String opis;
-    protected BigInteger maxOsoba;
-    protected BigInteger maxDanaZaOtkazivanje;
-    protected BigDecimal cenaProlece;
-    protected BigDecimal cenaLeto;
-    protected BigDecimal cenaJesen;
-    protected BigDecimal cenaZima;
-    protected Long vlasnik;
-    protected Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
-    protected Set<TImage> listaSlika = new HashSet<>();
+	private Long idSmestaja;
+    private TAdresa adresa;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+    private TipSmestaja tipSmestaja;
+    private KategorijaSmestaja kategorijaSmestaja;
+    private String opis;
+    private BigInteger maxOsoba;
+    private BigInteger maxDanaZaOtkazivanje;
+    private BigDecimal cenaProlece;
+    private BigDecimal cenaLeto;
+    private BigDecimal cenaJesen;
+    private BigDecimal cenaZima;
+    private Long vlasnik;
+    private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
+    private Set<TImage> listaSlika = new HashSet<>();
     
     public SmestajDTO() {
 	}
@@ -38,7 +38,8 @@ public class SmestajDTO {
 		super();
 		this.idSmestaja = s.getIdSmestaja();
 		this.adresa = s.getAdresa();
-		this.koordinate = s.getKoordinate();
+		this.latitude = s.getLatitude();
+		this.longitude = s.getLongitude();
 		this.tipSmestaja = s.getTipSmestaja();
 		this.kategorijaSmestaja = s.getKategorijaSmestaja();
 		this.opis = s.getOpis();
@@ -52,15 +53,16 @@ public class SmestajDTO {
 		this.listaDodatnihUsluga = s.getListaDodatnihUsluga();
 		this.listaSlika = s.getListaSlika();
 	}
-    
-	public SmestajDTO(Long idSmestaja, TAdresa adresa, TKoordinate koordinate, TipSmestaja tipSmestaja,
-			KategorijaSmestaja kategorijaSmestaja, String opis, BigInteger maxOsoba, BigInteger maxDanaZaOtkazivanje,
-			BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen, BigDecimal cenaZima, Long vlasnik,
-			Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
+ 
+	public SmestajDTO(Long idSmestaja, TAdresa adresa, BigDecimal latitude, BigDecimal longitude,
+			TipSmestaja tipSmestaja, KategorijaSmestaja kategorijaSmestaja, String opis, BigInteger maxOsoba,
+			BigInteger maxDanaZaOtkazivanje, BigDecimal cenaProlece, BigDecimal cenaLeto, BigDecimal cenaJesen,
+			BigDecimal cenaZima, Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
 		super();
 		this.idSmestaja = idSmestaja;
 		this.adresa = adresa;
-		this.koordinate = koordinate;
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.tipSmestaja = tipSmestaja;
 		this.kategorijaSmestaja = kategorijaSmestaja;
 		this.opis = opis;
@@ -74,9 +76,6 @@ public class SmestajDTO {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 		this.listaSlika = listaSlika;
 	}
-
-
-
 
 	public Long getIdSmestaja() {
 		return idSmestaja;
@@ -94,12 +93,20 @@ public class SmestajDTO {
 		this.adresa = adresa;
 	}
 
-	public TKoordinate getKoordinate() {
-		return koordinate;
+	public BigDecimal getLatitude() {
+		return latitude;
 	}
 
-	public void setKoordinate(TKoordinate koordinate) {
-		this.koordinate = koordinate;
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
 	}
 
 	public TipSmestaja getTipSmestaja() {

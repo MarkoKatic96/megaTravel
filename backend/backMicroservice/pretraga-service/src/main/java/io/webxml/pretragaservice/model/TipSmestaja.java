@@ -2,27 +2,43 @@ package io.webxml.pretragaservice.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlType(name = "TipSmestaja")
+@Entity
 public class TipSmestaja {
 	
-	private long idTipaSmestaja;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idTipaSmestaja;
+	
+	@NotNull
 	private String nazivTipaSmestaja;
+	
+	@OneToMany(mappedBy="tipSmestaja", cascade=CascadeType.ALL)
 	private List<Smestaj> smestaji;
 	
 	public TipSmestaja() {}
-	
-	public TipSmestaja(long idTipaSmestaja, String nazivTipaSmestaja, List<Smestaj> smestaji) {
+
+	public TipSmestaja(Long idTipaSmestaja, @NotNull String nazivTipaSmestaja, List<Smestaj> smestaji) {
 		super();
 		this.idTipaSmestaja = idTipaSmestaja;
 		this.nazivTipaSmestaja = nazivTipaSmestaja;
 		this.smestaji = smestaji;
 	}
 
-	public long getIdTipaSmestaja() {
+	public Long getIdTipaSmestaja() {
 		return idTipaSmestaja;
 	}
 
-	public void setIdTipaSmestaja(long idTipaSmestaja) {
+	public void setIdTipaSmestaja(Long idTipaSmestaja) {
 		this.idTipaSmestaja = idTipaSmestaja;
 	}
 
@@ -41,7 +57,4 @@ public class TipSmestaja {
 	public void setSmestaji(List<Smestaj> smestaji) {
 		this.smestaji = smestaji;
 	}
-	
-	
-
 }

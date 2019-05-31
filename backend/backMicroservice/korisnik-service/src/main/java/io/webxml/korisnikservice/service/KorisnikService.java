@@ -1,19 +1,13 @@
 package io.webxml.korisnikservice.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.webxml.korisnikservice.jwt.CustomException;
 import io.webxml.korisnikservice.jwt.JwtTokenUtils;
 import io.webxml.korisnikservice.model.Korisnik;
 import io.webxml.korisnikservice.repository.KorisnikRepository;

@@ -35,10 +35,10 @@ public class TAdresa {
 	private Smestaj smestaj;
 	
     @XmlElement(required = true)
-    protected String grad;
+    private String grad;
     @XmlElement(required = true)
-    protected String ulica;
-    protected int broj;
+    private String ulica;
+    private int broj;
 
     /**
      * Gets the value of the grad property.

@@ -1,26 +1,44 @@
 package io.webxml.pretragaservice.model;
 
-public class DodatneUsluge {
+import java.util.ArrayList;
+import java.util.List;
 
-	private long idDodatneUsluge;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
+
+@Entity
+public class DodatneUsluge {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idDodatneUsluge;
+	
+	@NotNull
 	private String nazivDodatneUsluge;
-	private Smestaj smestaj;
 	
+	@ManyToMany(mappedBy = "listaDodatnihUsluga")
+	private List<Smestaj> listaSmestaja;
 	
-	public DodatneUsluge() {}
+	public DodatneUsluge() {
 	
-	public DodatneUsluge(long idDodatneUsluge, String nazivDodatneUsluge, Smestaj smestaj) {
+	}
+	
+	public DodatneUsluge(Long id, @NotNull String nazivDodatneUsluge) {
 		super();
-		this.idDodatneUsluge = idDodatneUsluge;
+		this.idDodatneUsluge = id;
 		this.nazivDodatneUsluge = nazivDodatneUsluge;
-		this.smestaj = smestaj;
+		listaSmestaja = new ArrayList<>();
 	}
 
-	public long getIdDodatneUsluge() {
+	public Long getIdDodatneUsluge() {
 		return idDodatneUsluge;
 	}
 
-	public void setIdDodatneUsluge(long idDodatneUsluge) {
+	public void setIdDodatneUsluge(Long idDodatneUsluge) {
 		this.idDodatneUsluge = idDodatneUsluge;
 	}
 
@@ -32,16 +50,12 @@ public class DodatneUsluge {
 		this.nazivDodatneUsluge = nazivDodatneUsluge;
 	}
 
-	public Smestaj getSmestaj() {
-		return smestaj;
+	public List<Smestaj> getListaSmestaja() {
+		return listaSmestaja;
 	}
 
-	public void setSmestaj(Smestaj smestaj) {
-		this.smestaj = smestaj;
+	public void setListaSmestaja(List<Smestaj> listaSmestaja) {
+		this.listaSmestaja = listaSmestaja;
 	}
-	
-	
-	
-	
 	
 }

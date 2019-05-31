@@ -26,22 +26,22 @@ import javax.xml.bind.annotation.XmlType;
 public class NeaktiviranAgent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long idNeaktiviranogAgenta;
+    private Long idNeaktiviranogAgenta;
 	
 	@NotNull
     @XmlElement(required = true)
-    protected String ime;
+    private String ime;
 	
 	@NotNull
     @XmlElement(required = true)
-    protected String prezime;
+    private String prezime;
 	
 	@NotNull
-    protected Long poslovniMaticniBroj;
+    private Long poslovniMaticniBroj;
 
 	@NotNull
     @XmlElement(required = true)
-    protected String email;
+    private String email;
 	
     public NeaktiviranAgent() {
 		super();

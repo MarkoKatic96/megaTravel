@@ -32,32 +32,32 @@ import org.hibernate.annotations.CreationTimestamp;
 public class Agent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long idAgenta;
+    private Long idAgenta;
 	
 	@NotNull
     @XmlElement(required = true)
-    protected String ime;
+    private String ime;
 	
 	@NotNull
     @XmlElement(required = true)
-    protected String prezime;
+    private String prezime;
 	
 	@NotNull
-    protected Long poslovniMaticniBroj;
+    private Long poslovniMaticniBroj;
 	
 	@NotNull
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
 	@CreationTimestamp
-    protected Date datumClanstva;
+    private Date datumClanstva;
 	
 	@NotNull
     @XmlElement(required = true)
-    protected String email;
+    private String email;
 	
 	@NotNull
     @XmlElement(required = true)
-    protected String lozinka;
+    private String lozinka;
 	
     public Agent() {
 		super();

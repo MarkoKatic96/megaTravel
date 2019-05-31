@@ -10,7 +10,7 @@ import com.megatravel.agentglobalback.repository.NeaktiviranAgentRepository;
 public class NeaktiviranAgentService {
 	
 	@Autowired
-	NeaktiviranAgentRepository agentRepository;
+	private NeaktiviranAgentRepository agentRepository;
 	
 	public NeaktiviranAgent findByEmail(String email) {
 		return agentRepository.findByEmail(email);

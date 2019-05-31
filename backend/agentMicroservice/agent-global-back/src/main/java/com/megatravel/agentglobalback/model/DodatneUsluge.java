@@ -26,38 +26,39 @@ public class DodatneUsluge {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long idDodatneUsluge;
 	
 	@NotNull
-	private String dodatnaUsluga;
+	private String nazivDodatneUsluge;
 	
 	@ManyToMany(mappedBy = "listaDodatnihUsluga")
 	private List<Smestaj> listaSmestaja;
 	
-	public DodatneUsluge(Long id, @NotNull String dodatnaUsluga) {
-		super();
-		this.id = id;
-		this.dodatnaUsluga = dodatnaUsluga;
-		listaSmestaja = new ArrayList<>();
+	public DodatneUsluge() {
+	
 	}
 	
-	public DodatneUsluge() {
+	public DodatneUsluge(Long id, @NotNull String nazivDodatneUsluge) {
+		super();
+		this.idDodatneUsluge = id;
+		this.nazivDodatneUsluge = nazivDodatneUsluge;
+		listaSmestaja = new ArrayList<>();
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdDodatneUsluge() {
+		return idDodatneUsluge;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdDodatneUsluge(Long idDodatneUsluge) {
+		this.idDodatneUsluge = idDodatneUsluge;
 	}
 
-	public String getDodatnaUsluga() {
-		return dodatnaUsluga;
+	public String getNazivDodatneUsluge() {
+		return nazivDodatneUsluge;
 	}
 
-	public void setDodatnaUsluga(String dodatnaUsluga) {
-		this.dodatnaUsluga = dodatnaUsluga;
+	public void setNazivDodatneUsluge(String nazivDodatneUsluge) {
+		this.nazivDodatneUsluge = nazivDodatneUsluge;
 	}
 
 	public List<Smestaj> getListaSmestaja() {

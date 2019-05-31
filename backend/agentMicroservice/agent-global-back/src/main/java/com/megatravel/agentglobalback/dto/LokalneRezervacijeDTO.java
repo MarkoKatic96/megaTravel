@@ -7,15 +7,15 @@ import com.megatravel.agentglobalback.model.StatusRezervacije;
 
 public class LokalneRezervacijeDTO {
 	
-	protected Long globalniId;
+	private Long globalniId;
 	private Long lokalniId;
-	protected Long smestajId;
-	protected Long korisnikId;
+	private Long smestajId;
+	private Long korisnikId;
 	private Long vlasnikId;
-    protected Date odDatuma;
-    protected Date doDatuma;
-    protected StatusRezervacije statusRezervacije;
-    protected Date timestamp;
+    private Date odDatuma;
+    private Date doDatuma;
+    private StatusRezervacije statusRezervacije;
+    private Date timestamp;
     private Date updateTimestamp;
 	
     public LokalneRezervacijeDTO(Long globalniId, Long lokalniId, Long smestajId, Long vlasnikId, Long korisnikId, Date odDatuma, Date doDatuma,

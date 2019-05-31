@@ -32,20 +32,20 @@ import javax.xml.bind.annotation.XmlType;
 public class TImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long idImage;
+    private Long idImage;
 	
 	@ManyToOne
 	@NotNull
-    protected Smestaj smestaj;
+    private Smestaj smestaj;
     
 	@XmlElement(required = true)
 	@NotNull
-    protected String name;
+    private String name;
     
     @XmlElement(required = true)
     @NotNull
     @Lob
-    protected byte[] bytes;
+    private byte[] bytes;
 
     /**
      * Gets the value of the idImage property.

@@ -2,7 +2,6 @@ package io.webxml.reservationservice.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ import io.webxml.reservationservice.repository.RezervacijaRepository;
 @Service
 public class RezervacijaService {
 
-	@Autowired
+	private @Autowired
 	RezervacijaRepository rezervacijaRepository;
 	
 	public List<Rezervacija> getAllReservations(){
@@ -53,13 +52,13 @@ public class RezervacijaService {
 	public Rezervacija reserve(Rezervacija rezervacija){
 		int zauzeto = 0;
 		Optional<List<Rezervacija>> rezervacije = Optional.of(rezervacijaRepository.findAll());
-		List<Rezervacija> rezervacijeSaId = new ArrayList<Rezervacija>();
+		//List<Rezervacija> rezervacijeSaId = new ArrayList<Rezervacija>();
 		if(rezervacije.isPresent()) {
 			for (Rezervacija rezervacija1 : rezervacije.get()) {
 				//uzimam sve rezervacije koje imaju isti smestaj
 				if(rezervacija1.getSmestajId()==rezervacija.getSmestajId()) {
-					if((rezervacija.getOd().equals(rezervacija1.getDo()) || rezervacija.getOd().after(rezervacija1.getDo()))
-							|| (rezervacija1.getOd().equals(rezervacija.getDo()) || rezervacija1.getOd().after(rezervacija.getDo()))) {
+					if((rezervacija.getOdDatuma().equals(rezervacija1.getDoDatuma()) || rezervacija.getOdDatuma().after(rezervacija1.getDoDatuma()))
+							|| (rezervacija1.getOdDatuma().equals(rezervacija.getDoDatuma()) || rezervacija1.getOdDatuma().after(rezervacija.getDoDatuma()))) {
 						System.out.println("Slobodna rezervacija");
 					}else {
 						zauzeto = 1;

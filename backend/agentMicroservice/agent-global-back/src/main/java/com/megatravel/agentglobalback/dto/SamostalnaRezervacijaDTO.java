@@ -6,11 +6,11 @@ import com.megatravel.agentglobalback.model.SamostalnaRezervacija;
 
 public class SamostalnaRezervacijaDTO {
 	
-	protected Long samostalnaRezervacijaId;
-    protected Long smestajId;
-    protected Date odDatuma;
-    protected Date doDatuma;
-    protected Date timestamp;
+	private Long samostalnaRezervacijaId;
+    private Long smestajId;
+    private Date odDatuma;
+    private Date doDatuma;
+    private Date timestamp;
 	
     public SamostalnaRezervacijaDTO(Long samostalnaRezervacijaId, Long smestajId, Date odDatuma, Date doDatuma,
 			Date timestamp) {

@@ -36,13 +36,13 @@ public class PotvrdaRezervacije {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long potvrdaRezervacijeId;
     
-	protected Long rezervacijaId;
+	private Long rezervacijaId;
     
-    protected StatusRezervacije statusRezervacije;
+    private StatusRezervacije statusRezervacije;
  
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected Date timestamp;
+    private Date timestamp;
 
     
     public PotvrdaRezervacije() {

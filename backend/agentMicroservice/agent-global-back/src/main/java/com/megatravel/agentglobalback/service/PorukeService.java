@@ -14,7 +14,7 @@ import com.megatravel.agentglobalback.repository.PorukaRepository;
 public class PorukeService {
 
 	@Autowired
-	PorukaRepository porukaRepository;
+	private PorukaRepository porukaRepository;
 	
 	public Page<Poruka> findAllWithUser(Long userId, Long agentId, Pageable page) {
 		return porukaRepository.findAllWithUser(userId, agentId, page);

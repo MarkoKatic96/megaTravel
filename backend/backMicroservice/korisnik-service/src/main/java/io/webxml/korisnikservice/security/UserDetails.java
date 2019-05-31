@@ -1,7 +1,6 @@
 package io.webxml.korisnikservice.security;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import io.webxml.korisnikservice.service.KorisnikService;
 @Service
 public class UserDetails implements UserDetailsService{
 	
-	@Autowired
+	private @Autowired
 	KorisnikService korisnikService;
 	
 	@Override

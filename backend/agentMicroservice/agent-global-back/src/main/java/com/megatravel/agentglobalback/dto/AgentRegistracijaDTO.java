@@ -2,13 +2,13 @@ package com.megatravel.agentglobalback.dto;
 
 public class AgentRegistracijaDTO {
 
-    protected Long idAgenta;	
-    protected String ime;
-    protected String prezime;
-    protected Long poslovniMaticniBroj;
-    protected String email;
-    //protected String lozinka;
-    //protected String potvrdaLozinke;
+    private Long idAgenta;	
+    private String ime;
+    private String prezime;
+    private Long poslovniMaticniBroj;
+    private String email;
+    //private String lozinka;
+    //private String potvrdaLozinke;
     	
     public AgentRegistracijaDTO() {
 	

@@ -33,7 +33,7 @@ public class OsnovnaPretragaService {
 		
 		if(op.getMesto()!=null && !op.getMesto().isEmpty()) {
 			for (Smestaj smestaj : returnLista) {
-				if(smestaj.getAdresa().contains(op.getMesto())) {
+				if(smestaj.getAdresa().getGrad().equals(op.getMesto())) {
 					listaSmestaja.add(smestaj);
 				}
 			}
@@ -60,9 +60,9 @@ public class OsnovnaPretragaService {
 			for (Smestaj smestaj : returnLista) {
 				for (Rezervacija rezervacija1 : rezervacije) {
 					if(rezervacija1.getSmestajId()==smestaj.getIdSmestaja()) {
-						//op.getDatumDolaska/Polaska je onaj sto se unosi u search, ovaj getDo/Od je u bazi
-						if((op.getDatumDolaska().equals(rezervacija1.getDo()) || op.getDatumDolaska().after(rezervacija1.getDo()))
-								|| (rezervacija1.getOd().equals(op.getDatumPolaska()) || rezervacija1.getOd().after(op.getDatumPolaska()))) {
+						//op.getDatumDolaska/Polaska je onaj sto se unosi u search, ovaj getDoDatuma/Od je u bazi
+						if((op.getDatumDolaska().equals(rezervacija1.getDoDatuma()) || op.getDatumDolaska().after(rezervacija1.getDoDatuma()))
+								|| (rezervacija1.getOdDatuma().equals(op.getDatumPolaska()) || rezervacija1.getOdDatuma().after(op.getDatumPolaska()))) {
 							System.out.println("SLOBODNO!");
 						}else {
 							zauzeto=1;

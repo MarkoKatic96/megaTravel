@@ -118,7 +118,8 @@ public class SmestajController {
 		 */
 		Smestaj s = new Smestaj();
 		s.setAdresa(smestajDTO.getAdresa());
-		s.setKoordinate(smestajDTO.getKoordinate());
+		s.setLatitude(smestajDTO.getLatitude());
+		s.setLongitude(smestajDTO.getLongitude());
 		s.setTipSmestaja(smestajDTO.getTipSmestaja());
 		s.setKategorijaSmestaja(smestajDTO.getKategorijaSmestaja());
 		s.setOpis(smestajDTO.getOpis());

@@ -33,8 +33,8 @@ public class TKoordinate {
 	@OneToOne
 	private Smestaj smestaj;
 	
-    protected int latitude;
-    protected int Longitude;
+    private int latitude;
+    private int Longitude;
 
     /**
      * Gets the value of the latitude property.

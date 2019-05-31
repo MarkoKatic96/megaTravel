@@ -17,7 +17,7 @@ import com.megatravel.agentglobalback.repository.AgentRepository;
 public class AgentService {
 	
 	@Autowired
-	AgentRepository agentRepository;
+	private AgentRepository agentRepository;
 	
 	@Autowired
 	private JwtTokenUtils jwtTokenProvider;

@@ -12,10 +12,10 @@ import com.megatravel.agentglobalback.repository.SmestajRepository;
 public class SamostalnaRezervacijaService {
 
 	@Autowired
-	SamostalnaRezervacijaRepository rezervacijaRepository;
+	private SamostalnaRezervacijaRepository rezervacijaRepository;
 
 	@Autowired
-	SmestajRepository smestajRepository;
+	private SmestajRepository smestajRepository;
 	
 	public SamostalnaRezervacija save(SamostalnaRezervacija s) {
 		return rezervacijaRepository.save(s);

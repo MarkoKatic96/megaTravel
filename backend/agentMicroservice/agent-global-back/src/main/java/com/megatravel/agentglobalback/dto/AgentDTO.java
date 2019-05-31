@@ -6,12 +6,12 @@ import com.megatravel.agentglobalback.model.Agent;
 
 public class AgentDTO {
 
-    protected Long idAgenta;	
-    protected String ime;
-    protected String prezime;
-    protected Long poslovniMaticniBroj;
-    protected Date datumClanstva;	
-    protected String email;
+    private Long idAgenta;	
+    private String ime;
+    private String prezime;
+    private Long poslovniMaticniBroj;
+    private Date datumClanstva;	
+    private String email;
 	
     public AgentDTO(Long idAgenta, String ime, String prezime, Long poslovniMaticniBroj, Date datumClanstva,
 			String email) {

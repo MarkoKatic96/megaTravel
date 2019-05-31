@@ -41,36 +41,36 @@ public class Rezervacija {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long rezervacijaId;
+    private Long rezervacijaId;
     
 	@NotNull
-	protected Long smestajId;
+	private Long smestajId;
 	
 	@NotNull
 	private Long vlasnikId;
     
 	@NotNull
-	protected Long korisnikId;
+	private Long korisnikId;
 	
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
     @NotNull
-    protected Date odDatuma;
+    private Date odDatuma;
     
     @XmlElement(name = "do", required = true)
     @XmlSchemaType(name = "dateTime")
     @NotNull
-    protected Date doDatuma;
+    private Date doDatuma;
     
     @XmlElement(defaultValue = "false")
     @NotNull
-    protected String statusRezervacije;
+    private String statusRezervacije;
     
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
     @NotNull
     @CreationTimestamp
-    protected Date timestamp;
+    private Date timestamp;
     
     @NotNull
     private Date updateTimestamp;
