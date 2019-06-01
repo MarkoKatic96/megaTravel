@@ -51,6 +51,18 @@ public class AgentController {
 		return new ResponseEntity<>(new AgentDTO(agent), HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/e/{email}", method = RequestMethod.GET)
+	public ResponseEntity<Agent> getAgentByEmail(@PathVariable String email) {
+		System.out.println("getAgentByEmail(" + email + ")");
+		
+		Agent agent = agentService.findByEmail(email);
+		if (agent == null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(agent, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> login(@RequestBody AgentPrijavaDTO agentPrijavaDTO) {
 		System.out.println("login(" + agentPrijavaDTO.getEmail() + "," + agentPrijavaDTO.getLozinka() + ")");
@@ -60,8 +72,6 @@ public class AgentController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		agentService.save(agent);
-		
 		try {
 			String jwt = agentService.signin(agentPrijavaDTO.getEmail(), agentPrijavaDTO.getLozinka());
 			ObjectMapper mapper = new ObjectMapper();
@@ -122,5 +132,11 @@ public class AgentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/token", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> validateToken(@RequestBody String token) {
+		System.out.println("validateToken()");
+	
+		return new ResponseEntity<>(new Boolean(true), HttpStatus.OK);
+	}
 	
 }
