@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		//TODO 1: ono cemu neregistrovani korisnik sme da pristupi
-		http.authorizeRequests().antMatchers("/*", "agent/login", "/agent/login", "/agent/signup").permitAll()
+		http.authorizeRequests().antMatchers("/*", "agent/login", "/agent/login", "/agent/signup", "/smestaj/smestaji", "/smestaj/smestajiTipa/*", "/smestaj/smestajiKategorije/*", "/smestaj/smestajiGrad/*").permitAll()
 		.antMatchers(HttpMethod.PUT, "/api/korisnik/*/aktivirajNalog", "/api/sobe/maksimalnaCena").permitAll().anyRequest()
 				.authenticated();
 

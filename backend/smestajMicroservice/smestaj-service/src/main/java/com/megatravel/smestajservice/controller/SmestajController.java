@@ -23,6 +23,7 @@ import com.megatravel.smestajservice.dto.SmestajDTO;
 import com.megatravel.smestajservice.jwt.JwtTokenUtils;
 import com.megatravel.smestajservice.model.Agent;
 import com.megatravel.smestajservice.model.Smestaj;
+import com.megatravel.smestajservice.model.SmestajiRestTemplate;
 import com.megatravel.smestajservice.service.SmestajService;
 
 @RestController
@@ -69,6 +70,38 @@ public class SmestajController {
 		}
 
 		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/smestaji", method = RequestMethod.GET)
+	public ResponseEntity<SmestajiRestTemplate> getSmestaji(){
+		List<Smestaj> lista = smestajService.getSmestaji();
+		SmestajiRestTemplate srt = new SmestajiRestTemplate();
+		srt.setSmestajiList(lista);
+		return new ResponseEntity<SmestajiRestTemplate>(srt, HttpStatus.OK);
+	}
+	
+	@RequestMapping("/smestajiTipa/{id}")
+	public ResponseEntity<SmestajiRestTemplate> getSmestajiTipa(@PathVariable("id") Long id){
+		List<Smestaj> lista = smestajService.getSmestajiOdredjenogTipa(id);
+		SmestajiRestTemplate srt = new SmestajiRestTemplate();
+		srt.setSmestajiList(lista);
+		return new ResponseEntity<SmestajiRestTemplate>(srt, HttpStatus.OK);
+	}
+	
+	@RequestMapping("/smestajiKategorije/{id}")
+	public ResponseEntity<SmestajiRestTemplate> getSmestajiKategorije(@PathVariable("id") Long id){
+		List<Smestaj> lista = smestajService.getSmestajiOdredjeneKategorije(id);
+		SmestajiRestTemplate srt = new SmestajiRestTemplate();
+		srt.setSmestajiList(lista);
+		return new ResponseEntity<SmestajiRestTemplate>(srt, HttpStatus.OK);
+	}
+	
+	@RequestMapping("/smestajiGrad/{grad}")
+	public ResponseEntity<SmestajiRestTemplate> getSmestajiGrad(@PathVariable("grad") String grad){
+		List<Smestaj> lista = smestajService.getSmestajiUGradu(grad);
+		SmestajiRestTemplate srt = new SmestajiRestTemplate();
+		srt.setSmestajiList(lista);
+		return new ResponseEntity<SmestajiRestTemplate>(srt, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

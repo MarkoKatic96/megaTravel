@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.megatravel.smestajservice.dto.SmestajDTO;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -142,11 +143,13 @@ public class Smestaj {
 	public void setIdSmestaja(Long idSmestaja) {
 		this.idSmestaja = idSmestaja;
 	}
-
+	
+	@JsonIgnore
 	public TAdresa getAdresa() {
 		return adresa;
 	}
 
+	@JsonIgnore
 	public void setAdresa(TAdresa adresa) {
 		this.adresa = adresa;
 	}
@@ -167,18 +170,22 @@ public class Smestaj {
 		this.longitude = longitude;
 	}
 
+	@JsonIgnore
 	public TipSmestaja getTipSmestaja() {
 		return tipSmestaja;
 	}
 
+	@JsonIgnore
 	public void setTipSmestaja(TipSmestaja tipSmestaja) {
 		this.tipSmestaja = tipSmestaja;
 	}
 
+	@JsonIgnore
 	public KategorijaSmestaja getKategorijaSmestaja() {
 		return kategorijaSmestaja;
 	}
 
+	@JsonIgnore
 	public void setKategorijaSmestaja(KategorijaSmestaja kategorijaSmestaja) {
 		this.kategorijaSmestaja = kategorijaSmestaja;
 	}
