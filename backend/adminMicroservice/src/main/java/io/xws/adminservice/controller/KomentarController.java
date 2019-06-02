@@ -18,7 +18,7 @@ import io.xws.adminservice.dto.KomentarDTO;
 import io.xws.adminservice.service.IKomentarService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://localhost:3000")
 @RequestMapping("/api/comment")
 @Api(tags = "")
 public class KomentarController 

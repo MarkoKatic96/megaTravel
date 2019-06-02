@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.xws.adminservice.dto.AgentDTO;
+import io.xws.adminservice.dto.NeregistrovaniAgentDTO;
 import io.xws.adminservice.service.IAgentService;
 
 @RestController
@@ -46,7 +48,7 @@ public class AgentController
 	 * Zbog ispisa poruke na view moze se prebaciti da vraca string, mada treba na agentu da se proveri prvo
 	 */
 	@PostMapping("/confirmrequest")
-	public ResponseEntity<Boolean> createPotvrdiZahtev(@RequestBody AgentDTO zahtev)
+	public ResponseEntity<Boolean> createPotvrdiZahtev(@RequestBody NeregistrovaniAgentDTO zahtev)
 	{
 		System.out.println("createPotvrdiZahtev()");
 		
@@ -54,4 +56,15 @@ public class AgentController
 		
 	}
 	
+	/*
+	 * Odbijanje zahteva za agenta (brisanje zahteva)
+	 */
+	@DeleteMapping("/refuserequest")
+	public ResponseEntity<Boolean> deleteOdbijZahtev(@RequestBody NeregistrovaniAgentDTO zahtev)
+	{
+		System.out.println("deleteOdbijZahtev()");
+		
+		return (!agentService.deleteOdbijZahtev(zahtev)) ? new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		
+	}
 }
