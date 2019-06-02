@@ -8,13 +8,8 @@
 
 package io.webxml.pretragaservice.model;
 
-import java.util.Date;
+import java.sql.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -36,50 +31,38 @@ import org.hibernate.annotations.CreationTimestamp;
     "timestamp"
 })
 @XmlRootElement(name = "Rezervacija")
-@Entity
 public class Rezervacija {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rezervacijaId;
     
-	@NotNull
 	private Long smestajId;
 	
-	@NotNull
 	private Long vlasnikId;
     
-	@NotNull
 	private Long korisnikId;
 	
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    @NotNull
     private Date odDatuma;
     
     @XmlElement(name = "do", required = true)
     @XmlSchemaType(name = "dateTime")
-    @NotNull
     private Date doDatuma;
     
     @XmlElement(defaultValue = "false")
-    @NotNull
     private String statusRezervacije;
     
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    @NotNull
-    @CreationTimestamp
     private Date timestamp;
     
-    @NotNull
     private Date updateTimestamp;
 
     public Rezervacija() {
 	}
     
-    public Rezervacija(Long rezervacijaId, @NotNull Long smestajId, @NotNull Long vlasnikId, @NotNull Long korisnikId, @NotNull Date odDatuma,
-			@NotNull Date doDatuma, @NotNull StatusRezervacije statusRezervacije) {
+    public Rezervacija(Long rezervacijaId, Long smestajId, Long vlasnikId, Long korisnikId, Date odDatuma,
+			 Date doDatuma, StatusRezervacije statusRezervacije) {
 		super();
 		this.rezervacijaId = rezervacijaId;
 		this.smestajId = smestajId;

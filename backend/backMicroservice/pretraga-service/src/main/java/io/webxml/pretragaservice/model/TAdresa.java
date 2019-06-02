@@ -8,11 +8,6 @@
 
 package io.webxml.pretragaservice.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -25,13 +20,11 @@ import javax.xml.bind.annotation.XmlType;
     "ulica",
     "broj"
 })
-@Entity
+
 public class TAdresa {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Long adresaId;
 	
-	@OneToOne
 	private Smestaj smestaj;
 	
     @XmlElement(required = true)

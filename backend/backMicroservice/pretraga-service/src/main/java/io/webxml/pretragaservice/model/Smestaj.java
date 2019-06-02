@@ -4,20 +4,6 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -44,15 +30,11 @@ import javax.xml.bind.annotation.XmlType;
     "listaSlika"
 })
 @XmlRootElement(name = "Smestaj")
-@Entity
 public class Smestaj {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
     private Long idSmestaja;
 	
     @XmlElement(required = true)
-    @OneToOne
-    @JoinColumn(name = "adresa_id")
     private TAdresa adresa;
     
     @XmlElement(required = true)
@@ -62,14 +44,9 @@ public class Smestaj {
     private BigDecimal longitude;
     
     @XmlElement(required = true)
-    @Enumerated(EnumType.STRING)
-    @ManyToOne
-    @JoinColumn(name="tipsmestaja_id", nullable = false)
     private TipSmestaja tipSmestaja;
     
     @XmlElement(required = true)
-    @ManyToOne
-    @JoinColumn(name="kategorijasmestaja_id", nullable = false)
     private KategorijaSmestaja kategorijaSmestaja;
     
     @XmlElement(required = true)
@@ -93,18 +70,14 @@ public class Smestaj {
     @XmlElement(required = true)
     private float cenaZima;
     
-    @NotNull
     private Long vlasnik;
     
     @XmlList
     @XmlElement(required = true)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="tipsmestaja_id"))
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     
     @XmlList
     @XmlElement(required = true)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
     private Set<TImage> listaSlika = new HashSet<>();
     
     public Smestaj() {
@@ -112,7 +85,7 @@ public class Smestaj {
 
 	public Smestaj(Long idSmestaja, TAdresa adresa, BigDecimal latitude, BigDecimal longitude, TipSmestaja tipSmestaja,
 			KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje, int cenaProlece,
-			int cenaLeto, int cenaJesen, int cenaZima, @NotNull Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga,
+			int cenaLeto, int cenaJesen, int cenaZima, Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga,
 			Set<TImage> listaSlika) {
 		super();
 		this.idSmestaja = idSmestaja;

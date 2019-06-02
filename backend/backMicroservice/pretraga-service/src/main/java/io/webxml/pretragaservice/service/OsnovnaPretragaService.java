@@ -21,23 +21,21 @@ public class OsnovnaPretragaService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public List<Smestaj> osnovnaPretragaSmestaji(OsnovnaPretraga op, SmestajiRestTemplate srt, RezervacijeRestTemplate rrt){
+	public List<Smestaj> osnovnaPretragaSmestaji(OsnovnaPretraga op){
+		SmestajiRestTemplate srt = restTemplate.getForObject("http://smestaj-service/smestaj/smestaji", SmestajiRestTemplate.class);
 		List<Smestaj> lista = new ArrayList<Smestaj>();
 		List<Smestaj> listaSmestaja = new ArrayList<Smestaj>();
 		List<Smestaj> returnLista = new ArrayList<Smestaj>();
 		List<Rezervacija> rezervacije = new ArrayList<Rezervacija>();
-		rezervacije = rrt.getRezervacijaList();//sve rezervacije
 		lista = srt.getSmestajiList(); //svi smestaji
-		for (Smestaj smestaj : lista) {
-			returnLista.add(smestaj);
-		}
+		returnLista.addAll(lista);
+
 		
 		if(op.getMesto()!=null && !op.getMesto().isEmpty()) {
-			for (Smestaj smestaj : returnLista) {
-				if(smestaj.getAdresa().getGrad().equals(op.getMesto())) {
-					listaSmestaja.add(smestaj);
-				}
-			}
+			
+			String mesto = op.getMesto();
+			SmestajiRestTemplate smestajiUGradu = restTemplate.getForObject("http://smestaj-service/smestaj/smestajiGrad/" + mesto, SmestajiRestTemplate.class);
+			listaSmestaja = smestajiUGradu.getSmestajiList();
 			
 			returnLista.clear();
 			returnLista.addAll(listaSmestaja);
@@ -56,7 +54,9 @@ public class OsnovnaPretragaService {
 			listaSmestaja.clear();
 		}
 		
-		if(op.getDatumDolaska()!=null && op.getDatumPolaska()!=null && op.getDatumDolaska().before(op.getDatumPolaska())) {
+		/*if(op.getDatumDolaska()!=null && op.getDatumPolaska()!=null && op.getDatumDolaska().before(op.getDatumPolaska())) {
+			RezervacijeRestTemplate rrt = restTemplate.getForObject("http://reservation-service/rezervacije", RezervacijeRestTemplate.class);
+			rezervacije = rrt.getRezervacijaList();//sve rezervacije
 			int zauzeto=0;
 			for (Smestaj smestaj : returnLista) {
 				for (Rezervacija rezervacija1 : rezervacije) {
@@ -81,12 +81,12 @@ public class OsnovnaPretragaService {
 			returnLista.addAll(listaSmestaja);
 			listaSmestaja.clear();
 			
-		}
+		}*/
 		
 		if(op.getTipSmestaja()!=null) {
 			List<Smestaj> sst = new ArrayList<Smestaj>();
 			Long tipSmestaja = op.getTipSmestaja();
-			SmestajiRestTemplate smestajiSaTipom = restTemplate.getForObject("http://korisnik-service/api/smestajiTipa/" + tipSmestaja, SmestajiRestTemplate.class);
+			SmestajiRestTemplate smestajiSaTipom = restTemplate.getForObject("http://smestaj-service/smestaj/smestajiTipa/" + tipSmestaja, SmestajiRestTemplate.class);
 			sst = smestajiSaTipom.getSmestajiList();
 			for (Smestaj smestaj : sst) {
 				for(Smestaj smestaj2 : returnLista) {
@@ -103,7 +103,7 @@ public class OsnovnaPretragaService {
 		if(op.getKategorijaSmestaja()!=null) {
 			List<Smestaj> ssk = new ArrayList<Smestaj>();
 			Long kategorijaSmestaja = op.getKategorijaSmestaja();
-			SmestajiRestTemplate smestajiSaKategorijom = restTemplate.getForObject("http://korisnik-service/api/smestajiKategorije/" + kategorijaSmestaja, SmestajiRestTemplate.class);
+			SmestajiRestTemplate smestajiSaKategorijom = restTemplate.getForObject("http://smestaj-service/smestaj/smestajiKategorije/" + kategorijaSmestaja, SmestajiRestTemplate.class);
 			ssk = smestajiSaKategorijom.getSmestajiList();
 			for (Smestaj smestaj : ssk) {
 				for(Smestaj smestaj2 : returnLista) {
@@ -118,7 +118,7 @@ public class OsnovnaPretragaService {
 		}
 		
 		//nije jos testirano da li radi
-		if(!op.getDodatneUsluge().isEmpty()) {
+		/*if(!op.getDodatneUsluge().isEmpty()) {
 			for(int i = 0; i<op.getDodatneUsluge().size(); i++) { 
 				for (Smestaj smestaj : returnLista) { 
 					for(int g = 0; g<smestaj.getListaDodatnihUsluga().size(); g++) { 
@@ -132,7 +132,7 @@ public class OsnovnaPretragaService {
 				returnLista.addAll(listaSmestaja);
 				listaSmestaja.clear();
 			}
-		}
+		}*/
 		
 		return returnLista;
 	}

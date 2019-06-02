@@ -8,7 +8,7 @@
 
 package io.webxml.reservationservice.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +46,6 @@ public class Rezervacija {
 	@NotNull
 	private Long smestajId;
 	
-	@NotNull
 	private Long vlasnikId;
     
 	@NotNull
@@ -78,7 +77,7 @@ public class Rezervacija {
     public Rezervacija() {
 	}
     
-    public Rezervacija(Long rezervacijaId, @NotNull Long smestajId, @NotNull Long vlasnikId, @NotNull Long korisnikId, @NotNull Date odDatuma,
+    public Rezervacija(Long rezervacijaId, @NotNull Long smestajId, Long vlasnikId, @NotNull Long korisnikId, @NotNull Date odDatuma,
 			@NotNull Date doDatuma, @NotNull StatusRezervacije statusRezervacije) {
 		super();
 		this.rezervacijaId = rezervacijaId;

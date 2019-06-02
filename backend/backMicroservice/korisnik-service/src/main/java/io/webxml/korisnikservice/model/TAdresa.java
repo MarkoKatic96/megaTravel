@@ -25,13 +25,10 @@ import javax.xml.bind.annotation.XmlType;
     "ulica",
     "broj"
 })
-@Entity
 public class TAdresa {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private Long adresaId;
 	
-	@OneToOne
 	private Smestaj smestaj;
 	
     @XmlElement(required = true)

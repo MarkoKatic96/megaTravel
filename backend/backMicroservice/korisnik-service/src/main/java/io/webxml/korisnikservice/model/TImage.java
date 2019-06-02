@@ -28,13 +28,10 @@ import javax.xml.bind.annotation.XmlType;
     "name",
     "bytes"
 })
-@Entity
 public class TImage {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long idImage;
 	
-	@ManyToOne
 	@NotNull
     private Smestaj smestaj;
     

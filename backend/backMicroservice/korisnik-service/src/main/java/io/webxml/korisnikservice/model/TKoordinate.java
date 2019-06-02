@@ -24,13 +24,10 @@ import javax.xml.bind.annotation.XmlType;
     "latitude",
     "Longitude"
 })
-@Entity
 public class TKoordinate {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Long koordinateId;
 	
-	@OneToOne
 	private Smestaj smestaj;
 	
     protected int latitude;

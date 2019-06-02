@@ -44,15 +44,11 @@ import javax.xml.bind.annotation.XmlType;
     "listaSlika"
 })
 @XmlRootElement(name = "Smestaj")
-@Entity
 public class Smestaj {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long idSmestaja;
 	
     @XmlElement(required = true)
-    @OneToOne
-    @JoinColumn(name = "adresa_id")
     private TAdresa adresa;
     
     @XmlElement(required = true)
@@ -62,14 +58,9 @@ public class Smestaj {
     private BigDecimal longitude;
     
     @XmlElement(required = true)
-    @Enumerated(EnumType.STRING)
-    @ManyToOne
-    @JoinColumn(name="tipsmestaja_id", nullable = false)
     private TipSmestaja tipSmestaja;
     
     @XmlElement(required = true)
-    @ManyToOne
-    @JoinColumn(name="kategorijasmestaja_id", nullable = false)
     private KategorijaSmestaja kategorijaSmestaja;
     
     @XmlElement(required = true)
@@ -98,13 +89,10 @@ public class Smestaj {
     
     @XmlList
     @XmlElement(required = true)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="tipsmestaja_id"))
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     
     @XmlList
     @XmlElement(required = true)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
     private Set<TImage> listaSlika = new HashSet<>();
     
     public Smestaj() {

@@ -12,17 +12,13 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "TipSmestaja")
-@Entity
 public class TipSmestaja {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idTipaSmestaja;
 	
 	@NotNull
 	private String nazivTipaSmestaja;
 	
-	@OneToMany(mappedBy="tipSmestaja", cascade=CascadeType.ALL)
 	private List<Smestaj> smestaji;
 	
 	public TipSmestaja() {}

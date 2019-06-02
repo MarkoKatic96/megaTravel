@@ -81,7 +81,8 @@ import javax.xml.bind.annotation.XmlType;
     "lozinka",
     "datumClanstva",
     "registrovan",
-    "listaRezervacija"
+    "rola"
+    //"listaRezervacija"
 })
 @XmlRootElement(name = "Korisnik")
 public class Korisnik {

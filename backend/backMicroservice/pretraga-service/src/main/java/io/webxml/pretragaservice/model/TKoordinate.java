@@ -8,11 +8,6 @@
 
 package io.webxml.pretragaservice.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -24,13 +19,11 @@ import javax.xml.bind.annotation.XmlType;
     "latitude",
     "Longitude"
 })
-@Entity
+
 public class TKoordinate {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Long koordinateId;
 	
-	@OneToOne
 	private Smestaj smestaj;
 	
     protected int latitude;
