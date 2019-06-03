@@ -2,6 +2,8 @@ package com.megatravel.smestajservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.megatravel.smestajservice.dto.SmestajKorisnikDTO;
+import com.megatravel.smestajservice.model.DodatneUsluge;
 import com.megatravel.smestajservice.model.Smestaj;
+import com.megatravel.smestajservice.repository.DodatnaUslugaRepository;
 import com.megatravel.smestajservice.repository.SmestajRepository;
 
 @Component
@@ -17,6 +21,9 @@ public class SmestajService {
 
 	@Autowired
 	private SmestajRepository smestajRepository;
+	
+	@Autowired
+	private DodatnaUslugaRepository dodatnaUslugaRepository;
 	
 	public Smestaj findOne(Long idSmestaja, Long idVlasnika) {
 		Smestaj s = smestajRepository.getOne(idSmestaja);
@@ -45,7 +52,7 @@ public class SmestajService {
 		return lista;
 	} 
 	
-	public List<Smestaj> getSmestajiOdredjenogTipa(Long id){
+	/*public List<Smestaj> getSmestajiOdredjenogTipa(Long id){
 		List<Smestaj> lista = smestajRepository.findAllSmestajWithType(id);
 		return lista;
 	}
@@ -64,7 +71,7 @@ public class SmestajService {
 			}
 		}
 		return returnLista;
-	}
+	}*/
 	
 	public Page<Smestaj> getAll(Long idVlasnika,Pageable page) {
 		return smestajRepository.findAllFromMe(idVlasnika, page);
@@ -92,5 +99,27 @@ public class SmestajService {
 	
 	public Page<Smestaj> getAllOfKategorija(Long kategorija, Pageable page) {
 		return smestajRepository.getAllOfKategorija(kategorija, page);
+	}
+	
+	//ovo mi je samo za testiranje ostavi ovako ne zasticeno kasnije cemo zastititi
+	public SmestajKorisnikDTO dodajUslugu(Long uslugaId, Long smestajId) {
+		Optional<DodatneUsluge> usluga = dodatnaUslugaRepository.findById(uslugaId);
+		Optional<Smestaj> smestaj = smestajRepository.findById(smestajId);
+		if(usluga.isPresent() && smestaj.isPresent()) {
+			Set<DodatneUsluge> usluge = smestaj.get().getListaDodatnihUsluga();
+			for (DodatneUsluge dodatneUsluge : usluge) {
+				if(dodatneUsluge.getIdDodatneUsluge()==uslugaId) {
+					//ima vec tu dodatnu uslugu
+					break;
+				}
+			}
+			usluge.add(usluga.get());
+			smestaj.get().setListaDodatnihUsluga(usluge);
+			smestajRepository.save(smestaj.get());
+			SmestajKorisnikDTO smestajDTO = findOne(smestajId);
+			return smestajDTO;
+		}
+		
+		return null;
 	}
 }

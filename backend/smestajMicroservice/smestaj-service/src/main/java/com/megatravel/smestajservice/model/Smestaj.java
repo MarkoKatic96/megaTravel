@@ -261,6 +261,7 @@ public class Smestaj {
      * 
      * 
      */
+	@JsonIgnore
     public Set<DodatneUsluge> getListaDodatnihUsluga() {
         if (listaDodatnihUsluga == null) {
             listaDodatnihUsluga = new HashSet<DodatneUsluge>();
@@ -268,6 +269,7 @@ public class Smestaj {
         return this.listaDodatnihUsluga;
     }
 
+	@JsonIgnore
     public void setListaDodatnihUsluga(Set<DodatneUsluge> listaDodatnihUsluga) {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 	}

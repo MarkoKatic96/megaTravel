@@ -21,6 +21,7 @@ import com.megatravel.smestajservice.dto.SmestajKorisnikDTO;
 import com.megatravel.smestajservice.jwt.JwtTokenUtils;
 import com.megatravel.smestajservice.model.Korisnik;
 import com.megatravel.smestajservice.model.Smestaj;
+import com.megatravel.smestajservice.model.SmestajiRestTemplate;
 import com.megatravel.smestajservice.service.SmestajService;
 
 @RestController
@@ -37,22 +38,9 @@ public class SmestajKorisnikController {
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public ResponseEntity<List<SmestajKorisnikDTO>> getAllSmestaji(HttpServletRequest req, Pageable page) {
-		System.out.println("getAllSmestaj()");
-		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik/"+email, Korisnik.class);
-		if (korisnikEntity.getStatusCode() != HttpStatus.OK) {
-			return null;
-		}
-		
-		Korisnik korisnik = korisnikEntity.getBody();
-		if (korisnik == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
+	public ResponseEntity<SmestajiRestTemplate> getAllSmestaji(Pageable page) {		
 
+		//ne treba ovde autorizacija svako moze da pregleda smestaje
 		Page<Smestaj> smestaji = smestajService.getSmestaji(page);
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -65,8 +53,11 @@ public class SmestajKorisnikController {
 			SmestajKorisnikDTO smestajDTO = new SmestajKorisnikDTO(s);
 			retVal.add(smestajDTO);
 		}
+		
+		SmestajiRestTemplate srt = new SmestajiRestTemplate();
+		srt.setSmestajiList(retVal);
 
-		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
+		return new ResponseEntity<>(srt, headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -95,7 +86,19 @@ public class SmestajKorisnikController {
 		return new ResponseEntity<>(smestaj, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/grad/{grad}", method = RequestMethod.GET)
+	//ovo mi je samo za testiranje ostavi ovako ne zasticeno kasnije cemo zastititi
+	@RequestMapping(value="/dodaj-uslugu/{uslugaId}/{smestajId}", method = RequestMethod.GET)
+	public ResponseEntity<SmestajKorisnikDTO> dodajUslugu(@PathVariable("uslugaId") Long uslugaId,@PathVariable("smestajId") Long smestajId){
+		SmestajKorisnikDTO smestaj = smestajService.dodajUslugu(uslugaId, smestajId);
+		if (smestaj==null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(smestaj, HttpStatus.OK);
+	}
+	
+	
+	/*@RequestMapping(value = "/grad/{grad}", method = RequestMethod.GET)
 	public ResponseEntity<List<SmestajKorisnikDTO>> getSmestajUGradu(@PathVariable String grad, Pageable page, HttpServletRequest req) {
 		System.out.println("getSmestajUGradu(" + grad + ")");
 		
@@ -192,5 +195,5 @@ public class SmestajKorisnikController {
 		}
 
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
-	}
+	}*/
 }
