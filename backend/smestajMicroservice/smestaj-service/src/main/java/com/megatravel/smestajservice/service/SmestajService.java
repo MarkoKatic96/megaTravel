@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import com.megatravel.smestajservice.dto.SmestajKorisnikDTO;
 import com.megatravel.smestajservice.model.Smestaj;
 import com.megatravel.smestajservice.repository.SmestajRepository;
 
@@ -25,6 +26,15 @@ public class SmestajService {
 			}
 		}
 		return null;
+	}
+	
+	public SmestajKorisnikDTO findOne(Long idSmestaja) {
+		Smestaj s = smestajRepository.getOne(idSmestaja);
+		if (s == null) {
+			return null;
+		} else {
+			return new SmestajKorisnikDTO(s);
+		}
 	}
 	
 	public List<Smestaj> getSmestaji(){
@@ -60,11 +70,27 @@ public class SmestajService {
 		return smestajRepository.findAllFromMe(idVlasnika, page);
 	}
 	
+	public Page<Smestaj> getAllInGrad(String grad,Pageable page) {
+		return smestajRepository.getAllInGrad(grad, page);
+	}
+	
 	public Smestaj save(Smestaj smestaj) {
 		return smestajRepository.save(smestaj);
 	}
 	
 	public void remove(Long id) {
 		smestajRepository.deleteById(id);
+	}
+
+	public Page<Smestaj> getSmestaji(Pageable page) {
+		return smestajRepository.findAll(page);
+	}
+
+	public Page<Smestaj> getAllOfTip(Long tip, Pageable page) {
+		return smestajRepository.getAllOfTip(tip,page);
+	}
+	
+	public Page<Smestaj> getAllOfKategorija(Long kategorija, Pageable page) {
+		return smestajRepository.getAllOfKategorija(kategorija, page);
 	}
 }

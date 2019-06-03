@@ -26,5 +26,14 @@ public interface SmestajRepository extends JpaRepository<Smestaj, Long> {
 	
 	@Query(value = "SELECT * FROM Smestaj WHERE kategorijasmestaja_id = ?1", nativeQuery = true)
 	List<Smestaj> findAllSmestajWithCategory(Long id);
+
+	@Query(value= "SELECT DISTINCT s FROM Smestaj s WHERE s.adresa.grad = ?1 ORDER BY s.idSmestaja")
+	Page<Smestaj> getAllInGrad(String grad, Pageable page);
+
+	@Query(value= "SELECT DISTINCT s FROM Smestaj s WHERE s.tipSmestaja = ?1 ORDER BY s.idSmestaja")
+	Page<Smestaj> getAllOfTip(Long tip, Pageable page);
+	
+	@Query(value= "SELECT DISTINCT s FROM Smestaj s WHERE s.kategorijaSmestaja = ?1 ORDER BY s.idSmestaja")
+	Page<Smestaj> getAllOfKategorija(Long kategorija, Pageable page);
 	
 }

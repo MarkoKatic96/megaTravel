@@ -27,13 +27,6 @@ public class TipSmestaja {
 	
 	public TipSmestaja() {}
 
-	public TipSmestaja(Long idTipaSmestaja, @NotNull String nazivTipaSmestaja, List<Smestaj> smestaji) {
-		super();
-		this.idTipaSmestaja = idTipaSmestaja;
-		this.nazivTipaSmestaja = nazivTipaSmestaja;
-		this.smestaji = smestaji;
-	}
-
 	public Long getIdTipaSmestaja() {
 		return idTipaSmestaja;
 	}

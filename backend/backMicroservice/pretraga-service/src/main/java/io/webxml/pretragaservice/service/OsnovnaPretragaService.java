@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import io.webxml.pretragaservice.model.DodatneUsluge;
 import io.webxml.pretragaservice.model.OsnovnaPretraga;
 import io.webxml.pretragaservice.model.Rezervacija;
-import io.webxml.pretragaservice.model.RezervacijeRestTemplate;
 import io.webxml.pretragaservice.model.Smestaj;
 import io.webxml.pretragaservice.model.SmestajiRestTemplate;
 

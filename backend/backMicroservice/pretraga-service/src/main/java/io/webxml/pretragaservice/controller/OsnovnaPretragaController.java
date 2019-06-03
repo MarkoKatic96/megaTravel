@@ -7,12 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import io.webxml.pretragaservice.model.OsnovnaPretraga;
-import io.webxml.pretragaservice.model.RezervacijeRestTemplate;
 import io.webxml.pretragaservice.model.Smestaj;
-import io.webxml.pretragaservice.model.SmestajiRestTemplate;
 import io.webxml.pretragaservice.service.OsnovnaPretragaService;
 
 @RestController

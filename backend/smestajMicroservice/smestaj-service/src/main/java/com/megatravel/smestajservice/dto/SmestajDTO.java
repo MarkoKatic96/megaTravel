@@ -52,29 +52,6 @@ public class SmestajDTO {
 		this.listaDodatnihUsluga = s.getListaDodatnihUsluga();
 		this.listaSlika = s.getListaSlika();
 	}
- 
-	public SmestajDTO(Long idSmestaja, TAdresa adresa, BigDecimal latitude, BigDecimal longitude,
-			TipSmestaja tipSmestaja, KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba,
-			int maxDanaZaOtkazivanje, float cenaProlece, float cenaLeto, float cenaJesen,
-			float cenaZima, Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga, Set<TImage> listaSlika) {
-		super();
-		this.idSmestaja = idSmestaja;
-		this.adresa = adresa;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.tipSmestaja = tipSmestaja;
-		this.kategorijaSmestaja = kategorijaSmestaja;
-		this.opis = opis;
-		this.maxOsoba = maxOsoba;
-		this.maxDanaZaOtkazivanje = maxDanaZaOtkazivanje;
-		this.cenaProlece = cenaProlece;
-		this.cenaLeto = cenaLeto;
-		this.cenaJesen = cenaJesen;
-		this.cenaZima = cenaZima;
-		this.vlasnik = vlasnik;
-		this.listaDodatnihUsluga = listaDodatnihUsluga;
-		this.listaSlika = listaSlika;
-	}
 
 	public Long getIdSmestaja() {
 		return idSmestaja;

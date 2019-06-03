@@ -2,6 +2,7 @@ package io.webxml.reservationservice.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,6 +82,33 @@ public class RezervacijaService {
 			return rezervacija.get();
 		}
 		return null;
+	}
+	
+	public Rezervacija findOne(Long idRezervacije, Long idAgenta) {
+		Rezervacija rez = rezervacijaRepository.getOne(idRezervacije);
+		if (rez!=null) {
+			if (rez.getVlasnikId()==idAgenta) {
+				return rez;
+			}
+		}
+		return null;
+	}
+
+	public void remove(Long id) {
+		rezervacijaRepository.deleteById(id);
+	}
+
+	public List<Rezervacija> findAllAfter(Date timestamp, Long idAgenta) {
+		return rezervacijaRepository.findAllAfter(timestamp,idAgenta);
+	}
+
+	public boolean konfliktRezervacijaExists(Long idAgenta, Long smestajId, Date odDatuma, Date doDatuma) {
+		ArrayList<Rezervacija> konfliktRezervacije = rezervacijaRepository.findKonfliktRezervacije(idAgenta, smestajId, odDatuma, doDatuma);
+		return !konfliktRezervacije.isEmpty();
+	}
+	
+	public Rezervacija save(Rezervacija r) {
+		return rezervacijaRepository.save(r);
 	}
 	
 }
