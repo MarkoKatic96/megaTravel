@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.webxml.reservationservice.model.Rezervacija;
+import io.webxml.reservationservice.model.StatusRezervacije;
 import io.webxml.reservationservice.repository.RezervacijaRepository;
 
 @Service
@@ -78,7 +79,8 @@ public class RezervacijaService {
 	public Rezervacija otkaziRezervaciju(Long id) {
 		Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
 		if(rezervacija.isPresent()) {
-			rezervacijaRepository.deleteById(id);
+			rezervacija.get().setStatusRezervacije(StatusRezervacije.OTKAZANA);
+			rezervacijaRepository.save(rezervacija.get());
 			return rezervacija.get();
 		}
 		return null;

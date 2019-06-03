@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import io.webxml.pretragaservice.dto.SmestajKorisnikDTO;
+import io.webxml.pretragaservice.model.DodatneUsluge;
 import io.webxml.pretragaservice.model.OsnovnaPretraga;
 import io.webxml.pretragaservice.model.Rezervacija;
+import io.webxml.pretragaservice.model.RezervacijeRestTemplate;
 import io.webxml.pretragaservice.model.Smestaj;
 import io.webxml.pretragaservice.model.SmestajiRestTemplate;
+import io.webxml.pretragaservice.model.StatusRezervacije;
 
 
 @Service
@@ -19,21 +23,22 @@ public class OsnovnaPretragaService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public List<Smestaj> osnovnaPretragaSmestaji(OsnovnaPretraga op){
-		SmestajiRestTemplate srt = restTemplate.getForObject("http://smestaj-service/smestaj/smestaji", SmestajiRestTemplate.class);
-		List<Smestaj> lista = new ArrayList<Smestaj>();
-		List<Smestaj> listaSmestaja = new ArrayList<Smestaj>();
-		List<Smestaj> returnLista = new ArrayList<Smestaj>();
+	public List<SmestajKorisnikDTO> osnovnaPretragaSmestaji(OsnovnaPretraga op){
+		SmestajiRestTemplate srt = restTemplate.getForObject("http://smestaj-service/smestaj-korisnik/all", SmestajiRestTemplate.class);
+		List<SmestajKorisnikDTO> lista = new ArrayList<SmestajKorisnikDTO>();
+		List<SmestajKorisnikDTO> listaSmestaja = new ArrayList<SmestajKorisnikDTO>();
+		List<SmestajKorisnikDTO> returnLista = new ArrayList<SmestajKorisnikDTO>();
 		List<Rezervacija> rezervacije = new ArrayList<Rezervacija>();
 		lista = srt.getSmestajiList(); //svi smestaji
 		returnLista.addAll(lista);
-
-		
+	
 		if(op.getMesto()!=null && !op.getMesto().isEmpty()) {
 			
-			String mesto = op.getMesto();
-			SmestajiRestTemplate smestajiUGradu = restTemplate.getForObject("http://smestaj-service/smestaj/smestajiGrad/" + mesto, SmestajiRestTemplate.class);
-			listaSmestaja = smestajiUGradu.getSmestajiList();
+			for (SmestajKorisnikDTO smestaj : returnLista) {
+				if(smestaj.getAdresa().getGrad().equals(op.getMesto())) {
+					listaSmestaja.add(smestaj);
+				}
+			}
 			
 			returnLista.clear();
 			returnLista.addAll(listaSmestaja);
@@ -41,7 +46,7 @@ public class OsnovnaPretragaService {
 		}
 		
 		if(op.getBrojOsoba()>0) {
-			for (Smestaj smestaj : returnLista) {
+			for (SmestajKorisnikDTO smestaj : returnLista) {
 				if(smestaj.getMaxOsoba()>=op.getBrojOsoba()) {
 					listaSmestaja.add(smestaj);
 				}
@@ -52,13 +57,13 @@ public class OsnovnaPretragaService {
 			listaSmestaja.clear();
 		}
 		
-		/*if(op.getDatumDolaska()!=null && op.getDatumPolaska()!=null && op.getDatumDolaska().before(op.getDatumPolaska())) {
+		if(op.getDatumDolaska()!=null && op.getDatumPolaska()!=null && op.getDatumDolaska().before(op.getDatumPolaska())) {
 			RezervacijeRestTemplate rrt = restTemplate.getForObject("http://reservation-service/rezervacije", RezervacijeRestTemplate.class);
 			rezervacije = rrt.getRezervacijaList();//sve rezervacije
 			int zauzeto=0;
-			for (Smestaj smestaj : returnLista) {
+			for (SmestajKorisnikDTO smestaj : returnLista) {
 				for (Rezervacija rezervacija1 : rezervacije) {
-					if(rezervacija1.getSmestajId()==smestaj.getIdSmestaja()) {
+					if(rezervacija1.getSmestajId()==smestaj.getIdSmestaja() && rezervacija1.getStatusRezervacije()!=StatusRezervacije.OTKAZANA) {
 						//op.getDatumDolaska/Polaska je onaj sto se unosi u search, ovaj getDoDatuma/Od je u bazi
 						if((op.getDatumDolaska().equals(rezervacija1.getDoDatuma()) || op.getDatumDolaska().after(rezervacija1.getDoDatuma()))
 								|| (rezervacija1.getOdDatuma().equals(op.getDatumPolaska()) || rezervacija1.getOdDatuma().after(op.getDatumPolaska()))) {
@@ -79,18 +84,13 @@ public class OsnovnaPretragaService {
 			returnLista.addAll(listaSmestaja);
 			listaSmestaja.clear();
 			
-		}*/
+		}
 		
 		if(op.getTipSmestaja()!=null) {
-			List<Smestaj> sst = new ArrayList<Smestaj>();
 			Long tipSmestaja = op.getTipSmestaja();
-			SmestajiRestTemplate smestajiSaTipom = restTemplate.getForObject("http://smestaj-service/smestaj/smestajiTipa/" + tipSmestaja, SmestajiRestTemplate.class);
-			sst = smestajiSaTipom.getSmestajiList();
-			for (Smestaj smestaj : sst) {
-				for(Smestaj smestaj2 : returnLista) {
-					if(smestaj.getIdSmestaja()==smestaj2.getIdSmestaja()) {
-						listaSmestaja.add(smestaj2);
-					}
+			for (SmestajKorisnikDTO smestaj : returnLista) {
+				if(smestaj.getTipSmestaja().getIdTipaSmestaja()==tipSmestaja) {
+					listaSmestaja.add(smestaj);
 				}
 			}			
 			returnLista.clear();
@@ -99,15 +99,10 @@ public class OsnovnaPretragaService {
 		}
 		
 		if(op.getKategorijaSmestaja()!=null) {
-			List<Smestaj> ssk = new ArrayList<Smestaj>();
 			Long kategorijaSmestaja = op.getKategorijaSmestaja();
-			SmestajiRestTemplate smestajiSaKategorijom = restTemplate.getForObject("http://smestaj-service/smestaj/smestajiKategorije/" + kategorijaSmestaja, SmestajiRestTemplate.class);
-			ssk = smestajiSaKategorijom.getSmestajiList();
-			for (Smestaj smestaj : ssk) {
-				for(Smestaj smestaj2 : returnLista) {
-					if(smestaj.getIdSmestaja()==smestaj2.getIdSmestaja()) {
-						listaSmestaja.add(smestaj2);
-					}
+			for (SmestajKorisnikDTO smestaj : returnLista) {
+				if(smestaj.getKategorijaSmestaja().getId()==kategorijaSmestaja) {
+					listaSmestaja.add(smestaj);
 				}
 			}			
 			returnLista.clear();
@@ -115,12 +110,12 @@ public class OsnovnaPretragaService {
 			listaSmestaja.clear();
 		}
 		
-		//nije jos testirano da li radi
-		/*if(!op.getDodatneUsluge().isEmpty()) {
+		if(!op.getDodatneUsluge().isEmpty() || op.getDodatneUsluge()!=null) {
 			for(int i = 0; i<op.getDodatneUsluge().size(); i++) { 
-				for (Smestaj smestaj : returnLista) { 
-					for(int g = 0; g<smestaj.getListaDodatnihUsluga().size(); g++) { 
-						if(op.getDodatneUsluge().get(i) == ((List<DodatneUsluge>) smestaj.getListaDodatnihUsluga()).get(g).getIdDodatneUsluge()) {
+				for (SmestajKorisnikDTO smestaj : returnLista) { 
+					List<DodatneUsluge> usluge = new ArrayList<DodatneUsluge>(smestaj.getListaDodatnihUsluga());
+					for(int g = 0; g<usluge.size(); g++) { 
+						if(op.getDodatneUsluge().get(i) == usluge.get(g).getIdDodatneUsluge()) {
 							listaSmestaja.add(smestaj);
 							break;
 						}
@@ -130,7 +125,7 @@ public class OsnovnaPretragaService {
 				returnLista.addAll(listaSmestaja);
 				listaSmestaja.clear();
 			}
-		}*/
+		}
 		
 		return returnLista;
 	}

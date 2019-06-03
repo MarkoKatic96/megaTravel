@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.webxml.korisnikservice.jwt.JwtTokenUtils;
 import io.webxml.korisnikservice.model.Korisnik;
+import io.webxml.korisnikservice.model.Login;
 import io.webxml.korisnikservice.service.KorisnikService;
 
 @RestController
@@ -59,16 +60,24 @@ public class KorisnikController {
 		return (k!=null) ? new ResponseEntity<Korisnik>(k, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = "/login/{email}/{lozinka}")
-	public ResponseEntity<String> login(@PathVariable("email") String email, @PathVariable("lozinka") String lozinka){
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> login(@RequestBody Login login){
+		String email = login.getEmail();
+		String lozinka = login.getPassword();
 		String jwt = korisnikService.login(email, lozinka);
 		return (jwt!=null) ? new ResponseEntity<String>(jwt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	/*@RequestMapping(value = "/getKorisnikByToken/{token}")
-	public ResponseEntity<Korisnik> getKorisnikByToken(@PathVariable("token") HttpServletRequest token, @PathVariable("lozinka") String lozinka){
-		String jwt = korisnikService.login(email, lozinka);
-		return (jwt!=null) ? new ResponseEntity<Korisnik>(jwt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}*/
+	@RequestMapping(value = "/getKorisnikByToken/{token}")
+	public ResponseEntity<Korisnik> getKorisnikByToken(@PathVariable("token") String token){
+		
+		String email = jwtTokenUtils.getUsername(token);
+		
+		Korisnik korisnik = korisnikService.getKorisnikByEmail(email);
+		if (korisnik == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		return new ResponseEntity<Korisnik>(korisnik, HttpStatus.OK);
+	}
 	
 }

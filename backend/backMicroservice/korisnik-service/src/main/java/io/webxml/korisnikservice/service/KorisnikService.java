@@ -18,9 +18,6 @@ public class KorisnikService {
 	@Autowired
 	private KorisnikRepository korisnikRepository;
 	
-	/*@Autowired
-	private AuthenticationManager authenticationManager;*/
-	
 	@Autowired
 	private JwtTokenUtils jwtTokenProvider;
 	
