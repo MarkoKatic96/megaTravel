@@ -70,6 +70,14 @@ import javax.xml.bind.annotation.XmlType;
  * </pre>
  * 
  * 
+	        {
+        	"email": "ww@ww.w",
+    		"ime": "ww",
+    		"prezime": "WWWW",
+    		"lozinka":"ww",
+    		"datumClanstva": "2002-02-02" 
+    		}
+ * 
  */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)

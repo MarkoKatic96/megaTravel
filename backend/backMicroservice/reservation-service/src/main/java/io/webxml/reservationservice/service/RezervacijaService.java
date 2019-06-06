@@ -69,6 +69,7 @@ public class RezervacijaService {
 				}
 			}
 			if(zauzeto==0) {
+				rezervacija.setStatusRezervacije(StatusRezervacije.KREIRANA);
 				return rezervacijaRepository.save(rezervacija);
 			}
 		}

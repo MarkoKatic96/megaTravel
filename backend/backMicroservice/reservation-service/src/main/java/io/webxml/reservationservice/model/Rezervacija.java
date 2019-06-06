@@ -29,12 +29,27 @@ import org.hibernate.annotations.CreationTimestamp;
 @XmlType(name = "", propOrder = {
     "rezervacijaId",
     "smestajId",
+    "vlasnikId",
     "korisnikId",
     "odDatuma",
     "doDatuma",
-    "potvrdjenaRezervacija",
+    "statusRezervacije",
+    "updateTimestamp",
     "timestamp"
 })
+/*
+  {
+	"smestajId": "1",
+	"korisnikId": "1",
+	"vlasnikId": "1",
+	"odDatuma": "2020-02-02",
+	"doDatuma": "2020-03-03",
+	"statusRezervacije": 0,
+	"timestamp":"2020-02-02",
+	"updateTimestamp":"2020-02-02"
+	
+}
+*/
 @XmlRootElement(name = "Rezervacija")
 @Entity
 public class Rezervacija {

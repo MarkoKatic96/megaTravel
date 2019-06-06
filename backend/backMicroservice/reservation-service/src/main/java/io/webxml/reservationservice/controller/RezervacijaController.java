@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import io.webxml.reservationservice.jwt.JwtTokenUtils;
 
 import io.webxml.reservationservice.model.Korisnik;
 import io.webxml.reservationservice.model.Rezervacija;
@@ -28,6 +29,9 @@ public class RezervacijaController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	JwtTokenUtils jwtTokenUtils;
+	
 	//ovo samo admin moze da vidi. Treba zastititi
 	@RequestMapping(value = "/rezervacije")
 	public ResponseEntity<RezervacijeRestTemplate> getAllReservations(){
@@ -37,12 +41,12 @@ public class RezervacijaController {
 		return (!rezervacije.isEmpty()) ? new ResponseEntity<RezervacijeRestTemplate>(rrt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = "/rezervacije/{korisnikId}")
-	public ResponseEntity<List<Rezervacija>> getAllReservationsFromUser(@PathVariable("korisnikId") Long korisnikId, HttpServletRequest req){
-		String bearerToken = req.getHeader("Authorization");
-		String token = bearerToken.substring(7);
+	@RequestMapping(value = "/rezervacije/{korisnikId}/{token}")
+	public ResponseEntity<List<Rezervacija>> getAllReservationsFromUser(@PathVariable("korisnikId") Long korisnikId, @PathVariable("token") String token, HttpServletRequest req){
+		
 		Korisnik k = restTemplate.getForObject("http://korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
-		if(k!=null) {
+		
+		if(k!=null && k.getIdKorisnik()==korisnikId) {
 			List<Rezervacija> rezervacije = rezervacijaService.getAllReservationsFromUser(korisnikId);
 			return (!rezervacije.isEmpty()) ? new ResponseEntity<List<Rezervacija>>(rezervacije, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}else {
@@ -50,12 +54,12 @@ public class RezervacijaController {
 		}
 	}
 	
-	@RequestMapping(value = "/rezervisi", method = RequestMethod.POST)
-	public ResponseEntity<Rezervacija> reserve(@RequestBody Rezervacija rezervacija, HttpServletRequest req){
+	//ovako radi ali vrv nije dobra praksa ovako raditi
+	@RequestMapping(value = "/rezervisi/{token}", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<Rezervacija> reserve(@PathVariable("token") String token, @RequestBody Rezervacija rezervacija){
 		
-		String bearerToken = req.getHeader("Authorization");
-		String token = bearerToken.substring(7);
 		Korisnik k = restTemplate.getForObject("http://korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
+
 		if(k!=null) {
 			Rezervacija r = rezervacijaService.reserve(rezervacija);
 			return (r!=null) ? new ResponseEntity<Rezervacija>(r, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);	
@@ -64,11 +68,11 @@ public class RezervacijaController {
 		}
 	}
 	
-	@RequestMapping(value = "/otkazi/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Rezervacija> otkazi(@PathVariable("id") Long id, HttpServletRequest req){
-		String bearerToken = req.getHeader("Authorization");
-		String token = bearerToken.substring(7);
+	@RequestMapping(value = "/otkazi/{id}/{token}", method = RequestMethod.DELETE)
+	public ResponseEntity<Rezervacija> otkazi(@PathVariable("id") Long id, @PathVariable("token") String token, HttpServletRequest req){
+		
 		Korisnik k = restTemplate.getForObject("http://korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
+
 		if(k!=null) {
 			Rezervacija r = rezervacijaService.otkaziRezervaciju(id);
 			return (r!=null) ? new ResponseEntity<Rezervacija>(r, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
