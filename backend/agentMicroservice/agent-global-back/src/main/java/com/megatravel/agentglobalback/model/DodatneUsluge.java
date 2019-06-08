@@ -17,21 +17,29 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DodatneUsluge")
-//@XmlEnum
+@XmlRootElement(name = "DodatneUsluge")
 @Entity
 public class DodatneUsluge {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long idDodatneUsluge;
 	
 	@NotNull
+	@XmlElement(required = true)
 	private String nazivDodatneUsluge;
 	
 	@ManyToMany(mappedBy = "listaDodatnihUsluga")
+	@XmlElement(required = true)
 	private List<Smestaj> listaSmestaja;
 	
 	public DodatneUsluge() {

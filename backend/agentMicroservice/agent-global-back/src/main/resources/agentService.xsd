@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="https://megatravel.com" elementFormDefault="qualified" targetNamespace="https://megatravel.com" version="1.0">
+
+  <xs:element name="Agent" type="tns:agent"/>
+
+  <xs:element name="getAgentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getAgentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="agent" type="tns:agent"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMessagesRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMessagesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="messages" type="tns:message"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="AbstractUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element name="firstName" type="xs:string"/>
+      <xs:element name="lastName" type="xs:string"/>
+      <xs:element name="email" type="xs:string"/>
+      <xs:element name="password" type="xs:string"/>
+      <xs:element name="role" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="agent">
+    <xs:complexContent>
+      <xs:extension base="tns:AbstractUser">
+        <xs:sequence>
+          <xs:element name="businessRegistrationNumber" type="xs:string"/>
+          <xs:element name="activated" type="xs:boolean"/>
+          <xs:element name="lastSync" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="User">
+    <xs:complexContent>
+      <xs:extension base="tns:AbstractUser">
+        <xs:sequence>
+          <xs:element name="telephone_number" type="xs:string"/>
+          <xs:element name="address" type="xs:string"/>
+          <xs:element name="activated" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Admin">
+    <xs:complexContent>
+      <xs:extension base="tns:AbstractUser">
+        <xs:all/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="message">
+    <xs:sequence>
+      <xs:element name="messageId" type="xs:long"/>
+      <xs:element name="messageBody" type="xs:string"/>
+      <xs:element name="messageTime" type="xs:string"/>
+      <xs:element name="userId" type="xs:long"/>
+      <xs:element name="recieved" type="xs:boolean"/>
+      <xs:element name="opened" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="reservationId" type="xs:long"/>
+      <xs:element minOccurs="0" name="lastUpdated" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

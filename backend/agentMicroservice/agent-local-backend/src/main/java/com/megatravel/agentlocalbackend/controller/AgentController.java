@@ -1,18 +1,10 @@
 package com.megatravel.agentlocalbackend.controller;
 
 import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,12 +12,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,15 +23,16 @@ import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.dto.AgentDTO;
 import com.megatravel.agentlocalbackend.dto.AgentPrijavaDTO;
 import com.megatravel.agentlocalbackend.dto.AgentRegistracijaDTO;
-import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
 import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.model.NeaktiviranAgent;
 import com.megatravel.agentlocalbackend.repository.RevokedTokensRepository;
 import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.service.NeaktiviranAgentService;
+import com.megatravel.agentlocalbackend.soap.AgentClient;
+import com.megatravel.agentlocalbackend.wsdl.GetAgentResponse;
 
-@RestController
-@RequestMapping("/agent")
+//@RestController
+//@RequestMapping("/agent")
 public class AgentController {
 	
 	@Autowired
@@ -54,7 +45,10 @@ public class AgentController {
 	AgentService agentService;
 	
 	@Autowired
-	JwtTokenUtils jwtTokenUtils;
+	AgentClient agentClient;
+	
+	//@Autowired
+	//JwtTokenUtils jwtTokenUtils;
 	
 	@Autowired
 	private RevokedTokensRepository revokedTokensRepository;
@@ -63,12 +57,14 @@ public class AgentController {
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
 		System.out.println("getAgent(" + id + ")");
 		
-		Agent agent = agentService.findOne(id);
+		GetAgentResponse agentResponse = agentClient.getAgent(id.toString());
+		//Agent agent = agentService.findOne(id);
+		com.megatravel.agentlocalbackend.wsdl.Agent agent = agentResponse.getAgent();
 		if (agent == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
-
-		return new ResponseEntity<>(new AgentDTO(agent), HttpStatus.OK);
+		
+		return new ResponseEntity<>(new AgentDTO(), HttpStatus.OK);
 	}
 /*
 	@RequestMapping(value = "/e/{email}", method = RequestMethod.GET)

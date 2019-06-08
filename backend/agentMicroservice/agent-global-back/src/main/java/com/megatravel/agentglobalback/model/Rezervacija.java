@@ -26,30 +26,26 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "rezervacijaId",
-    "smestajId",
-    "korisnikId",
-    "odDatuma",
-    "doDatuma",
-    "potvrdjenaRezervacija",
-    "timestamp"
-})
+@XmlType(name = "")
 @XmlRootElement(name = "Rezervacija")
 @Entity
 public class Rezervacija {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
     private Long rezervacijaId;
     
 	@NotNull
+	@XmlElement(required = true)
 	private Long smestajId;
 	
 	@NotNull
+	@XmlElement(required = true)
 	private Long vlasnikId;
     
 	@NotNull
+	@XmlElement(required = true)
 	private Long korisnikId;
 	
     @XmlElement(required = true)
@@ -62,7 +58,7 @@ public class Rezervacija {
     @NotNull
     private Date doDatuma;
     
-    @XmlElement(defaultValue = "false")
+    @XmlElement(defaultValue = "false", required = true)
     @NotNull
     private String statusRezervacije;
     
@@ -73,6 +69,7 @@ public class Rezervacija {
     private Date timestamp;
     
     @NotNull
+    @XmlElement(required = true)
     private Date updateTimestamp;
 
     public Rezervacija() {

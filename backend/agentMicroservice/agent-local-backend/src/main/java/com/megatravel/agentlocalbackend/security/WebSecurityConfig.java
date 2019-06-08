@@ -3,7 +3,6 @@ package com.megatravel.agentlocalbackend.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,15 +14,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.megatravel.agentlocalbackend.jwt.JwtTokenFilterConfigurer;
-import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
-
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private JwtTokenUtils jwtTokenProvider;
+	//@Autowired
+	//private JwtTokenUtils jwtTokenProvider;
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -55,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling().accessDeniedPage("/agent/login");
 
 		// Apply JWT
-		http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+		//http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 	}
 
 	@Override

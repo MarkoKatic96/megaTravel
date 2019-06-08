@@ -1,4 +1,4 @@
-package com.megatravel.agentglobalback.jwt;
+/*package com.megatravel.agentglobalback.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,3 +22,4 @@ public class JwtTokenFilterConfigurer extends SecurityConfigurerAdapter<DefaultS
 	}
 
 }
+*/

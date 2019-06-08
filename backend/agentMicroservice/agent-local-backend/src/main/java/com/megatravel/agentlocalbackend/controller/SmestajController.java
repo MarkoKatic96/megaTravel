@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.megatravel.agentlocalbackend.dto.SmestajDTO;
-import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
 import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.model.Smestaj;
 import com.megatravel.agentlocalbackend.service.AgentService;
@@ -35,14 +34,14 @@ public class SmestajController {
 	@Autowired
 	SmestajService smestajService;
 	
-	@Autowired
-	JwtTokenUtils jwtTokenUtils;
+	//@Autowired
+	//JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req, Pageable page) {
 		System.out.println("getAllSmestaj()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
+		/*String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
 		Agent agent = agentService.findByEmail(email);
@@ -63,13 +62,13 @@ public class SmestajController {
 			retVal.add(smestajDTO);
 		}
 
-		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
+		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);*/return null;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<SmestajDTO> getSmestaj(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("getSmestaj()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -84,13 +83,13 @@ public class SmestajController {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(new SmestajDTO(smestaj), HttpStatus.OK);
+		return new ResponseEntity<>(new SmestajDTO(smestaj), HttpStatus.OK);*/return null;
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> create(@RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("create()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -99,23 +98,6 @@ public class SmestajController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		/*
-		this.idSmestaja = idSmestaja;
-		this.adresa = adresa;
-		this.koordinate = koordinate;
-		this.tipSmestaja = tipSmestaja;
-		this.kategorijaSmestaja = kategorijaSmestaja;
-		this.opis = opis;
-		this.maxOsoba = maxOsoba;
-		this.maxDanaZaOtkazivanje = maxDanaZaOtkazivanje;
-		this.cenaProlece = cenaProlece;
-		this.cenaLeto = cenaLeto;
-		this.cenaJesen = cenaJesen;
-		this.cenaZima = cenaZima;
-		this.vlasnik = vlasnik;
-		this.listaDodatnihUsluga = listaDodatnihUsluga;
-		this.listaSlika = listaSlika;
-		 */
 		Smestaj s = new Smestaj();
 		s.setAdresa(smestajDTO.getAdresa());
 		s.setLatitude(smestajDTO.getLatitude());
@@ -135,13 +117,13 @@ public class SmestajController {
 
 		Smestaj retVal = smestajService.save(s);
 
-		return new ResponseEntity<>(new SmestajDTO(retVal), HttpStatus.CREATED);
+		return new ResponseEntity<>(new SmestajDTO(retVal), HttpStatus.CREATED);*/return null;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> update(@PathVariable Long id, @RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("update()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -159,13 +141,13 @@ public class SmestajController {
 
 		Smestaj retVal = smestajService.save(smestaj);
 
-		return new ResponseEntity<>(new SmestajDTO(retVal), HttpStatus.OK);
+		return new ResponseEntity<>(new SmestajDTO(retVal), HttpStatus.OK);*/return null;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("delete()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -181,6 +163,6 @@ public class SmestajController {
 
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		}*/return null;
 	}
 }

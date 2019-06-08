@@ -9,17 +9,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TipSmestaja")
 @Entity
 public class TipSmestaja {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long idTipaSmestaja;
 	
 	@NotNull
+	@XmlElement(required = true)
 	private String nazivTipaSmestaja;
 	
 	@OneToMany(mappedBy="tipSmestaja", cascade=CascadeType.ALL)

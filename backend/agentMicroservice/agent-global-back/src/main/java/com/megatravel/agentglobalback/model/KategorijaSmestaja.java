@@ -9,13 +9,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "KategorijaSmestaja")
+@XmlRootElement(name = "KategorijaSmestaja")
 @Entity
 public class KategorijaSmestaja {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long id;
 	
 	@XmlElement(required = true)
@@ -23,6 +31,7 @@ public class KategorijaSmestaja {
 	private String naziv;
 	
 	@OneToMany(mappedBy="kategorijaSmestaja", cascade=CascadeType.ALL)
+	@XmlElement(required = true)
 	private List<Smestaj> smestaji;
 	
 	

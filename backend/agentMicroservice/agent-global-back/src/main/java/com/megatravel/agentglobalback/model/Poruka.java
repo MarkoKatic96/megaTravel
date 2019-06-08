@@ -7,32 +7,48 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Poruka")
+@XmlRootElement(name = "Poruka")
 @Entity
 public class Poruka {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long idPoruke;
 	
 	@NotNull
 	@CreationTimestamp
+	@XmlElement(required = true)
 	private Date datumSlanja;
 	
 	@NotNull
+	@XmlElement(required = true)
 	private Long posiljalac;
 	
+	@XmlElement(required = true)
 	private String tipPosiljaoca;
 	
 	@NotNull
+	@XmlElement(required = true)
 	private Long primalac;
 	
+	@XmlElement(required = true)
 	private String tipPrimaoca;
 	
+	@XmlElement(required = true)
 	private String sadrzaj;
 	
+	@XmlElement(required = true)
 	private String status;
 
 	public Poruka() {

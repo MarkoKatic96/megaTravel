@@ -23,21 +23,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "rezervacijaId",
-    "statusRezervacije",
-    "timestamp"
-})
+@XmlType(name = "")
 @XmlRootElement(name = "PotvrdaRezervacije")
 @Entity
 public class PotvrdaRezervacije {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long potvrdaRezervacijeId;
     
+	@XmlElement(required = true)
 	private Long rezervacijaId;
     
+	@XmlElement(required = true)
     private StatusRezervacije statusRezervacije;
  
     @XmlElement(required = true)

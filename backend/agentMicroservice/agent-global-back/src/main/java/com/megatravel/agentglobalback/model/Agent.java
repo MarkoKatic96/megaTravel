@@ -32,6 +32,7 @@ import org.hibernate.annotations.CreationTimestamp;
 public class Agent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
     private Long idAgenta;
 	
 	@NotNull

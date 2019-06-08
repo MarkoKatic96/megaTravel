@@ -15,25 +15,28 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TKoordinate", propOrder = {
-    "latitude",
-    "Longitude"
-})
+@XmlType(name = "TKoordinate")
 @Entity
 public class TKoordinate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long koordinateId;
 	
 	@OneToOne
+	@XmlElement(required = true)
 	private Smestaj smestaj;
 	
+	@XmlElement(required = true)
     private int latitude;
+	
+	@XmlElement(required = true)
     private int Longitude;
 
     /**

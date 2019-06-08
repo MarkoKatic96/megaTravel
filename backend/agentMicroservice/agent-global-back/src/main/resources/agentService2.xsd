@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="agentDTO">
+    <xs:sequence>
+      <xs:element name="datumClanstva" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="idAgenta" type="xs:long" minOccurs="0"/>
+      <xs:element name="ime" type="xs:string" minOccurs="0"/>
+      <xs:element name="poslovniMaticniBroj" type="xs:long" minOccurs="0"/>
+      <xs:element name="prezime" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

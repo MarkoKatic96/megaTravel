@@ -71,6 +71,26 @@
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
 		</dependency> 
+		
+		<!-- https://mvnrepository.com/artifact/org.jvnet.jaxb2.maven2/maven-jaxb2-plugin -->
+		<dependency>
+		    <groupId>org.jvnet.jaxb2.maven2</groupId>
+		    <artifactId>maven-jaxb2-plugin</artifactId>
+		    <version>0.14.0</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/jaxb2-maven-plugin -->
+		<dependency>
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>jaxb2-maven-plugin</artifactId>
+		    <version>2.4</version>
+		</dependency>
+				
+		
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
 
 	</dependencies>
 
@@ -86,12 +106,42 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<build>    
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.14.0</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sources>
+                    	<source>src/main/java/com/megatravel/agentglobalback/model</source>
+		            </sources>
+                    <transformSchemas>
+                      <transformSchema>
+                        <uri>https://megatravel.com</uri>
+                        <toFile>userService.xsd</toFile>
+                      </transformSchema>
+                    </transformSchemas>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>

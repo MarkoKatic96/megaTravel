@@ -24,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.dto.NovaPorukaDTO;
 import com.megatravel.agentlocalbackend.dto.PorukaDTO;
-import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
 import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.service.PorukeService;
 
@@ -34,8 +33,8 @@ public class PorukeController {
 	@Autowired
 	RestTemplateConfiguration config;
 	
-	@Autowired
-	JwtTokenUtils jwtTokenUtils;
+	//@Autowired
+	//JwtTokenUtils jwtTokenUtils;
 	
 	@Autowired
 	PorukeService porukeService;

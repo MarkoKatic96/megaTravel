@@ -15,10 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.megatravel.agentglobalback.dto.AgentDTO;
 import com.megatravel.agentglobalback.dto.AgentPrijavaDTO;
 import com.megatravel.agentglobalback.dto.AgentRegistracijaDTO;
-import com.megatravel.agentglobalback.jwt.JwtTokenUtils;
 import com.megatravel.agentglobalback.model.Agent;
 import com.megatravel.agentglobalback.model.NeaktiviranAgent;
-import com.megatravel.agentglobalback.model.RevokedTokens;
 import com.megatravel.agentglobalback.repository.RevokedTokensRepository;
 import com.megatravel.agentglobalback.service.AgentService;
 import com.megatravel.agentglobalback.service.NeaktiviranAgentService;
@@ -33,8 +31,8 @@ public class AgentController {
 	@Autowired
 	AgentService agentService;
 	
-	@Autowired
-	JwtTokenUtils jwtTokenUtils;
+	//@Autowired
+	//JwtTokenUtils jwtTokenUtils;
 	
 	@Autowired
 	private RevokedTokensRepository revokedTokensRepository;
@@ -118,7 +116,7 @@ public class AgentController {
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public ResponseEntity<Void> signout(HttpServletRequest req) {
 		System.out.println("signout()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -128,7 +126,7 @@ public class AgentController {
 		}
 		
 		revokedTokensRepository.save(new RevokedTokens(null, token));
-		
+		*/
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -137,6 +135,13 @@ public class AgentController {
 		System.out.println("validateToken()");
 	
 		return new ResponseEntity<>(new Boolean(true), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ping", method = RequestMethod.GET)
+	public ResponseEntity<String> ping(HttpServletRequest req) {
+		System.out.println("ping()");
+	
+		return new ResponseEntity<>("You reached agent global back", HttpStatus.OK);
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.megatravel.agentglobalback.jwt;
+/*package com.megatravel.agentglobalback.jwt;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -103,4 +103,4 @@ public class JwtTokenUtils {
 		}
 	}
 
-}
+}*/

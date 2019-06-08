@@ -20,24 +20,25 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TAdresa", propOrder = {
-    "grad",
-    "ulica",
-    "broj"
-})
+@XmlType(name = "TAdresa")
 @Entity
 public class TAdresa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long adresaId;
 	
 	@OneToOne
+	@XmlElement(required = false)
 	private Smestaj smestaj;
 	
     @XmlElement(required = true)
     private String grad;
+    
     @XmlElement(required = true)
     private String ulica;
+    
+    @XmlElement(required = true)
     private int broj;
 
     /**

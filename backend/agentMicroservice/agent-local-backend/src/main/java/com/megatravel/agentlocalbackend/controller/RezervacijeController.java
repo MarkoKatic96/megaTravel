@@ -24,10 +24,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.dto.LokalneRezervacijeDTO;
-import com.megatravel.agentlocalbackend.dto.PorukaDTO;
 import com.megatravel.agentlocalbackend.dto.RezervacijaDTO;
 import com.megatravel.agentlocalbackend.dto.SamostalnaRezervacijaDTO;
-import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
 import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.model.PotvrdaRezervacije;
 import com.megatravel.agentlocalbackend.model.Rezervacija;
@@ -51,13 +49,13 @@ public class RezervacijeController {
 	@Autowired
 	AgentService agentService;
 	
-	@Autowired
-	JwtTokenUtils jwtTokenUtils;
+	//@Autowired
+	//JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SamostalnaRezervacijaDTO> createRezervacija(@RequestBody SamostalnaRezervacijaDTO rezDTO, HttpServletRequest req) {
 		System.out.println("createRezervacija()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -69,13 +67,13 @@ public class RezervacijeController {
 		SamostalnaRezervacija s = new SamostalnaRezervacija(null, rezDTO.getSmestajId(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma());
 		SamostalnaRezervacija retVal = samostalnaRezervacijaService.save(s);
 		
-		return new ResponseEntity<>(new SamostalnaRezervacijaDTO(retVal), HttpStatus.CREATED);
+		return new ResponseEntity<>(new SamostalnaRezervacijaDTO(retVal), HttpStatus.CREATED);*/return null;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteRezervacija(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("deleteRezervacija()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -90,13 +88,13 @@ public class RezervacijeController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		}*/return null;
 	}
 	
 	@RequestMapping(value = "/potvrdi", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RezervacijaDTO> potvrdiRezervacija(@RequestBody PotvrdaRezervacije potvrda, HttpServletRequest req) {
 		System.out.println("potvrdiRezervacija()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -113,7 +111,7 @@ public class RezervacijeController {
 		rezervacija.setStatusRezervacije(potvrda.getStatusRezervacije());
 		Rezervacija retVal = rezervacijaService.save(rezervacija);
 		
-		return new ResponseEntity<>(new RezervacijaDTO(retVal), HttpStatus.OK);
+		return new ResponseEntity<>(new RezervacijaDTO(retVal), HttpStatus.OK);*/return null;
 	}
 	
 	@RequestMapping(value = "/updatedb", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -159,7 +157,7 @@ public class RezervacijeController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<LokalneRezervacijeDTO>> sendRezervacijeUpdate(@RequestBody List<LokalneRezervacijeDTO> listaLokalnihRezervacija, HttpServletRequest req) {
 		System.out.println("sendRezervacijeUpdate()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -186,7 +184,7 @@ public class RezervacijeController {
 			}
 		}
 		
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
+		return new ResponseEntity<>(retVal, HttpStatus.OK);*/return null;
 	}
 	
 }

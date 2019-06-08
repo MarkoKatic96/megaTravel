@@ -8,22 +8,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "")
+@XmlRootElement(name = "RevokedTokens")
 @Entity
 public class RevokedTokens {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long idTokena;
 	
 	@NotNull
 	@Column(length=500)
+	@XmlElement(required = true)
 	private String token;
 	
 	@NotNull
 	@CreationTimestamp
+	@XmlElement(required = true)
 	private Date revocationDate;
 	
 	public RevokedTokens() {

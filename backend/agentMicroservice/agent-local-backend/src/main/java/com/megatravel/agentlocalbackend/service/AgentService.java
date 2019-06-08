@@ -1,15 +1,8 @@
 package com.megatravel.agentlocalbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.megatravel.agentlocalbackend.exceptions.CustomException;
-import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
 import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.repository.AgentRepository;
 
@@ -19,27 +12,27 @@ public class AgentService {
 	@Autowired
 	private AgentRepository agentRepository;
 	
-	@Autowired
-	private JwtTokenUtils jwtTokenProvider;
+	//@Autowired
+	//private JwtTokenUtils jwtTokenProvider;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+	//@Autowired
+	//private AuthenticationManager authenticationManager;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	//@Autowired
+	//private PasswordEncoder passwordEncoder;
 	
 
 	public String signin(String email, String lozinka) {
-		try {
+		/*try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, lozinka));			
 			return jwtTokenProvider.createToken(email);
 		} catch (AuthenticationException e) {
 			throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/return null;
 	}
 
 	public Agent signup(Agent agent) {
-		if (!agentRepository.existsByEmail(agent.getEmail())) {
+		/*if (!agentRepository.existsByEmail(agent.getEmail())) {
 			if (!agentRepository.existsByPoslovniMaticniBroj(agent.getPoslovniMaticniBroj())) {
 				agent.setLozinka(passwordEncoder.encode(agent.getLozinka()));
 				return agentRepository.save(agent);
@@ -48,7 +41,7 @@ public class AgentService {
 			}			
 		} else {
 			throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/return null;
 	}
 	
 	public Agent findByEmail(String email) {

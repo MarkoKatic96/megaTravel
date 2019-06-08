@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: admin-service
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Nikola
+Built-By: Boris
 Implementation-Vendor-Id: com.xws
-Build-Jdk: 1.8.0_191
+Build-Jdk: 1.8.0_211
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/admin-service
 Created-By: Maven Integration for Eclipse
