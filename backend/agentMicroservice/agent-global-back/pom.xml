@@ -137,7 +137,7 @@
                     <transformSchemas>
                       <transformSchema>
                         <uri>https://megatravel.com</uri>
-                        <toFile>userService.xsd</toFile>
+                        <toFile>agentService.xsd</toFile>
                       </transformSchema>
                     </transformSchemas>
                 </configuration>

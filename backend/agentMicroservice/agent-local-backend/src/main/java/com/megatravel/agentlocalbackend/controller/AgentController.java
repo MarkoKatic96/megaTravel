@@ -57,12 +57,12 @@ public class AgentController {
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
 		System.out.println("getAgent(" + id + ")");
 		
-		GetAgentResponse agentResponse = agentClient.getAgent(id.toString());
+		GetAgentResponse agentResponse = agentClient.getAgent(id);
 		//Agent agent = agentService.findOne(id);
-		com.megatravel.agentlocalbackend.wsdl.Agent agent = agentResponse.getAgent();
-		if (agent == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
+		//Agent agent = agentResponse.getAgent();
+		//if (agent == null) {
+		//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		//}
 		
 		return new ResponseEntity<>(new AgentDTO(), HttpStatus.OK);
 	}

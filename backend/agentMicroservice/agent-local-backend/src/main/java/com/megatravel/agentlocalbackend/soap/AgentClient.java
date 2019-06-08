@@ -2,7 +2,6 @@ package com.megatravel.agentlocalbackend.soap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 
@@ -13,7 +12,7 @@ public class AgentClient extends WebServiceGatewaySupport {
 
 	private static final Logger log = LoggerFactory.getLogger(AgentClient.class);
 
-	public GetAgentResponse getAgent(String id) {
+	public GetAgentResponse getAgent(Long id) {
 
 		GetAgentRequest request = new GetAgentRequest();
 		request.setId(id);
