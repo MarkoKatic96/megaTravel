@@ -17,7 +17,6 @@ import com.megatravel.agentglobalback.dto.AgentPrijavaDTO;
 import com.megatravel.agentglobalback.dto.AgentRegistracijaDTO;
 import com.megatravel.agentglobalback.model.Agent;
 import com.megatravel.agentglobalback.model.NeaktiviranAgent;
-import com.megatravel.agentglobalback.repository.RevokedTokensRepository;
 import com.megatravel.agentglobalback.service.AgentService;
 import com.megatravel.agentglobalback.service.NeaktiviranAgentService;
 
@@ -34,8 +33,8 @@ public class AgentController {
 	//@Autowired
 	//JwtTokenUtils jwtTokenUtils;
 	
-	@Autowired
-	private RevokedTokensRepository revokedTokensRepository;
+	//@Autowired
+	//Oprivate RevokedTokensRepository revokedTokensRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {

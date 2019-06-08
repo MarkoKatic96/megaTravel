@@ -5,5 +5,12 @@
 // Generated on: 2019.06.01 at 10:28:48 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "https://megatravel.com", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(
+		xmlns = {@XmlNs(prefix="ns3", namespaceURI="https://megatravel.com")},
+		namespace = "https://megatravel.com",
+		elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
+		attributeFormDefault = javax.xml.bind.annotation.XmlNsForm.UNSET
+		)
 package com.megatravel.agentglobalback.model;
+
+import javax.xml.bind.annotation.XmlNs;

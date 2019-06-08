@@ -1,14 +1,34 @@
 package com.megatravel.agentglobalback.dto;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "agentRegistracijaDTO", propOrder = {
+    "email",
+    "idAgenta",
+    "ime",
+    "poslovniMaticniBroj",
+    "prezime"
+})
 public class AgentRegistracijaDTO {
 
-    private Long idAgenta;	
-    private String ime;
-    private String prezime;
-    private Long poslovniMaticniBroj;
-    private String email;
-    //private String lozinka;
-    //private String potvrdaLozinke;
+	@XmlElement(namespace="https://megatravel.com/email")
+    protected String email;
+	
+	@XmlElement(namespace="https://megatravel.com/idAgenta")
+    protected Long idAgenta;
+	
+	@XmlElement(namespace="https://megatravel.com/ime")
+    protected String ime;
+	
+	@XmlElement(namespace="https://megatravel.com/poslovniMaticniBroj")
+    protected Long poslovniMaticniBroj;
+	
+	@XmlElement(namespace="https://megatravel.com/prezime")
+    protected String prezime;
     	
     public AgentRegistracijaDTO() {
 	

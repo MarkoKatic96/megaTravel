@@ -2,21 +2,64 @@ package com.megatravel.agentglobalback.dto;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+
 import com.megatravel.agentglobalback.model.Rezervacija;
 import com.megatravel.agentglobalback.model.StatusRezervacije;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "lokalneRezervacijeDTO", propOrder = {
+    "doDatuma",
+    "globalniId",
+    "korisnikId",
+    "lokalniId",
+    "odDatuma",
+    "smestajId",
+    "statusRezervacije",
+    "timestamp",
+    "updateTimestamp",
+    "vlasnikId"
+})
 public class LokalneRezervacijeDTO {
 	
-	private Long globalniId;
-	private Long lokalniId;
-	private Long smestajId;
-	private Long korisnikId;
-	private Long vlasnikId;
-    private Date odDatuma;
-    private Date doDatuma;
-    private StatusRezervacije statusRezervacije;
-    private Date timestamp;
-    private Date updateTimestamp;
+	@XmlElement(namespace="https://megatravel.com/doDatuma")
+    @XmlSchemaType(name = "dateTime")
+    protected Date doDatuma;
+	
+	@XmlElement(namespace="https://megatravel.com/globalniId")
+    protected Long globalniId;
+	
+	@XmlElement(namespace="https://megatravel.com/korisnikId")
+    protected Long korisnikId;
+	
+	@XmlElement(namespace="https://megatravel.com/lokalniId")
+    protected Long lokalniId;
+	
+	@XmlElement(namespace="https://megatravel.com/odDatuma")
+    @XmlSchemaType(name = "dateTime")
+    protected Date odDatuma;
+	
+	@XmlElement(namespace="https://megatravel.com/smestajId")
+    protected Long smestajId;
+	
+	@XmlElement(namespace="https://megatravel.com/statusRezervacije")
+	@XmlSchemaType(name = "string")
+    protected StatusRezervacije statusRezervacije;
+	
+	@XmlElement(namespace="https://megatravel.com/timestamp")
+    @XmlSchemaType(name = "dateTime")
+    protected Date timestamp;
+	
+	@XmlElement(namespace="https://megatravel.com/updateTimestamp")
+    @XmlSchemaType(name = "dateTime")
+    protected Date updateTimestamp;
+	
+	@XmlElement(namespace="https://megatravel.com/vlasnikId")
+    protected Long vlasnikId;
 	
     public LokalneRezervacijeDTO(Long globalniId, Long lokalniId, Long smestajId, Long vlasnikId, Long korisnikId, Date odDatuma, Date doDatuma,
 			StatusRezervacije statusRezervacije, Date timestamp, Date updateTimestamp) {

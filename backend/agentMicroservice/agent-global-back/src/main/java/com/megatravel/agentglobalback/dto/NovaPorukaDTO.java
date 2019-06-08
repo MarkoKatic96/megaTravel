@@ -1,9 +1,21 @@
 package com.megatravel.agentglobalback.dto;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "novaPorukaDTO", propOrder = {
+    "primalac",
+    "sadrzaj"
+})
 public class NovaPorukaDTO {
+	@XmlElement(namespace="https://megatravel.com/primalac")
+    protected Long primalac;
 	
-	private Long primalac;
-	private String sadrzaj;
+	@XmlElement(namespace="https://megatravel.com/sadrzaj")
+    protected String sadrzaj;
 	
 	public NovaPorukaDTO() {
 	}

@@ -1,19 +1,49 @@
 package com.megatravel.agentglobalback.dto;
 
-import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.megatravel.agentglobalback.model.Agent;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "agentDTO", propOrder = {
+    "datumClanstva",
+    "email",
+    "idAgenta",
+    "ime",
+    "poslovniMaticniBroj",
+    "prezime"
+})
 public class AgentDTO {
-
-    private Long idAgenta;	
-    private String ime;
-    private String prezime;
-    private Long poslovniMaticniBroj;
-    private Date datumClanstva;	
-    private String email;
 	
-    public AgentDTO(Long idAgenta, String ime, String prezime, Long poslovniMaticniBroj, Date datumClanstva,
+	@XmlSchemaType(name = "dateTime")
+    @XmlElement(namespace="https://megatravel.com/datumClanstva")
+    protected XMLGregorianCalendar datumClanstva;
+    
+    @XmlElement(namespace="https://megatravel.com/email")
+    protected String email;
+    
+    @XmlElement(namespace="https://megatravel.com/idAgenta")
+    protected Long idAgenta;
+    
+    @XmlElement(namespace="https://megatravel.com/ime")
+    protected String ime;
+    
+    @XmlElement(namespace="https://megatravel.com/poslovniMaticniBroj")
+    protected Long poslovniMaticniBroj;
+    
+    @XmlElement(namespace="https://megatravel.com/prezime")
+    protected String prezime;
+	
+    public AgentDTO(Long idAgenta, String ime, String prezime, Long poslovniMaticniBroj, XMLGregorianCalendar datumClanstva,
 			String email) {
 		super();
 		this.idAgenta = idAgenta;
@@ -34,7 +64,13 @@ public class AgentDTO {
 		this.ime = agent.getIme();
 		this.prezime = agent.getPrezime();
 		this.poslovniMaticniBroj = agent.getPoslovniMaticniBroj();
-		this.datumClanstva = agent.getDatumClanstva();
+		GregorianCalendar c = new GregorianCalendar();
+		c.setTime(agent.getDatumClanstva());
+		try {
+			this.datumClanstva = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+		} catch (DatatypeConfigurationException e) {
+			this.datumClanstva = null;
+		}
 		this.email = agent.getEmail();
 	}
 
@@ -70,11 +106,11 @@ public class AgentDTO {
 		this.poslovniMaticniBroj = poslovniMaticniBroj;
 	}
 
-	public Date getDatumClanstva() {
+	public XMLGregorianCalendar getDatumClanstva() {
 		return datumClanstva;
 	}
 
-	public void setDatumClanstva(Date datumClanstva) {
+	public void setDatumClanstva(XMLGregorianCalendar datumClanstva) {
 		this.datumClanstva = datumClanstva;
 	}
 

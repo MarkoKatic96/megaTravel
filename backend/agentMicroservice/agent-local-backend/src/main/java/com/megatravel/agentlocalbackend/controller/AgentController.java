@@ -1,46 +1,36 @@
 package com.megatravel.agentlocalbackend.controller;
 
-import java.nio.charset.Charset;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
-import com.megatravel.agentlocalbackend.dto.AgentDTO;
-import com.megatravel.agentlocalbackend.dto.AgentPrijavaDTO;
-import com.megatravel.agentlocalbackend.dto.AgentRegistracijaDTO;
 import com.megatravel.agentlocalbackend.model.Agent;
-import com.megatravel.agentlocalbackend.model.NeaktiviranAgent;
-import com.megatravel.agentlocalbackend.repository.RevokedTokensRepository;
 import com.megatravel.agentlocalbackend.service.AgentService;
-import com.megatravel.agentlocalbackend.service.NeaktiviranAgentService;
 import com.megatravel.agentlocalbackend.soap.AgentClient;
+import com.megatravel.agentlocalbackend.wsdl.AgentDTO;
+import com.megatravel.agentlocalbackend.wsdl.AgentPrijavaDTO;
+import com.megatravel.agentlocalbackend.wsdl.AgentRegistracijaDTO;
+import com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailResponse;
 import com.megatravel.agentlocalbackend.wsdl.GetAgentResponse;
+import com.megatravel.agentlocalbackend.wsdl.LoginResponse;
+import com.megatravel.agentlocalbackend.wsdl.SignUpResponse;
+import com.megatravel.agentlocalbackend.wsdl.SignUpResponse.NeaktiviranAgent;
 
-//@RestController
-//@RequestMapping("/agent")
+@RestController
+@RequestMapping("/agent")
 public class AgentController {
 	
 	@Autowired
 	RestTemplateConfiguration config;
 	
-	@Autowired
-	NeaktiviranAgentService neaktiviranAgentService;
-
 	@Autowired
 	AgentService agentService;
 	
@@ -50,39 +40,50 @@ public class AgentController {
 	//@Autowired
 	//JwtTokenUtils jwtTokenUtils;
 	
-	@Autowired
-	private RevokedTokensRepository revokedTokensRepository;
+	//@Autowired
+	//private RevokedTokensRepository revokedTokensRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
 		System.out.println("getAgent(" + id + ")");
 		
-		GetAgentResponse agentResponse = agentClient.getAgent(id);
-		//Agent agent = agentService.findOne(id);
-		//Agent agent = agentResponse.getAgent();
-		//if (agent == null) {
-		//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		//}
+		Agent agent = agentService.findOne(id);
+		if (agent == null) {
+			GetAgentResponse agentResponse = agentClient.getAgent(id);
+			AgentDTO agentDTO = agentResponse.getAgent();
+			return new ResponseEntity<>(agentDTO, HttpStatus.NOT_FOUND);
+		}
 		
 		return new ResponseEntity<>(new AgentDTO(), HttpStatus.OK);
 	}
-/*
+
 	@RequestMapping(value = "/e/{email}", method = RequestMethod.GET)
 	public ResponseEntity<Agent> getAgentByEmail(@PathVariable String email) {
 		System.out.println("getAgentByEmail(" + email + ")");
 		
 		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			GetAgentByEmailResponse agentByEmailResponse = agentClient.getAgentByEmail(email);
+			com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailResponse.Agent agentNovi = agentByEmailResponse.getAgent(); 
+			
+			if (agentNovi==null) {
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			} else {
+				agent = new Agent(agentNovi.getIdAgenta(), agentNovi.getIme(), agentNovi.getPrezime(), agentNovi.getPoslovniMaticniBroj(), agentNovi.getEmail(), agentNovi.getLozinka());
+				agent.setDatumClanstva(agentNovi.getDatumClanstva().toGregorianCalendar().getTime());
+				agentService.deleteAll();
+				agentService.save(agent);
+			}
+			
 		}
 
 		return new ResponseEntity<>(agent, HttpStatus.OK);
 	}
-*/	
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> login(@RequestBody AgentPrijavaDTO agentPrijavaDTO) {
 		System.out.println("login(" + agentPrijavaDTO.getEmail() + "," + agentPrijavaDTO.getLozinka() + ")");
-		 
+		 /*
 		RestTemplate restTemplate = config.createRestTemplate();
 		
 		String loginUrl = "https://localhost:8400/agent/login"; 
@@ -115,13 +116,22 @@ public class AgentController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		*/
+		LoginResponse loginResponse = agentClient.getLogin(agentPrijavaDTO);
+		String jwt = loginResponse.getJwt();
+		if (jwt.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+		} else {
+			getAgentByEmail(agentPrijavaDTO.getEmail());
+			return new ResponseEntity<>(jwt, HttpStatus.OK);
+		}
 		
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<NeaktiviranAgent> signup(@RequestBody AgentRegistracijaDTO agentRegistracijaDTO) {
 		System.out.println("signup()");
-
+		/*
 		Agent tempKorisnik = agentService.findByEmail(agentRegistracijaDTO.getEmail());
 		if(tempKorisnik != null) {
 			//mora biti jedinstveni mail za korisnika
@@ -148,14 +158,26 @@ public class AgentController {
 		
 		NeaktiviranAgent agent = new NeaktiviranAgent(null, agentRegistracijaDTO.getIme(), agentRegistracijaDTO.getPrezime(), agentRegistracijaDTO.getPoslovniMaticniBroj(), agentRegistracijaDTO.getEmail());
 		NeaktiviranAgent retValue = neaktiviranAgentService.save(agent);
-
-		return new ResponseEntity<>(retValue, HttpStatus.CREATED);
+		*/
+		
+		SignUpResponse signupResponse = agentClient.getSignUp(agentRegistracijaDTO);
+		NeaktiviranAgent agent = signupResponse.getNeaktiviranAgent();
+		
+		try{
+			if (agent.getIdNeaktiviranogAgenta()==0 || agent==null) {
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		
+		return new ResponseEntity<>(agent, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public ResponseEntity<Void> signout(HttpServletRequest request) {
 		System.out.println("signout()");
-		
+		/*
 		String signOutUrl = "https://localhost:8400/agent/signout";
 		
 		RestTemplate restTemplate = config.createRestTemplate();
@@ -171,6 +193,9 @@ public class AgentController {
 	    } catch (Exception e) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
+	    */
+		
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/token", method = RequestMethod.POST)

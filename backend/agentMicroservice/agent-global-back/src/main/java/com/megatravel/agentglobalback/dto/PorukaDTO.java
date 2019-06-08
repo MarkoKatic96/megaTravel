@@ -2,19 +2,53 @@ package com.megatravel.agentglobalback.dto;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+
 import com.megatravel.agentglobalback.model.Poruka;
 import com.megatravel.agentglobalback.model.StatusPoruke;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "porukaDTO", propOrder = {
+    "datumSlanja",
+    "idPoruke",
+    "posiljalac",
+    "primalac",
+    "sadrzaj",
+    "status",
+    "tipPosiljaoca",
+    "tipPrimaoca"
+})
 public class PorukaDTO {
-	
-	private Long idPoruke;	
-	private Date datumSlanja;
-	private Long posiljalac;
-	private String tipPosiljaoca;
-	private Long primalac;
-	private String tipPrimaoca;
-	private String sadrzaj;
-	private StatusPoruke status;
+
+    @XmlSchemaType(name = "dateTime")
+    @XmlElement(namespace="https://megatravel.com/datumSlanja")
+    protected Date datumSlanja;
+    
+    @XmlElement(namespace="https://megatravel.com/idPoruke")
+    protected Long idPoruke;
+    
+    @XmlElement(namespace="https://megatravel.com/posiljalac")
+    protected Long posiljalac;
+    
+    @XmlElement(namespace="https://megatravel.com/primalac")
+    protected Long primalac;
+    
+    @XmlElement(namespace="https://megatravel.com/sadrzaj")
+    protected String sadrzaj;
+    
+    @XmlElement(namespace="https://megatravel.com/status")
+    @XmlSchemaType(name = "string")
+    protected StatusPoruke status;
+
+    @XmlElement(namespace="https://megatravel.com/tipPosiljaoca")
+    protected String tipPosiljaoca;
+    
+    @XmlElement(namespace="https://megatravel.com/tipPrimaoca")
+    protected String tipPrimaoca;
 	
 	public PorukaDTO() {
 	}

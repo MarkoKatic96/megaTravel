@@ -101,6 +101,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			
+			
+			<!-- Ovo je bitno -->
+			<!--
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
@@ -129,7 +132,7 @@
 				</dependency>
 			</dependencies>
             </plugin>
-            <!--
+            
             <plugin>
 			    <groupId>org.codehaus.mojo</groupId>
 			    <artifactId>jaxb2-maven-plugin</artifactId>

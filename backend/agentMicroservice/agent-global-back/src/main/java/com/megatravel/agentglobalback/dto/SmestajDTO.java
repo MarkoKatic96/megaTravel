@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 import com.megatravel.agentglobalback.model.DodatneUsluge;
 import com.megatravel.agentglobalback.model.KategorijaSmestaja;
 import com.megatravel.agentglobalback.model.Smestaj;
@@ -11,25 +16,74 @@ import com.megatravel.agentglobalback.model.TAdresa;
 import com.megatravel.agentglobalback.model.TImage;
 import com.megatravel.agentglobalback.model.TipSmestaja;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "smestajDTO", propOrder = {
+    "adresa",
+    "cenaJesen",
+    "cenaLeto",
+    "cenaProlece",
+    "cenaZima",
+    "idSmestaja",
+    "kategorijaSmestaja",
+    "latitude",
+    "listaDodatnihUsluga",
+    "listaSlika",
+    "longitude",
+    "maxDanaZaOtkazivanje",
+    "maxOsoba",
+    "opis",
+    "tipSmestaja",
+    "vlasnik"
+})
 public class SmestajDTO {
-	
+	@XmlElement(namespace="https://megatravel.com/idSmestaja")
 	private Long idSmestaja;
+
+	@XmlElement(namespace="https://megatravel.com/adresa")
     private TAdresa adresa;
+	
+	@XmlElement(namespace="https://megatravel.com/latitude")
     private BigDecimal latitude;
+	
+	@XmlElement(namespace="https://megatravel.com/longitude")
     private BigDecimal longitude;
+	
+	@XmlElement(namespace="https://megatravel.com/tipSmestaja")
     private TipSmestaja tipSmestaja;
+	
+	@XmlElement(namespace="https://megatravel.com/kategorijaSmestaja")
     private KategorijaSmestaja kategorijaSmestaja;
+	
+	@XmlElement(namespace="https://megatravel.com/opis")
     private String opis;
+	
+	@XmlElement(namespace="https://megatravel.com/maxOsoba")
     private int maxOsoba;
+	
+	@XmlElement(namespace="https://megatravel.com/maxDanaZaOtkazivanje")
     private int maxDanaZaOtkazivanje;
+	
+	@XmlElement(namespace="https://megatravel.com/cenaProlece")
     private float cenaProlece;
+
+	@XmlElement(namespace="https://megatravel.com/cenaLeto")
     private float cenaLeto;
+	
+	@XmlElement(namespace="https://megatravel.com/cenaJesen")
     private float cenaJesen;
+	
+	@XmlElement(namespace="https://megatravel.com/cenaZima")
     private float cenaZima;
+	
+	@XmlElement(namespace="https://megatravel.com/vlasnik")
     private Long vlasnik;
+	
+	@XmlElement(namespace="https://megatravel.com/listaDodatnihUsluga")
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
+	
+	@XmlElement(namespace="https://megatravel.com/listaSlika")
     private Set<TImage> listaSlika = new HashSet<>();
-    
+	
     public SmestajDTO() {
 	}
 
