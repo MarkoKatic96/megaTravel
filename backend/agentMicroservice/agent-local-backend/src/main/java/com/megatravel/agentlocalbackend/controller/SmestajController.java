@@ -1,14 +1,16 @@
 package com.megatravel.agentlocalbackend.controller;
 
-import java.util.ArrayList;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +19,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.dto.SmestajDTO;
-import com.megatravel.agentlocalbackend.model.Agent;
-import com.megatravel.agentlocalbackend.model.Smestaj;
 import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.service.SmestajService;
 
 @RestController
 @RequestMapping("/smestaj")
 public class SmestajController {
+	
+	@Autowired
+	RestTemplateConfiguration config;
 	
 	@Autowired
 	AgentService agentService;
@@ -41,43 +46,29 @@ public class SmestajController {
 	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req, Pageable page) {
 		System.out.println("getAllSmestaj()");
 		
-		/*String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://smestaj-service/smestaj/all"; 
 		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-
-		Page<Smestaj> smestaji = smestajService.getAll(agent.getIdAgenta(), page);
+		RestTemplate restTemplate = config.createRestTemplate();
 		
-		HttpHeaders headers = new HttpHeaders();
-		long korisniciTotal = smestaji.getTotalElements();
-		headers.add("X-Total-Count", String.valueOf(korisniciTotal));
-
-		List<SmestajDTO> retVal = new ArrayList<SmestajDTO>();
-
-		for (Smestaj s : smestaji) {
-			SmestajDTO smestajDTO = new SmestajDTO(s);
-			retVal.add(smestajDTO);
-		}
-
-		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);*/return null;
+	    try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<List<SmestajDTO>> exchange = restTemplate.exchange(url,
+	        		HttpMethod.GET,
+	                new HttpEntity<>(body),
+	                new ParameterizedTypeReference<List<SmestajDTO>>(){});
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<SmestajDTO> getSmestaj(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("getSmestaj()");
 		/*
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://smestaj-service/smestaj/" + id; 
 		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-
-		Smestaj smestaj = smestajService.findOne(id, agent.getIdAgenta());
+		RestTemplate restTemplate = config.createRestTemplate();
 		
 		if (smestaj==null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -89,6 +80,8 @@ public class SmestajController {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> create(@RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("create()");
+	
+		String url = "https://smestaj-service/smestaj"; 
 		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
@@ -124,8 +117,7 @@ public class SmestajController {
 	public ResponseEntity<SmestajDTO> update(@PathVariable Long id, @RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("update()");
 		/*
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://smestaj-service/smestaj/" + id; 
 		
 		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
@@ -148,8 +140,7 @@ public class SmestajController {
 	public ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("delete()");
 		/*
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://smestaj-service/smestaj/" + id; 
 		
 		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			

@@ -48,7 +48,7 @@ public class PorukeController {
 		
 		//String token = jwtTokenUtils.resolveToken(req);
 		//String email = jwtTokenUtils.getUsername(token);
-		String getPorukeUrl = "https://localhost:8400/poruke/" + userId; 
+		String getPorukeUrl = "https://poruke-agent-service/poruke/" + userId; 
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 		
@@ -69,7 +69,7 @@ public class PorukeController {
 	public ResponseEntity<List<PorukaDTO>> getNeprocitanePoruke(Pageable page, HttpServletRequest req) {
 		System.out.println("getNeprocitanePoruke()");
 		
-		String getPorukeUrl = "https://localhost:8400/neprocitane";
+		String getPorukeUrl = "https://poruke-agent-service/neprocitane";
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 		
@@ -89,7 +89,7 @@ public class PorukeController {
 	public ResponseEntity<Void> setProcitanePorukeFromUser(@PathVariable Long userId, HttpServletRequest req) {
 		System.out.println("setProcitanePorukeFromUser()");
 		
-		String postPorukeUrl = "https://localhost:8400/poruke/" + userId; 
+		String postPorukeUrl = "https://poruke-agent-service/poruke/" + userId; 
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 		
@@ -110,7 +110,7 @@ public class PorukeController {
 	public ResponseEntity<PorukaDTO> sendPoruka(@RequestBody NovaPorukaDTO novaPoruka, HttpServletRequest req) {
 		System.out.println("sendPoruka()");
 		
-		String postPorukeUrl = "https://localhost:8400/poruke";
+		String postPorukeUrl = "https://poruke-agent-service/poruke";
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 		

@@ -55,19 +55,20 @@ public class RezervacijeController {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SamostalnaRezervacijaDTO> createRezervacija(@RequestBody SamostalnaRezervacijaDTO rezDTO, HttpServletRequest req) {
 		System.out.println("createRezervacija()");
-		/*
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://agent-global-service/rezervacije"; 
 		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
+		RestTemplate restTemplate = config.createRestTemplate();
 		
-		SamostalnaRezervacija s = new SamostalnaRezervacija(null, rezDTO.getSmestajId(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma());
-		SamostalnaRezervacija retVal = samostalnaRezervacijaService.save(s);
-		
-		return new ResponseEntity<>(new SamostalnaRezervacijaDTO(retVal), HttpStatus.CREATED);*/return null;
+	    try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<SamostalnaRezervacijaDTO> exchange = restTemplate.exchange(url,
+	        		HttpMethod.POST,
+	                new HttpEntity<>(body),
+	                SamostalnaRezervacijaDTO.class);
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
