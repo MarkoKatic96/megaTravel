@@ -1,18 +1,10 @@
 package com.megatravel.agentlocalbackend.controller;
 
 import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,11 +49,12 @@ public class AgentController {
 	@Autowired
 	private RevokedTokensRepository revokedTokensRepository;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
-		System.out.println("getAgent(" + id + ")");
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ResponseEntity<AgentDTO> getAgent() {
+		System.out.println("getAgent()");
 		
-		Agent agent = agentService.findOne(id);
+		//uzima samo tog jednog koji se ulogovao jer je jedini u bazu
+		Agent agent = agentService.findOne();
 		if (agent == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
@@ -89,7 +80,7 @@ public class AgentController {
 		 
 		RestTemplate restTemplate = config.createRestTemplate();
 		
-		String loginUrl = "https://localhost:8400/agent/login"; 
+		String loginUrl = "https://agent-global-service/agent/login"; 
 		
 		HttpEntity<AgentPrijavaDTO> request = new HttpEntity<>(agentPrijavaDTO);
 		String token = restTemplate.postForObject(loginUrl, request, String.class);
@@ -97,7 +88,7 @@ public class AgentController {
 		System.out.println("tokencina: " + token);
 		
 		if(token != null) {
-			String getAgentUrl = "https://localhost:8400/agent/e/" + agentPrijavaDTO.getEmail();
+			String getAgentUrl = "https://agent-global-service/agent/e/" + agentPrijavaDTO.getEmail();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.set("Authorization", "Bearer "+token);
@@ -123,44 +114,29 @@ public class AgentController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<NeaktiviranAgent> signup(@RequestBody AgentRegistracijaDTO agentRegistracijaDTO) {
+	public ResponseEntity<Void> signup(@RequestBody AgentRegistracijaDTO agentRegistracijaDTO) {
 		System.out.println("signup()");
 
-		Agent tempKorisnik = agentService.findByEmail(agentRegistracijaDTO.getEmail());
-		if(tempKorisnik != null) {
-			//mora biti jedinstveni mail za korisnika
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
+		RestTemplate restTemplate = config.createRestTemplate();
 		
-		tempKorisnik = agentService.findByPMB(agentRegistracijaDTO.getPoslovniMaticniBroj());
-		if(tempKorisnik != null) {
-			//mora biti jedinstveni PIM za korisnika
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
+		String registerUrl = "https://agent-global-service/agent/register"; 
 		
-		NeaktiviranAgent tempKorisnik2 = neaktiviranAgentService.findByEmail(agentRegistracijaDTO.getEmail());
-		if(tempKorisnik2 != null) {
-			//mora biti jedinstveni mail za korisnika
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
-		
-		tempKorisnik2 = neaktiviranAgentService.findByPMB(agentRegistracijaDTO.getPoslovniMaticniBroj());
-		if(tempKorisnik2 != null) {
-			//mora biti jedinstveni PIM za korisnika
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
-		
-		NeaktiviranAgent agent = new NeaktiviranAgent(null, agentRegistracijaDTO.getIme(), agentRegistracijaDTO.getPrezime(), agentRegistracijaDTO.getPoslovniMaticniBroj(), agentRegistracijaDTO.getEmail());
-		NeaktiviranAgent retValue = neaktiviranAgentService.save(agent);
+		HttpEntity<AgentRegistracijaDTO> body = new HttpEntity<>(agentRegistracijaDTO);
 
-		return new ResponseEntity<>(retValue, HttpStatus.CREATED);
+		ResponseEntity<NeaktiviranAgent> exchange = restTemplate.exchange(registerUrl,
+                HttpMethod.POST,
+                new HttpEntity<>(body),
+                NeaktiviranAgent.class);
+		
+		return new ResponseEntity<>(exchange.getStatusCode());
+		
 	}
 	
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public ResponseEntity<Void> signout(HttpServletRequest request) {
 		System.out.println("signout()");
 		
-		String signOutUrl = "https://localhost:8400/agent/signout";
+		String signOutUrl = "https://agent-global-service/agent/signout";
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 	    try {

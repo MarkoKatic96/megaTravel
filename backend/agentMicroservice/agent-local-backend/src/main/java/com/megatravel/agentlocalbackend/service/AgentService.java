@@ -59,9 +59,9 @@ public class AgentService {
 		return agentRepository.findByPoslovniMaticniBroj(poslovniMaticniBroj);
 	}
 
-	public Agent findOne(Long id) {
+	public Agent findOne() {
 		try{
-			return agentRepository.findById(id).get();
+			return agentRepository.findAll().get(0);
 		} catch (Exception e) {
 			return null;
 		}

@@ -22,16 +22,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.megatravel.agentlocalbackend.Singleton;
 import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.dto.LokalneRezervacijeDTO;
-import com.megatravel.agentlocalbackend.dto.PorukaDTO;
 import com.megatravel.agentlocalbackend.dto.RezervacijaDTO;
 import com.megatravel.agentlocalbackend.dto.SamostalnaRezervacijaDTO;
 import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
 import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.model.PotvrdaRezervacije;
 import com.megatravel.agentlocalbackend.model.Rezervacija;
-import com.megatravel.agentlocalbackend.model.SamostalnaRezervacija;
 import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.service.RezervacijaService;
 import com.megatravel.agentlocalbackend.service.SamostalnaRezervacijaService;
@@ -58,49 +57,47 @@ public class RezervacijeController {
 	public ResponseEntity<SamostalnaRezervacijaDTO> createRezervacija(@RequestBody SamostalnaRezervacijaDTO rezDTO, HttpServletRequest req) {
 		System.out.println("createRezervacija()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://agent-global-service/rezervacije"; 
 		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
+		RestTemplate restTemplate = config.createRestTemplate();
 		
-		SamostalnaRezervacija s = new SamostalnaRezervacija(null, rezDTO.getSmestajId(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma());
-		SamostalnaRezervacija retVal = samostalnaRezervacijaService.save(s);
-		
-		return new ResponseEntity<>(new SamostalnaRezervacijaDTO(retVal), HttpStatus.CREATED);
+	    try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<SamostalnaRezervacijaDTO> exchange = restTemplate.exchange(url,
+	        		HttpMethod.POST,
+	                new HttpEntity<>(body),
+	                SamostalnaRezervacijaDTO.class);
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteRezervacija(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("deleteRezervacija()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://agent-global-service/rezervacije/" + id; 
 		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
+		RestTemplate restTemplate = config.createRestTemplate();
 		
-		SamostalnaRezervacija rez = samostalnaRezervacijaService.findOne(id,agent.getIdAgenta());
-		if (rez != null) {
-			samostalnaRezervacijaService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	    try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<Void> exchange = restTemplate.exchange(url,
+	        		HttpMethod.DELETE,
+	                new HttpEntity<>(body),
+	                Void.class);
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@RequestMapping(value = "/potvrdi", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RezervacijaDTO> potvrdiRezervacija(@RequestBody PotvrdaRezervacije potvrda, HttpServletRequest req) {
 		System.out.println("potvrdiRezervacija()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		Agent agent = agentService.findByEmail(email);
+		Agent agent = agentService.findOne();
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
@@ -112,6 +109,7 @@ public class RezervacijeController {
 		
 		rezervacija.setStatusRezervacije(potvrda.getStatusRezervacije());
 		Rezervacija retVal = rezervacijaService.save(rezervacija);
+		Singleton.getInstance().getRezZaUpdate().add(retVal);
 		
 		return new ResponseEntity<>(new RezervacijaDTO(retVal), HttpStatus.OK);
 	}
@@ -122,14 +120,14 @@ public class RezervacijeController {
 		
 		Date oldestDate = rezervacijaService.findOldestDate();
 		
-		//ako nema nicega u bazi inicijalizuj na najmanju vrednost
+		//ako nema nicega u bazi inicijalizuj na pocetak (racunarskog) vremena
 		if(oldestDate == null) {
 			oldestDate = new Date(0L);
 		}
 		
 		System.out.println("oldestDate(): " + oldestDate.toString());
 		
-		String getRezervacijeUrl = "https://localhost:8400/rezervacije/" + oldestDate; 
+		String getRezervacijeUrl = "https://agent-global-service/rezervacije/" + oldestDate; 
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 		
@@ -157,36 +155,40 @@ public class RezervacijeController {
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<LokalneRezervacijeDTO>> sendRezervacijeUpdate(@RequestBody List<LokalneRezervacijeDTO> listaLokalnihRezervacija, HttpServletRequest req) {
+	public ResponseEntity<List<LokalneRezervacijeDTO>> sendRezervacijeUpdate(HttpServletRequest req) {
 		System.out.println("sendRezervacijeUpdate()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		String url = "https://agent-global-service/rezervacije/update"; 
 		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		RestTemplate restTemplate = config.createRestTemplate();
+		
+		List<LokalneRezervacijeDTO> send = new ArrayList<>();
+		List<Rezervacija> zaUpdate = Singleton.getInstance().getRezZaUpdate();
+		for (Rezervacija rezervacija : zaUpdate) {
+			send.add(new LokalneRezervacijeDTO(rezervacija, rezervacija.getRezervacijaId()));
 		}
+		Singleton.getInstance().getRezZaUpdate().clear();
 		
-		ArrayList<LokalneRezervacijeDTO> retVal = new ArrayList<>();
-		
-		for (LokalneRezervacijeDTO lokalneRezervacijeDTO : listaLokalnihRezervacija) {
-			if (rezervacijaService.konfliktRezervacijaExists(agent.getIdAgenta(), lokalneRezervacijeDTO.getSmestajId(), lokalneRezervacijeDTO.getOdDatuma(), lokalneRezervacijeDTO.getDoDatuma())) {
-				// postoji rezervacija koja zauzima smestaj u tom periodu
-				// ne smem dodati tu rezervaciju u globalnu bazu
-				// vracam lokalnoj bazi globalId = null da je obavestim da je rezervacija nevazeca
-				
-				lokalneRezervacijeDTO.setGlobalniId(null);
-				retVal.add(lokalneRezervacijeDTO);
-			} else {
-				// dodajem rezervaciju u globalnu bazu i vracam lokalnoj bazi id te rezervacije
-				
-				Rezervacija rez = new Rezervacija(lokalneRezervacijeDTO.getGlobalniId(), lokalneRezervacijeDTO.getSmestajId(), lokalneRezervacijeDTO.getVlasnikId(), lokalneRezervacijeDTO.getKorisnikId(), lokalneRezervacijeDTO.getOdDatuma(), lokalneRezervacijeDTO.getDoDatuma(), lokalneRezervacijeDTO.getStatusRezervacije());
-				retVal.add(new LokalneRezervacijeDTO(rezervacijaService.save(rez), lokalneRezervacijeDTO.getLokalniId()));
+	    try {
+	    	//String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	    	HttpEntity<Object> requestEntity = new HttpEntity<Object>(send);
+	        ResponseEntity<List<LokalneRezervacijeDTO>> exchange = restTemplate.exchange(url,
+	        		HttpMethod.POST,
+	        		requestEntity,
+	        		new ParameterizedTypeReference<List<LokalneRezervacijeDTO>>() {});
+	        
+	        send.clear();
+	        
+	        //Obavestavamo client o rezervacijama koje nisu prosle i zahtevamo updejt lokalne baze i refresh stranice
+	        for (LokalneRezervacijeDTO rez : exchange.getBody()) {
+				if(rez.getGlobalniId() == null) {
+					send.add(rez);
+				}
 			}
-		}
-		
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	        return new ResponseEntity<List<LokalneRezervacijeDTO>>(send, exchange.getStatusCode());
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 }
