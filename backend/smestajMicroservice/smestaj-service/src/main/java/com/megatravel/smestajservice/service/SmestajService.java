@@ -12,9 +12,13 @@ import org.springframework.stereotype.Component;
 
 import com.megatravel.smestajservice.dto.SmestajKorisnikDTO;
 import com.megatravel.smestajservice.model.DodatneUsluge;
+import com.megatravel.smestajservice.model.KategorijaSmestaja;
 import com.megatravel.smestajservice.model.Smestaj;
+import com.megatravel.smestajservice.model.TipSmestaja;
 import com.megatravel.smestajservice.repository.DodatnaUslugaRepository;
+import com.megatravel.smestajservice.repository.KategorijaSmestajaRepository;
 import com.megatravel.smestajservice.repository.SmestajRepository;
+import com.megatravel.smestajservice.repository.TipSmestajaRepository;
 
 @Component
 public class SmestajService {
@@ -24,6 +28,12 @@ public class SmestajService {
 	
 	@Autowired
 	private DodatnaUslugaRepository dodatnaUslugaRepository;
+	
+	@Autowired
+	private TipSmestajaRepository tipSmestajaRepository;
+	
+	@Autowired
+	private KategorijaSmestajaRepository kategorijaSmestajaRepository;
 	
 	public Smestaj findOne(Long idSmestaja, Long idVlasnika) {
 		Smestaj s = smestajRepository.getOne(idSmestaja);
@@ -52,27 +62,6 @@ public class SmestajService {
 		return lista;
 	} 
 	
-	/*public List<Smestaj> getSmestajiOdredjenogTipa(Long id){
-		List<Smestaj> lista = smestajRepository.findAllSmestajWithType(id);
-		return lista;
-	}
-	
-	public List<Smestaj> getSmestajiOdredjeneKategorije(Long id){
-		List<Smestaj> lista = smestajRepository.findAllSmestajWithCategory(id);
-		return lista;
-	}
-	
-	public List<Smestaj> getSmestajiUGradu(String grad){
-		List<Smestaj> lista = smestajRepository.pronadjiSve();
-		List<Smestaj> returnLista = new ArrayList<Smestaj>();
-		for (Smestaj smestaj : lista) {
-			if(smestaj.getAdresa().getGrad().equals(grad)) {
-				returnLista.add(smestaj);
-			}
-		}
-		return returnLista;
-	}*/
-	
 	public Page<Smestaj> getAll(Long idVlasnika,Pageable page) {
 		return smestajRepository.findAllFromMe(idVlasnika, page);
 	}
@@ -99,6 +88,18 @@ public class SmestajService {
 	
 	public Page<Smestaj> getAllOfKategorija(Long kategorija, Pageable page) {
 		return smestajRepository.getAllOfKategorija(kategorija, page);
+	}
+	
+	public List<TipSmestaja> getAllTipove() {
+		return tipSmestajaRepository.getAll();
+	}
+	
+	public List<KategorijaSmestaja> getAllKategorije() {
+		return kategorijaSmestajaRepository.getAll();
+	}
+	
+	public List<DodatneUsluge> getAllUsluge(){
+		return dodatnaUslugaRepository.getAll();
 	}
 	
 	//ovo mi je samo za testiranje ostavi ovako ne zasticeno kasnije cemo zastititi

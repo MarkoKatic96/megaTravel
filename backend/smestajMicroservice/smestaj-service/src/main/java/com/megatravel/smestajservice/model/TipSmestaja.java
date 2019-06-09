@@ -42,7 +42,7 @@ public class TipSmestaja {
 	public void setNazivTipaSmestaja(String nazivTipaSmestaja) {
 		this.nazivTipaSmestaja = nazivTipaSmestaja;
 	}
-
+	
 	public List<Smestaj> getSmestaji() {
 		return smestaji;
 	}
