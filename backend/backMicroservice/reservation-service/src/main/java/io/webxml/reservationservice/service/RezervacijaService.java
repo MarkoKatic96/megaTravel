@@ -70,6 +70,8 @@ public class RezervacijaService {
 			}
 			if(zauzeto==0) {
 				rezervacija.setStatusRezervacije(StatusRezervacije.KREIRANA);
+				rezervacija.setVlasnikId((long) 1);//dodaj ovo da radi kako treba
+				rezervacija.setTimestamp(new Date());//i dodati setupdatetimestampe
 				return rezervacijaRepository.save(rezervacija);
 			}
 		}

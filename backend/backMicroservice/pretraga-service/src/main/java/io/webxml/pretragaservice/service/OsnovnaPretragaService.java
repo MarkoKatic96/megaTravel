@@ -110,7 +110,7 @@ public class OsnovnaPretragaService {
 			listaSmestaja.clear();
 		}
 		
-		if(!op.getDodatneUsluge().isEmpty() || op.getDodatneUsluge()!=null) {
+		if(op.getDodatneUsluge()!=null) {
 			for(int i = 0; i<op.getDodatneUsluge().size(); i++) { 
 				for (SmestajKorisnikDTO smestaj : returnLista) { 
 					List<DodatneUsluge> usluge = new ArrayList<DodatneUsluge>(smestaj.getListaDodatnihUsluga());

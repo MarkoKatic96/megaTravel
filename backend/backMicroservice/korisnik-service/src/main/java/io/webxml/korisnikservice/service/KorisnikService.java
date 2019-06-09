@@ -1,5 +1,6 @@
 package io.webxml.korisnikservice.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class KorisnikService {
 		Korisnik k = korisnikRepository.nadjiKorisnikaPoEmail(korisnik.getEmail());
 		if(k==null) {
 			korisnik.setRola("KORISNIK");
+			korisnik.setDatumClanstva(new Date());
 			return korisnikRepository.save(korisnik);
 		}
 		return null;
