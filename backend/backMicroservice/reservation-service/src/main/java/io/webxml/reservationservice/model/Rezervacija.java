@@ -87,7 +87,6 @@ public class Rezervacija {
     @CreationTimestamp
     private Date timestamp;
     
-    @NotNull
     private Date updateTimestamp;
 
     public Rezervacija() {

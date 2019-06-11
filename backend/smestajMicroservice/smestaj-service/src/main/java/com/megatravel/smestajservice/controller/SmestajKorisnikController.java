@@ -83,21 +83,7 @@ public class SmestajKorisnikController {
 	}
 	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-	public ResponseEntity<SmestajKorisnikDTO> getSmestaj(@PathVariable Long id, HttpServletRequest req) {
-		System.out.println("getSmestaj()");
-		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik/"+email, Korisnik.class);
-		if (korisnikEntity.getStatusCode() != HttpStatus.OK) {
-			return null;
-		}
-		
-		Korisnik korisnik = korisnikEntity.getBody();
-		if (korisnik == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
+	public ResponseEntity<SmestajKorisnikDTO> getSmestaj(@PathVariable Long id) {
 
 		SmestajKorisnikDTO smestaj = smestajService.findOne(id);
 		

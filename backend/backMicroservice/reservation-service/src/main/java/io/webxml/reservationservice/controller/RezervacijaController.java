@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import io.webxml.reservationservice.dto.RezervacijaDTO;
 import io.webxml.reservationservice.jwt.JwtTokenUtils;
 import io.webxml.reservationservice.model.Korisnik;
 import io.webxml.reservationservice.model.Rezervacija;
@@ -44,23 +43,13 @@ public class RezervacijaController {
 		return (!rezervacije.isEmpty()) ? new ResponseEntity<RezervacijeRestTemplate>(rrt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = "rezervacija/status/{id}")
-	public ResponseEntity<RezervacijaDTO> getRezervacija(@PathVariable("id") Long id) {
-		RezervacijaDTO rez = rezervacijaService.findRezervacijaById(id);
-		if (rez==null) {
-			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-		}
-		
-		return new ResponseEntity<>(rez, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/rezervacije/{korisnikId}/{token}")
-	public ResponseEntity<List<Rezervacija>> getAllReservationsFromUser(@PathVariable("korisnikId") Long korisnikId, @PathVariable("token") String token, HttpServletRequest req){
+	@RequestMapping(value = "/rezervacije/{token}")
+	public ResponseEntity<List<Rezervacija>> getAllReservationsFromUser(@PathVariable("token") String token){
 		
 		Korisnik k = restTemplate.getForObject("http://korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
 		
-		if(k!=null && k.getIdKorisnik()==korisnikId) {
-			List<Rezervacija> rezervacije = rezervacijaService.getAllReservationsFromUser(korisnikId);
+		if(k!=null) {
+			List<Rezervacija> rezervacije = rezervacijaService.getAllReservationsFromUser(k.getIdKorisnik());
 			return (!rezervacije.isEmpty()) ? new ResponseEntity<List<Rezervacija>>(rezervacije, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}else {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
