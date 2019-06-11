@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import io.webxml.reservationservice.jwt.JwtTokenUtils;
 
+import io.webxml.reservationservice.dto.RezervacijaDTO;
+import io.webxml.reservationservice.jwt.JwtTokenUtils;
 import io.webxml.reservationservice.model.Korisnik;
 import io.webxml.reservationservice.model.Rezervacija;
 import io.webxml.reservationservice.model.RezervacijeRestTemplate;
@@ -41,6 +42,16 @@ public class RezervacijaController {
 		RezervacijeRestTemplate rrt = new RezervacijeRestTemplate();
 		rrt.setRezervacijaList(rezervacije);
 		return (!rezervacije.isEmpty()) ? new ResponseEntity<RezervacijeRestTemplate>(rrt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value = "rezervacija/status/{id}")
+	public ResponseEntity<RezervacijaDTO> getRezervacija(@PathVariable("id") Long id) {
+		RezervacijaDTO rez = rezervacijaService.findRezervacijaById(id);
+		if (rez==null) {
+			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(rez, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/rezervacije/{korisnikId}/{token}")

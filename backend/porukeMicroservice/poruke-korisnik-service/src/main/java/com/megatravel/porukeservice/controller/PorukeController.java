@@ -70,7 +70,7 @@ public class PorukeController {
 			retVal.add(new PorukaDTO(p));
 		}
 		
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
+		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/neprocitane", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -102,7 +102,7 @@ public class PorukeController {
 			retVal.add(new PorukaDTO(p));
 		}
 		
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
+		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{agentId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
