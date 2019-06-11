@@ -1,7 +1,7 @@
 # megaTravel
 
 ## Imena servisa i njihovi portovi:
-- Administratorski backend mikroservis - admin-service [port:8300]
+- Administratorski backend mikroservis - admin-service [port:8221]
 - Glavni agentski backend mikroservis - agent-global-service [port:8400]
 - Lokalni agentski backend mikroservis - agent-local-service [port:8500]
 - Eureka Discovery Server - discovery-service [port:8761]
