@@ -159,7 +159,7 @@
 			    </executions>
 			</plugin>
 			
-			-->
+		-->
 		</plugins>
 	</build>
 </project>

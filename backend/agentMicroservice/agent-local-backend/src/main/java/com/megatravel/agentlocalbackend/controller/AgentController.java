@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
-import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.soap.AgentClient;
 import com.megatravel.agentlocalbackend.wsdl.AgentDTO;
@@ -23,6 +22,8 @@ import com.megatravel.agentlocalbackend.wsdl.GetAgentResponse;
 import com.megatravel.agentlocalbackend.wsdl.LoginResponse;
 import com.megatravel.agentlocalbackend.wsdl.SignUpResponse;
 import com.megatravel.agentlocalbackend.wsdl.SignUpResponse.NeaktiviranAgent;
+
+
 
 @RestController
 @RequestMapping("/agent")
@@ -47,7 +48,7 @@ public class AgentController {
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
 		System.out.println("getAgent(" + id + ")");
 		
-		Agent agent = agentService.findOne(id);
+		com.megatravel.agentlocalbackend.model.Agent agent = agentService.findOne(id);
 		if (agent == null) {
 			GetAgentResponse agentResponse = agentClient.getAgent(id);
 			AgentDTO agentDTO = agentResponse.getAgent();
@@ -58,10 +59,10 @@ public class AgentController {
 	}
 
 	@RequestMapping(value = "/e/{email}", method = RequestMethod.GET)
-	public ResponseEntity<Agent> getAgentByEmail(@PathVariable String email) {
+	public ResponseEntity<com.megatravel.agentlocalbackend.model.Agent> getAgentByEmail(@PathVariable String email) {
 		System.out.println("getAgentByEmail(" + email + ")");
 		
-		Agent agent = agentService.findByEmail(email);
+		com.megatravel.agentlocalbackend.model.Agent agent = agentService.findByEmail(email);
 		if (agent == null) {
 			GetAgentByEmailResponse agentByEmailResponse = agentClient.getAgentByEmail(email);
 			com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailResponse.Agent agentNovi = agentByEmailResponse.getAgent(); 
@@ -69,7 +70,7 @@ public class AgentController {
 			if (agentNovi==null) {
 				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 			} else {
-				agent = new Agent(agentNovi.getIdAgenta(), agentNovi.getIme(), agentNovi.getPrezime(), agentNovi.getPoslovniMaticniBroj(), agentNovi.getEmail(), agentNovi.getLozinka());
+				agent = new com.megatravel.agentlocalbackend.model.Agent(agentNovi.getIdAgenta(), agentNovi.getIme(), agentNovi.getPrezime(), agentNovi.getPoslovniMaticniBroj(), agentNovi.getEmail(), agentNovi.getLozinka());
 				agent.setDatumClanstva(agentNovi.getDatumClanstva().toGregorianCalendar().getTime());
 				agentService.deleteAll();
 				agentService.save(agent);
