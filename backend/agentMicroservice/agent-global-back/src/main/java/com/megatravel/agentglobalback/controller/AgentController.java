@@ -153,7 +153,7 @@ public class AgentController {
 	public ResponseEntity<String> ping(HttpServletRequest req) {
 		System.out.println("ping()");
 	
-		return new ResponseEntity<>("You reached agent global back", HttpStatus.OK);
+		return new ResponseEntity<>("You reached agent global back" + agentService.findOne(1L).getEmail(), HttpStatus.OK);
 	}
 	
 }

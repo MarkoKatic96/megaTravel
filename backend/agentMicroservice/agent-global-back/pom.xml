@@ -107,16 +107,21 @@
 	</dependencyManagement>
 
 	<build>
+		<!-- 
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.5.1</version>
+					<configuration>
+						<finalName>agent-global-back</finalName>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
+		
+		
 		<plugins>
 			<plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
@@ -143,5 +148,15 @@
                 </configuration>
             </plugin>
 		</plugins>
+		
+		 -->
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	
+	
 	</build>
 </project>
