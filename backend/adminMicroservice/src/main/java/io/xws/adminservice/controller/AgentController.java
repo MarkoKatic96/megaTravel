@@ -8,18 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
-import io.xws.adminservice.dto.AgentDTO;
-import io.xws.adminservice.dto.NeregistrovaniAgentDTO;
+import io.xws.adminservice.model.NeregistrovaniAgent;
 import io.xws.adminservice.service.IAgentService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/admin-service/agent")
 @Api(tags = "")
 public class AgentController 
@@ -27,42 +26,48 @@ public class AgentController
 	@Autowired
 	private IAgentService agentService;
 	
+	
 	/*
 	 * Vraca sve agente koji su poslali zahtev (cekaju na odobrenje admina)
-	 * To znamo na osnovu toga sto im je lozinka prazno polje
+	 * To znamo na osnovu toga sto im je lozinka prazno polje (ovo ispravi)
 	 */
 	@GetMapping("/allrequests")
-	public ResponseEntity<List<AgentDTO>> getAllZahteviAgenata()
+	public ResponseEntity<List<NeregistrovaniAgent>> getAllZahteviNeregAgenata()
 	{
 		System.out.println("getAllZahteviAgenata()");
 		
-		List<AgentDTO> agenti = agentService.getAllZahteviAgenata();
+		List<NeregistrovaniAgent> agenti = agentService.getAllZahteviNeregAgenata();
 		
-		return (agenti.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<AgentDTO>>(agenti, HttpStatus.OK);
+		return (agenti.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<NeregistrovaniAgent>>(agenti, HttpStatus.OK);
 	}
 	
 	/*
 	 * Registrovanje novog agenta tj. dodavanje u sistem
 	 * Zbog ispisa poruke na view moze se prebaciti da vraca string, mada treba na agentu da se proveri prvo
 	 */
-	@PostMapping("/confirmrequest")
-	public ResponseEntity<Boolean> createPotvrdiZahtev(@RequestBody NeregistrovaniAgentDTO zahtev)
+	@PostMapping("/confirmrequest/{id}")
+	public ResponseEntity<String> createPotvrdiZahtev(@PathVariable("id") Long id)
 	{
 		System.out.println("createPotvrdiZahtev()");
 		
-		return (!agentService.createPotvrdiZahtev(zahtev)) ? new ResponseEntity<Boolean>(false, HttpStatus.CONFLICT) : new ResponseEntity<Boolean>(true, HttpStatus.ACCEPTED);
+		String response = agentService.createPotvrdiZahtev(id);
+		
+		return (!response.equals("OK")) ? new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST) : new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		
 	}
 	
 	/*
-	 * Odbijanje zahteva za agenta (brisanje zahteva)
+	 * Odbijanje zahteva za agenta (brisanje zahteva) (prepravi na id)
 	 */
-	@DeleteMapping("/refuserequest")
-	public ResponseEntity<Boolean> deleteOdbijZahtev(@RequestBody NeregistrovaniAgentDTO zahtev)
+	@DeleteMapping("/refuserequest/{id}")
+	public ResponseEntity<Boolean> deleteOdbijZahtev(@PathVariable("id") Long id)
 	{
 		System.out.println("deleteOdbijZahtev()");
 		
-		return (!agentService.deleteOdbijZahtev(zahtev)) ? new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return (!agentService.deleteOdbijZahtev(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
 	}
+	
+	//treba napraviti metode za 
+	
 }

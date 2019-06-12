@@ -1,5 +1,7 @@
 package io.xws.adminservice.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,22 @@ public class SmestajServiceImpl implements ISmestajService
 	@Autowired
 	private DTODodatneUslugeConverter uslugeConv;
 	
-
+	
+	@Override
+	public List<TipSmestajaDTO> getAllTipoviSmestaja() 
+	{
+		List<TipSmestaja> lista = tipSmRepo.findAll();
+		
+		List<TipSmestajaDTO> dtos = new ArrayList<TipSmestajaDTO>();
+		
+		for(TipSmestaja tip : lista)
+		{
+			dtos.add(tipSmConv.convertToDTO(tip));
+		}
+		
+		return dtos;
+	}
+	
 	@Override
 	public TipSmestajaDTO createTipSmestaja(TipSmestajaDTO dto)
 	{
@@ -90,6 +107,22 @@ public class SmestajServiceImpl implements ISmestajService
 		}
 		else
 			return false;
+	}
+	
+	
+	@Override
+	public List<KategorijaSmestajaDTO> getAllKategorijeSmestaja() 
+	{
+		List<KategorijaSmestaja> lista = katRepo.findAll();
+		
+		List<KategorijaSmestajaDTO> dtos = new ArrayList<KategorijaSmestajaDTO>();
+		
+		for(KategorijaSmestaja kat : lista)
+		{
+			dtos.add(katConv.convertToDTO(kat));
+		}
+		
+		return dtos;
 	}
 
 	@Override
@@ -137,6 +170,23 @@ public class SmestajServiceImpl implements ISmestajService
 		else
 			return false;
 	}
+	
+	
+	
+	@Override
+	public List<DodatneUslugeDTO> getAllDodatneUsluge()
+	{
+		List<DodatneUsluge> lista = uslugeRepo.findAll();
+		
+		List<DodatneUslugeDTO> dtos = new ArrayList<DodatneUslugeDTO>();
+		
+		for(DodatneUsluge kat : lista)
+		{
+			dtos.add(uslugeConv.convertToDTO(kat));
+		}
+		
+		return dtos;
+	}
 
 	@Override
 	public DodatneUslugeDTO createDodatnaUsluga(DodatneUslugeDTO dto)
@@ -183,11 +233,4 @@ public class SmestajServiceImpl implements ISmestajService
 			return false;
 	}
 
-	
-
-	
-	
-	
-	
-	
 }

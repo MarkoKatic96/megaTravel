@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import io.xws.adminservice.converter.DTOAgentConverter;
@@ -29,26 +30,19 @@ public class AgentServiceImpl implements IAgentService
 	@Autowired
 	private NeregistrovaniAgentRepository neregRepo;
 	
+	@Autowired
+	private MailServiceImpl mailService;
+	
 	
 	
 	@Override
-	public List<AgentDTO> getAllZahteviAgenata() 
+	public List<NeregistrovaniAgent> getAllZahteviNeregAgenata()
 	{
-		Optional<List<Agent>> agenti = Optional.of(agentRepo.findAll());
-		
-		List<AgentDTO> dtoList = new ArrayList<AgentDTO>();
+		Optional<List<NeregistrovaniAgent>> agenti = Optional.of(neregRepo.findAll());
 		
 		if(agenti.isPresent())
 		{
-			for(Agent agent : agenti.get())
-			{
-				if(agent.getLozinka() != null)
-					continue;
-				else
-					dtoList.add(agentConv.convertToDTO(agent));
-			}
-			
-			return dtoList;
+			return agenti.get();
 		}
 		else
 			return null;
@@ -56,10 +50,32 @@ public class AgentServiceImpl implements IAgentService
 
 
 	@Override
-	public boolean createPotvrdiZahtev(NeregistrovaniAgentDTO zahtev)
+	public String createPotvrdiZahtev(Long id)
 	{
-		if(agentRepo.existsByEmail(zahtev.getEmail())) //proverava se prvo na agentu
-			return false;
+		Optional<NeregistrovaniAgent> nereg = neregRepo.findById(id);
+		//treba validacija za poslovni broj i email
+		
+		if(!nereg.isPresent())
+			return "ERR";
+		
+		
+		//ova provera treba da ide na agent-service
+//		for(NeregistrovaniAgent agent : this.getAllZahteviNeregAgenata())
+//		{
+//			if(agent.getEmail().equals(nereg.get().getEmail()))
+//				return "POSTOJI-MAIL";
+//			else if(agent.getPoslovniMaticniBroj().equals(nereg.get().getPoslovniMaticniBroj()))
+//				return "POSTOJI-PMB";
+//		}
+		
+		for(Agent agent : agentRepo.findAll())
+		{
+			if(agent.getEmail().equals(nereg.get().getEmail()))
+				return "POSTOJI-MAIL";
+			else if(agent.getPoslovniMaticniBroj().equals(nereg.get().getPoslovniMaticniBroj()))
+				return "POSTOJI-PMB";
+		}
+		
 		
 //		if(zahtev.getLozinka() != null || zahtev.getPoslovniMaticniBroj() != null) //proverava se prvo na agentu
 //			return false;
@@ -86,25 +102,31 @@ public class AgentServiceImpl implements IAgentService
 		String lozinka = UUID.randomUUID().toString().split("-")[0];
 		
 		Agent agent = new Agent();
-		agent.setIme(zahtev.getIme());
-		agent.setPrezime(zahtev.getPrezime());
-		agent.setEmail(zahtev.getEmail());
+		agent.setIme(nereg.get().getIme());
+		agent.setPrezime(nereg.get().getPrezime());
+		agent.setEmail(nereg.get().getEmail());
 		agent.setLozinka(lozinka);
-		agent.setPoslovniMaticniBroj(zahtev.getPoslovniMaticniBroj());		
+		agent.setPoslovniMaticniBroj(nereg.get().getPoslovniMaticniBroj());
+		
+		neregRepo.delete(nereg.get());
 		agentRepo.save(agent);
 		
-		//treba jos napraviti mehanizam da posalje mail-om parametre za logovanje
+		try {
+			mailService.sendNotificaitionAsync(agent);
+		} catch (MailException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
-		
-		
-		return true;
+		return "OK";
 	}
 
 
 	@Override
-	public boolean deleteOdbijZahtev(NeregistrovaniAgentDTO zahtev)
+	public boolean deleteOdbijZahtev(Long id)
 	{
-		Optional<NeregistrovaniAgent> agent = neregRepo.findByEmail(zahtev.getEmail());
+		Optional<NeregistrovaniAgent> agent = neregRepo.findById(id);
 		
 		if(agent.isPresent())
 		{
