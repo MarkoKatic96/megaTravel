@@ -102,8 +102,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			
-			
-			
+			<!-- 			
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
@@ -159,7 +158,11 @@
 			    </executions>
 			</plugin>
 			
+
 			
+
+		-->
+
 		</plugins>
 		</pluginManagement>
 	</build>
