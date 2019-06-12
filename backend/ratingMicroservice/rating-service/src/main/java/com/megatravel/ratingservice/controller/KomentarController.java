@@ -21,6 +21,7 @@ import com.megatravel.ratingservice.dto.NoviKomentarDTO;
 import com.megatravel.ratingservice.dto.RezervacijaDTO;
 import com.megatravel.ratingservice.model.Komentar;
 import com.megatravel.ratingservice.model.StatusKomentara;
+import com.megatravel.ratingservice.model.StatusRezervacije;
 import com.megatravel.ratingservice.service.KomentarService;
 
 @RestController
@@ -50,7 +51,7 @@ public class KomentarController {
 		
 		if (rezervacija.getSmestajId()!=noviKomentar.getIdSmestaja() ||
 				rezervacija.getRezervacijaId()!=noviKomentar.getIdRezervacije() ||
-				rezervacija.getKorisnikId()!=noviKomentar.getIdRezervacije()) {
+				rezervacija.getKorisnikId()!=noviKomentar.getIdRezervacije() || rezervacija.getStatusRezervacije()!=StatusRezervacije.POTVRDJENA) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		
