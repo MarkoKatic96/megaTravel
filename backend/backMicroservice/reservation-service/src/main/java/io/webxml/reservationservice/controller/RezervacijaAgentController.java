@@ -1,5 +1,7 @@
 package io.webxml.reservationservice.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -122,7 +124,8 @@ public class RezervacijaAgentController {
 	}
 	
 	@RequestMapping(value = "/update/{timestamp}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<RezervacijaDTO>> getRezervacijeUpdate(@PathVariable Date timestamp, HttpServletRequest req) {
+	public ResponseEntity<List<RezervacijaDTO>> getRezervacijeUpdate(@PathVariable String timestamp, 
+			HttpServletRequest req) {
 		System.out.println("getRezervacijeUpdate()");
 		
 		String token = jwtTokenUtils.resolveToken(req);
@@ -138,7 +141,17 @@ public class RezervacijaAgentController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		List<Rezervacija> rezervacije = rezervacijaService.findAllAfter(timestamp, agent.getIdAgenta());
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date;
+		try {
+			date = format.parse ( timestamp );
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		} 
+		
+		List<Rezervacija> rezervacije = rezervacijaService.findAllAfter(date, agent.getIdAgenta());
 		List<RezervacijaDTO> retVal = new ArrayList<>();
 		
 		for (Rezervacija rez : rezervacije) {

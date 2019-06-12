@@ -65,16 +65,21 @@ public class SmestajController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<SmestajDTO> getSmestaj(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("getSmestaj()");
-		/*
+		
 		String url = "https://smestaj-service/smestaj/" + id; 
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 		
-		if (smestaj==null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
-
-		return new ResponseEntity<>(new SmestajDTO(smestaj), HttpStatus.OK);*/return null;
+		 try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<SmestajDTO> exchange = restTemplate.exchange(url,
+	        		HttpMethod.GET,
+	                new HttpEntity<>(body),
+	                SmestajDTO.class);
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -82,78 +87,55 @@ public class SmestajController {
 		System.out.println("create()");
 	
 		String url = "https://smestaj-service/smestaj"; 
-		/*
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-		
-		Smestaj s = new Smestaj();
-		s.setAdresa(smestajDTO.getAdresa());
-		s.setLatitude(smestajDTO.getLatitude());
-		s.setLongitude(smestajDTO.getLongitude());
-		s.setTipSmestaja(smestajDTO.getTipSmestaja());
-		s.setKategorijaSmestaja(smestajDTO.getKategorijaSmestaja());
-		s.setOpis(smestajDTO.getOpis());
-		s.setMaxOsoba(smestajDTO.getMaxOsoba());
-		s.setMaxDanaZaOtkazivanje(smestajDTO.getMaxDanaZaOtkazivanje());
-		s.setCenaProlece(smestajDTO.getCenaProlece());
-		s.setCenaLeto(smestajDTO.getCenaLeto());
-		s.setCenaJesen(smestajDTO.getCenaJesen());
-		s.setCenaZima(smestajDTO.getCenaZima());
-		s.setVlasnik(agent.getIdAgenta());
-		s.setListaDodatnihUsluga(smestajDTO.getListaDodatnihUsluga());
-		s.setListaSlika(smestajDTO.getListaSlika());
+		RestTemplate restTemplate = config.createRestTemplate();
 
-		Smestaj retVal = smestajService.save(s);
-
-		return new ResponseEntity<>(new SmestajDTO(retVal), HttpStatus.CREATED);*/return null;
+	    try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<SmestajDTO> exchange = restTemplate.exchange(url,
+	        		HttpMethod.POST,
+	                new HttpEntity<>(body),
+	                SmestajDTO.class);
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> update(@PathVariable Long id, @RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("update()");
-		/*
-		String url = "https://smestaj-service/smestaj/" + id; 
 		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-		
-		Smestaj smestaj = smestajService.findOne(id, agent.getIdAgenta());
-		if (smestaj == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		String url = "https://smestaj-service/smestaj/" + id;
+		RestTemplate restTemplate = config.createRestTemplate();
 
-		smestaj.update(smestajDTO);
-
-		Smestaj retVal = smestajService.save(smestaj);
-
-		return new ResponseEntity<>(new SmestajDTO(retVal), HttpStatus.OK);*/return null;
+	    try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<SmestajDTO> exchange = restTemplate.exchange(url,
+	        		HttpMethod.PUT,
+	                new HttpEntity<>(body),
+	                SmestajDTO.class);
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest req) {
 		System.out.println("delete()");
-		/*
+		
 		String url = "https://smestaj-service/smestaj/" + id; 
-		
-		Agent agent = agentService.findByEmail(email);
-		if (agent == null) {			
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-		
-		Smestaj smestaj = smestajService.findOne(id,agent.getIdAgenta());
-		if (smestaj != null) {
-			smestajService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+		RestTemplate restTemplate = config.createRestTemplate();
 
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}*/return null;
+	    try {
+	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
+	        ResponseEntity<Void> exchange = restTemplate.exchange(url,
+	        		HttpMethod.DELETE,
+	                new HttpEntity<>(body),
+	                Void.class);
+	        return exchange;
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
 }

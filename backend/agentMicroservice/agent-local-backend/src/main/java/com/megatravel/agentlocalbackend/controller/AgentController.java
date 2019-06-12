@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.service.AgentService;
+import com.megatravel.agentlocalbackend.service.RezervacijaService;
 import com.megatravel.agentlocalbackend.soap.AgentClient;
 import com.megatravel.agentlocalbackend.wsdl.AgentDTO;
 import com.megatravel.agentlocalbackend.wsdl.AgentPrijavaDTO;
@@ -32,6 +33,9 @@ public class AgentController {
 	RestTemplateConfiguration config;
 	
 	@Autowired
+	RezervacijaService rezervacijaService;
+	
+	@Autowired
 	AgentService agentService;
 	
 	@Autowired
@@ -47,7 +51,7 @@ public class AgentController {
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
 		System.out.println("getAgent(" + id + ")");
 		
-		Agent agent = agentService.findOne(id);
+		Agent agent = agentService.findOne();
 		if (agent == null) {
 			GetAgentResponse agentResponse = agentClient.getAgent(id);
 			AgentDTO agentDTO = agentResponse.getAgent();
@@ -194,6 +198,9 @@ public class AgentController {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
 	    */
+		rezervacijaService.deleteAll();
+		agentService.deleteAll();
+		
 		
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

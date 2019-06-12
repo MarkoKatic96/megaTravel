@@ -67,4 +67,8 @@ public class RezervacijaService {
 	public Date findOldestDate() {
 		return rezervacijaRepository.findOldestDate();
 	}
+	
+	public void deleteAll() {
+		rezervacijaRepository.deleteAll();
+	}
 }
