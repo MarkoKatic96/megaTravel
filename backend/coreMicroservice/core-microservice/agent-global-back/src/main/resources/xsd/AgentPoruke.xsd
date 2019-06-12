@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://github.com/MarkoKatic96/megaTravel/porukeagent"
+    xmlns:pa="https://github.com/MarkoKatic96/megaTravel/porukeagent"
+    xmlns:agent="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+    xmlns:backend="https://github.com/MarkoKatic96/megaTravel/xmlbackend">
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlagent"
+        schemaLocation="AgentShema.xsd"/>
+    <xs:import namespace="https://github.com/MarkoKatic96/megaTravel/xmlbackend"
+        schemaLocation="BackendShema.xsd"/>
+    <xs:element name="login">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="backend:Login"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dodajSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="agent:Smestaj"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="izmeniSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="agent:Smestaj"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="samostalnoRezervisiSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="agent:Samostalna_rezervacija"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dodajSlikuZaSmestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="slika" type="agent:TImage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="sendPorukaToKorisnik">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="zaKoga" type="xs:long"/>
+                <xs:element name="datumSlanja" type="xs:dateTime"/>
+                <xs:element name="sadrzajPoruke">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="500"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="potvrdaRealizacijeRezervacije">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="agent:Rezervacija"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getPromenjeneRezervacije">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="agentId"/>
+                <xs:element name="timestampPoslednjePromene"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="sendPromenjeneRezervacije">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="agent:Rezervacija"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="agent:Samostalna_rezervacija"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

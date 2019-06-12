@@ -1,0 +1,53 @@
+version: '3'
+services:
+
+  discovery:
+    image: discovery-server
+    container_name: discovery-server
+    build:
+      context: ./discovery-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+
+  gateway:
+    image: zuul-gateway
+    container_name: zuul-gateway
+    build:
+      context: ./zuul-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8762:8762"
+    depends_on:
+      - discovery
+    links:
+      - discovery:discovery
+
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db_xml
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    ports: 
+      - 3306:3306
+
+  admin-service:
+    image: admin-service
+    build:
+      context: ./admin-service
+      dockerfile: Dockerfile
+    ports:
+      - "8300"
+    depends_on:
+      - discovery
+      - db
+    links:
+      - discovery:discovery
+    environment: 
+      - DATABASE_HOST=db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=db_xml
+      - DATABASE_PORT=3306
