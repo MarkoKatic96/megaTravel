@@ -18,7 +18,7 @@ import io.xws.adminservice.dto.KorisnikDTO;
 import io.xws.adminservice.service.IKorisnikService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/admin-service/user")
 @Api(tags = "")
 public class KorisnikController

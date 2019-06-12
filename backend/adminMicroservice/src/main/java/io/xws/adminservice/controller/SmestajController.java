@@ -1,10 +1,13 @@
 package io.xws.adminservice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +22,7 @@ import io.xws.adminservice.dto.TipSmestajaDTO;
 import io.xws.adminservice.service.ISmestajService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/admin-service/accommodation")
 @Api(tags = "")
 public class SmestajController 
@@ -31,6 +34,16 @@ public class SmestajController
 	 //////////////////////////////////////////////
 	////////OPERACIJE SA TIPOVIMA SMESTAJA////////
    //////////////////////////////////////////////
+	
+	@GetMapping("/gettypes")
+	public ResponseEntity<List<TipSmestajaDTO>> getAllTipoviSmestaja()
+	{
+		System.out.println("getAllTipoviSmestaja()");
+		
+		List<TipSmestajaDTO> list = smestajService.getAllTipoviSmestaja();
+		
+		return (list.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<TipSmestajaDTO>>(list, HttpStatus.OK);
+	}
 	
 	@PostMapping("/addtype/")
 	public ResponseEntity<TipSmestajaDTO> createTipSmestaja(@RequestBody TipSmestajaDTO dto)
@@ -66,6 +79,16 @@ public class SmestajController
 	///////OPERACIJE SA KATEGORIJOM SMESTAJA//////
    //////////////////////////////////////////////
 	
+	@GetMapping("/getcategories")
+	public ResponseEntity<List<KategorijaSmestajaDTO>> getAllKategorijeSmestaja()
+	{
+		System.out.println("getAllKategorijeSmestaja()");
+		
+		List<KategorijaSmestajaDTO> list = smestajService.getAllKategorijeSmestaja();
+		
+		return (list.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<KategorijaSmestajaDTO>>(list, HttpStatus.OK);
+	}
+	
 	@PostMapping("/addcategory/")
 	public ResponseEntity<KategorijaSmestajaDTO> createKategorijaSmestaja(@RequestBody KategorijaSmestajaDTO dto)
 	{
@@ -99,6 +122,16 @@ public class SmestajController
 	 //////////////////////////////////////////////
 	////////OPERACIJE SA DODATNIM USLUGAMA////////
    //////////////////////////////////////////////
+	
+	@GetMapping("/getservices")
+	public ResponseEntity<List<DodatneUslugeDTO>> getAllDodatneUsluge()
+	{
+		System.out.println("getAllDodatneUsluge()");
+		
+		List<DodatneUslugeDTO> list = smestajService.getAllDodatneUsluge();
+		
+		return (list.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<DodatneUslugeDTO>>(list, HttpStatus.OK);
+	}
 	
 	@PostMapping("/addservice/")
 	public ResponseEntity<DodatneUslugeDTO> createDodatnaUsluga(@RequestBody DodatneUslugeDTO dto)

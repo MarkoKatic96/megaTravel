@@ -21,7 +21,7 @@ import io.xws.adminservice.repository.RevokedTokensRepository;
 import io.xws.adminservice.service.IAdminService;
 
 @RestController
-@CrossOrigin(origins = "https://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/admin-service/admin")
 @Api(tags = "")
 public class AdminController 
