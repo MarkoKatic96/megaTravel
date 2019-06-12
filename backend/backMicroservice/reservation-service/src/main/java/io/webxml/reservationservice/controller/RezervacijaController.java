@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import io.webxml.reservationservice.jwt.JwtTokenUtils;
+
 import io.webxml.reservationservice.model.Korisnik;
 import io.webxml.reservationservice.model.Rezervacija;
 import io.webxml.reservationservice.model.RezervacijeRestTemplate;
