@@ -1,6 +1,8 @@
 package io.webxml.pretragaservice.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +130,48 @@ public class OsnovnaPretragaService {
 		}
 		
 		return returnLista;
+	}
+	
+	public List<SmestajKorisnikDTO> sortSmestaji(List<SmestajKorisnikDTO> returnLista, String sort){
+		if(sort!=null || !sort.equals("")) {
+			if(sort.equals("cena")) {
+				Collections.sort(returnLista, new Comparator<SmestajKorisnikDTO>() {
+					@Override public int compare(SmestajKorisnikDTO p1, SmestajKorisnikDTO p2) {
+			            return (int) (p1.getCena() - p2.getCena()); // Ascending
+			        }
+					
+				});
+			}else if(sort.equals("kategorija")) {
+				returnLista = compareCategory(returnLista);
+			}
+		}
+		
+		return returnLista;
+	}
+	
+	public List<SmestajKorisnikDTO> compareCategory(List<SmestajKorisnikDTO> lista) {
+		List<SmestajKorisnikDTO> rLista = new ArrayList<SmestajKorisnikDTO>();
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("platinum")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("gold")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("silver")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("bronze")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		return rLista;
 	}
 
 }

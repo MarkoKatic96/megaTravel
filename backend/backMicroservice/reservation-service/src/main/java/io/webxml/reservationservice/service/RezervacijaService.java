@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.webxml.reservationservice.dto.RezervacijaDTO;
 import io.webxml.reservationservice.model.Rezervacija;
 import io.webxml.reservationservice.model.StatusRezervacije;
 import io.webxml.reservationservice.repository.RezervacijaRepository;
@@ -96,15 +95,6 @@ public class RezervacijaService {
 				return rez;
 			}
 		}
-		return null;
-	}
-	
-	public RezervacijaDTO findRezervacijaById(Long id) {
-		Optional<Rezervacija> or = rezervacijaRepository.findById(id);
-		if (or.isPresent()) {
-			return new RezervacijaDTO(or.get());
-		}
-		
 		return null;
 	}
 
