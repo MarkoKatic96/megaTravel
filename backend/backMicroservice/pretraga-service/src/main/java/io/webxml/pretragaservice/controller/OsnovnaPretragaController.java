@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.webxml.pretragaservice.dto.SmestajKorisnikDTO;
 import io.webxml.pretragaservice.model.OsnovnaPretraga;
-import io.webxml.pretragaservice.model.Smestaj;
 import io.webxml.pretragaservice.service.OsnovnaPretragaService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("pretraga-service")
 public class OsnovnaPretragaController {
 
 	@Autowired

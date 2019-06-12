@@ -8,13 +8,14 @@
 
 package com.megatravel.agentlocalbackend.wsdl;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -132,7 +133,7 @@ public class GetAgentByEmailResponse {
         protected Long poslovniMaticniBroj;
         @XmlElement(required = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar datumClanstva;
+        protected Date datumClanstva;
         @XmlElement(required = true)
         protected String email;
         @XmlElement(required = true)
@@ -231,10 +232,10 @@ public class GetAgentByEmailResponse {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link Date }
          *     
          */
-        public XMLGregorianCalendar getDatumClanstva() {
+        public Date getDatumClanstva() {
             return datumClanstva;
         }
 
@@ -243,10 +244,10 @@ public class GetAgentByEmailResponse {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link Date }
          *     
          */
-        public void setDatumClanstva(XMLGregorianCalendar value) {
+        public void setDatumClanstva(Date value) {
             this.datumClanstva = value;
         }
 

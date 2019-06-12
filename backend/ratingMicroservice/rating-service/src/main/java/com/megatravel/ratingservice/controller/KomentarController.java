@@ -25,7 +25,7 @@ import com.megatravel.ratingservice.model.StatusRezervacije;
 import com.megatravel.ratingservice.service.KomentarService;
 
 @RestController
-@RequestMapping("/komentar")
+@RequestMapping("/rating-service/komentar")
 public class KomentarController {
 
 	@Autowired

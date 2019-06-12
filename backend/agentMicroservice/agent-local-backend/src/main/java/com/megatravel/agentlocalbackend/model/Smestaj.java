@@ -21,37 +21,19 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.megatravel.agentlocalbackend.dto.SmestajDTO;
 
-
-
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "idSmestaja",
-    "adresa",
-    "koordinate",
-    "tipSmestaja",
-    "kategorijaSmestaja",
-    "opis",
-    "maxOsoba",
-    "maxDanaZaOtkazivanje",
-    "cenaProlece",
-    "cenaLeto",
-    "cenaJesen",
-    "cenaZima",
-    "vlasnik",
-    "listaDodatnihUsluga",
-    "listaSlika"
-})
+@XmlType(name = "")
 @XmlRootElement(name = "Smestaj")
 @Entity
 public class Smestaj {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
     private Long idSmestaja;
 	
     @XmlElement(required = true)
@@ -98,15 +80,14 @@ public class Smestaj {
     private float cenaZima;
     
     @NotNull
+    @XmlElement(required = false)
     private Long vlasnik;
     
-    @XmlList
     @XmlElement(required = true)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="tipsmestaja_id"))
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     
-    @XmlList
     @XmlElement(required = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
     private Set<TImage> listaSlika = new HashSet<>();

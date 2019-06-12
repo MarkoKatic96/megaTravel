@@ -8,7 +8,7 @@ import io.swagger.annotations.Api;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/adservice")
+@RequestMapping("/admin-service/adservice")
 @Api(tags = "")
 public class DodatnaUslugaController 
 {

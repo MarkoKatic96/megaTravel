@@ -8,13 +8,14 @@
 
 package com.megatravel.agentlocalbackend.wsdl;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -55,13 +56,13 @@ public class SamostalnaRezervacija {
     protected Long smestajId;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar odDatuma;
+    protected Date odDatuma;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar doDatuma;
+    protected Date doDatuma;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar timestamp;
+    protected Date timestamp;
 
     /**
      * Gets the value of the samostalnaRezervacijaId property.
@@ -116,10 +117,10 @@ public class SamostalnaRezervacija {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getOdDatuma() {
+    public Date getOdDatuma() {
         return odDatuma;
     }
 
@@ -128,10 +129,10 @@ public class SamostalnaRezervacija {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setOdDatuma(XMLGregorianCalendar value) {
+    public void setOdDatuma(Date value) {
         this.odDatuma = value;
     }
 
@@ -140,10 +141,10 @@ public class SamostalnaRezervacija {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getDoDatuma() {
+    public Date getDoDatuma() {
         return doDatuma;
     }
 
@@ -152,10 +153,10 @@ public class SamostalnaRezervacija {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setDoDatuma(XMLGregorianCalendar value) {
+    public void setDoDatuma(Date value) {
         this.doDatuma = value;
     }
 
@@ -164,10 +165,10 @@ public class SamostalnaRezervacija {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
@@ -176,10 +177,10 @@ public class SamostalnaRezervacija {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setTimestamp(XMLGregorianCalendar value) {
+    public void setTimestamp(Date value) {
         this.timestamp = value;
     }
 

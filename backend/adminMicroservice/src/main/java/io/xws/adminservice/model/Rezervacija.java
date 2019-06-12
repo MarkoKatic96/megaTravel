@@ -8,13 +8,14 @@
 
 package io.xws.adminservice.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -81,15 +82,15 @@ public class Rezervacija {
     protected long korisnikId;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar od;
+    protected Date od;
     @XmlElement(name = "do", required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar _do;
+    protected Date _do;
     @XmlElement(defaultValue = "false")
     protected boolean potvrdjenaRezervacija;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar timestamp;
+    protected Date timestamp;
 
     /**
      * Gets the value of the rezervacijaId property.
@@ -144,10 +145,10 @@ public class Rezervacija {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getOd() {
+    public Date getOd() {
         return od;
     }
 
@@ -156,10 +157,10 @@ public class Rezervacija {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setOd(XMLGregorianCalendar value) {
+    public void setOd(Date value) {
         this.od = value;
     }
 
@@ -168,10 +169,10 @@ public class Rezervacija {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getDo() {
+    public Date getDo() {
         return _do;
     }
 
@@ -180,10 +181,10 @@ public class Rezervacija {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setDo(XMLGregorianCalendar value) {
+    public void setDo(Date value) {
         this._do = value;
     }
 
@@ -208,10 +209,10 @@ public class Rezervacija {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
@@ -220,10 +221,10 @@ public class Rezervacija {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setTimestamp(XMLGregorianCalendar value) {
+    public void setTimestamp(Date value) {
         this.timestamp = value;
     }
 

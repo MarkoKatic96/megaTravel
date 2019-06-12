@@ -20,7 +20,7 @@ import io.xws.adminservice.service.IAgentService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/agent")
+@RequestMapping("/admin-service/agent")
 @Api(tags = "")
 public class AgentController 
 {

@@ -15,7 +15,7 @@ import com.megatravel.ratingservice.model.Ocena;
 import com.megatravel.ratingservice.service.OcenaService;
 
 @RestController
-@RequestMapping("/ocena")
+@RequestMapping("/rating-service/ocena")
 public class OcenaController {
 	
 	@Autowired

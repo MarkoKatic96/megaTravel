@@ -100,7 +100,7 @@ public class Agent {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
     public Date getDatumClanstva() {
@@ -112,7 +112,7 @@ public class Agent {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
     public void setDatumClanstva(Date value) {

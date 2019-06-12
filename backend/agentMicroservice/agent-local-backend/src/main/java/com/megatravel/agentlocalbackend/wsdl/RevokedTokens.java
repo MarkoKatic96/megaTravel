@@ -8,13 +8,14 @@
 
 package com.megatravel.agentlocalbackend.wsdl;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -52,7 +53,7 @@ public class RevokedTokens {
     protected String token;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar revocationDate;
+    protected Date revocationDate;
 
     /**
      * Gets the value of the idTokena property.
@@ -99,10 +100,10 @@ public class RevokedTokens {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getRevocationDate() {
+    public Date getRevocationDate() {
         return revocationDate;
     }
 
@@ -111,10 +112,10 @@ public class RevokedTokens {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setRevocationDate(XMLGregorianCalendar value) {
+    public void setRevocationDate(Date value) {
         this.revocationDate = value;
     }
 

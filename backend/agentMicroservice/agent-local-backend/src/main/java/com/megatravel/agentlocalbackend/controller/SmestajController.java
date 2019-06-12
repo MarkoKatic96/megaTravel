@@ -27,7 +27,7 @@ import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.service.SmestajService;
 
 @RestController
-@RequestMapping("/smestaj")
+@RequestMapping("/agent-local-service/smestaj")
 public class SmestajController {
 	
 	@Autowired

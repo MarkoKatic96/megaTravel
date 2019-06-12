@@ -23,6 +23,7 @@ import io.webxml.reservationservice.service.RezervacijaService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/reservation-service")
 public class RezervacijaController {
 	
 	@Autowired

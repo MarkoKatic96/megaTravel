@@ -29,7 +29,7 @@ import com.megatravel.porukeservice.model.TipOsobe;
 import com.megatravel.porukeservice.service.PorukeService;
 
 @RestController
-@RequestMapping("/poruke")
+@RequestMapping("/poruke-korisnik-service/poruke")
 public class PorukeController {
 	
 	@Autowired

@@ -3,7 +3,6 @@ package io.webxml.reservationservice.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -48,14 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		//TODO 1: ono cemu neregistrovani korisnik sme da pristupi
-<<<<<<< HEAD
 		http.authorizeRequests().antMatchers("/").permitAll();
-=======
-		http.authorizeRequests().antMatchers("/*", "/rezervacije", "/rezervacije/*","/rezervisi/*", "/otkazi/*/*").permitAll()
-		.antMatchers(HttpMethod.PUT, "/").permitAll().anyRequest()
-				.authenticated();
->>>>>>> bd5e0efa1daea7a0026a8fae93dcf2af99117e2a
-
 		
 		// If a user try to access a resource without having enough permissions
 		http.exceptionHandling().accessDeniedPage("/agent/login");

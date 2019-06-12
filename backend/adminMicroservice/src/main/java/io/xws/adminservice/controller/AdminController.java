@@ -22,7 +22,7 @@ import io.xws.adminservice.service.IAdminService;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:3000")
-@RequestMapping("/api/admin")
+@RequestMapping("/admin-service/admin")
 @Api(tags = "")
 public class AdminController 
 {

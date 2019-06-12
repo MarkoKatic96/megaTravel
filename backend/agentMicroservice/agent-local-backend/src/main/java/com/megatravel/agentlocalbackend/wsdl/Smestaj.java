@@ -9,13 +9,15 @@
 package com.megatravel.agentlocalbackend.wsdl;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.megatravel.agentlocalbackend.model.TImage;
 
 
 /**
@@ -108,9 +110,9 @@ public class Smestaj {
     protected float cenaZima;
     protected Long vlasnik;
     @XmlElement(required = true)
-    protected List<DodatneUsluge> listaDodatnihUsluga;
+    protected Set<DodatneUsluge> listaDodatnihUsluga;
     @XmlElement(required = true)
-    protected List<Smestaj.ListaSlika> listaSlika;
+    protected Set<TImage> listaSlika;
 
     /**
      * Gets the value of the idSmestaja property.
@@ -392,66 +394,25 @@ public class Smestaj {
         this.vlasnik = value;
     }
 
-    /**
-     * Gets the value of the listaDodatnihUsluga property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the listaDodatnihUsluga property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getListaDodatnihUsluga().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link DodatneUsluge }
-     * 
-     * 
-     */
-    public List<DodatneUsluge> getListaDodatnihUsluga() {
-        if (listaDodatnihUsluga == null) {
-            listaDodatnihUsluga = new ArrayList<DodatneUsluge>();
-        }
-        return this.listaDodatnihUsluga;
-    }
+    public Set<DodatneUsluge> getListaDodatnihUsluga() {
+		return listaDodatnihUsluga;
+	}
 
-    /**
-     * Gets the value of the listaSlika property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the listaSlika property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getListaSlika().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Smestaj.ListaSlika }
-     * 
-     * 
-     */
-    public List<Smestaj.ListaSlika> getListaSlika() {
-        if (listaSlika == null) {
-            listaSlika = new ArrayList<Smestaj.ListaSlika>();
-        }
-        return this.listaSlika;
-    }
+	public void setListaDodatnihUsluga(Set<DodatneUsluge> listaDodatnihUsluga) {
+		this.listaDodatnihUsluga = listaDodatnihUsluga;
+	}
+
+	public Set<TImage> getListaSlika() {
+		return listaSlika;
+	}
+
+	public void setListaSlika(Set<TImage> listaSlika) {
+		this.listaSlika = listaSlika;
+	}
 
 
-    /**
+
+	/**
      * <p>Java class for anonymous complex type.
      * 
      * <p>The following schema fragment specifies the expected content contained within this class.

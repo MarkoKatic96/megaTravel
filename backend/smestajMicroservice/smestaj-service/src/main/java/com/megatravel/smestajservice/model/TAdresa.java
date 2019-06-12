@@ -18,8 +18,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TAdresa", propOrder = {

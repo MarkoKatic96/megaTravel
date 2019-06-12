@@ -14,7 +14,6 @@ import io.webxml.pretragaservice.model.DodatneUsluge;
 import io.webxml.pretragaservice.model.OsnovnaPretraga;
 import io.webxml.pretragaservice.model.Rezervacija;
 import io.webxml.pretragaservice.model.RezervacijeRestTemplate;
-import io.webxml.pretragaservice.model.Smestaj;
 import io.webxml.pretragaservice.model.SmestajiRestTemplate;
 import io.webxml.pretragaservice.model.StatusRezervacije;
 
@@ -133,7 +132,7 @@ public class OsnovnaPretragaService {
 	}
 	
 	public List<SmestajKorisnikDTO> sortSmestaji(List<SmestajKorisnikDTO> returnLista, String sort){
-		if(sort!=null || !sort.equals("")) {
+		if(sort!=null && !sort.equals("")) {
 			if(sort.equals("cena")) {
 				Collections.sort(returnLista, new Comparator<SmestajKorisnikDTO>() {
 					@Override public int compare(SmestajKorisnikDTO p1, SmestajKorisnikDTO p2) {

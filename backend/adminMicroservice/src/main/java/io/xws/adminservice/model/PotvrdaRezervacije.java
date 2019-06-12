@@ -8,13 +8,14 @@
 
 package io.xws.adminservice.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -61,7 +62,7 @@ public class PotvrdaRezervacije {
     protected boolean statusRezervacije;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar timestamp;
+    protected Date timestamp;
 
     /**
      * Gets the value of the rezervacijaId property.
@@ -100,10 +101,10 @@ public class PotvrdaRezervacije {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
@@ -112,10 +113,10 @@ public class PotvrdaRezervacije {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setTimestamp(XMLGregorianCalendar value) {
+    public void setTimestamp(Date value) {
         this.timestamp = value;
     }
 

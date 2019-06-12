@@ -3,8 +3,6 @@ package com.megatravel.smestajservice.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +20,13 @@ import com.megatravel.smestajservice.dto.SmestajKorisnikDTO;
 import com.megatravel.smestajservice.jwt.JwtTokenUtils;
 import com.megatravel.smestajservice.model.DodatneUsluge;
 import com.megatravel.smestajservice.model.KategorijaSmestaja;
-import com.megatravel.smestajservice.model.Korisnik;
 import com.megatravel.smestajservice.model.Smestaj;
 import com.megatravel.smestajservice.model.SmestajiRestTemplate;
 import com.megatravel.smestajservice.model.TipSmestaja;
 import com.megatravel.smestajservice.service.SmestajService;
 
 @RestController
-@RequestMapping("/smestaj-korisnik/")
+@RequestMapping("/smestaj-service/smestaj-korisnik/")
 @CrossOrigin(origins = "http://localhost:3000")
 public class SmestajKorisnikController {
 	

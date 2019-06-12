@@ -21,7 +21,7 @@ import com.megatravel.agentglobalback.service.AgentService;
 import com.megatravel.agentglobalback.service.NeaktiviranAgentService;
 
 @RestController
-@RequestMapping("/agent")
+@RequestMapping("/agent-global-service/agent")
 public class AgentController {
 	
 	@Autowired
@@ -76,6 +76,19 @@ public class AgentController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<AgentDTO> edit(@RequestBody Agent noviAgent) {
+		System.out.println("edit(" + noviAgent.getEmail() + "," + noviAgent.getLozinka() + ")");
+		
+		Agent agent = agentService.findByEmail(noviAgent.getEmail());
+		if(agent == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		agent = agentService.save(noviAgent);
+		return new ResponseEntity<AgentDTO>(new AgentDTO(agent), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)

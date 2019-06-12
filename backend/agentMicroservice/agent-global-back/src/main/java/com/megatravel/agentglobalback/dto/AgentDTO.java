@@ -1,15 +1,12 @@
 package com.megatravel.agentglobalback.dto;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.megatravel.agentglobalback.model.Agent;
 
@@ -26,7 +23,7 @@ public class AgentDTO {
 	
 	@XmlSchemaType(name = "dateTime")
     @XmlElement(namespace="https://megatravel.com/datumClanstva")
-    protected XMLGregorianCalendar datumClanstva;
+    protected Date datumClanstva;
     
     @XmlElement(namespace="https://megatravel.com/email")
     protected String email;
@@ -43,7 +40,7 @@ public class AgentDTO {
     @XmlElement(namespace="https://megatravel.com/prezime")
     protected String prezime;
 	
-    public AgentDTO(Long idAgenta, String ime, String prezime, Long poslovniMaticniBroj, XMLGregorianCalendar datumClanstva,
+    public AgentDTO(Long idAgenta, String ime, String prezime, Long poslovniMaticniBroj, Date datumClanstva,
 			String email) {
 		super();
 		this.idAgenta = idAgenta;
@@ -64,13 +61,7 @@ public class AgentDTO {
 		this.ime = agent.getIme();
 		this.prezime = agent.getPrezime();
 		this.poslovniMaticniBroj = agent.getPoslovniMaticniBroj();
-		GregorianCalendar c = new GregorianCalendar();
-		c.setTime(agent.getDatumClanstva());
-		try {
-			this.datumClanstva = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-		} catch (DatatypeConfigurationException e) {
-			this.datumClanstva = null;
-		}
+		this.datumClanstva = agent.getDatumClanstva();
 		this.email = agent.getEmail();
 	}
 
@@ -106,11 +97,11 @@ public class AgentDTO {
 		this.poslovniMaticniBroj = poslovniMaticniBroj;
 	}
 
-	public XMLGregorianCalendar getDatumClanstva() {
+	public Date getDatumClanstva() {
 		return datumClanstva;
 	}
 
-	public void setDatumClanstva(XMLGregorianCalendar datumClanstva) {
+	public void setDatumClanstva(Date datumClanstva) {
 		this.datumClanstva = datumClanstva;
 	}
 

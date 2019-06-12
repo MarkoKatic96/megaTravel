@@ -26,7 +26,7 @@ import com.megatravel.agentlocalbackend.wsdl.SignUpResponse.NeaktiviranAgent;
 
 
 @RestController
-@RequestMapping("/agent")
+@RequestMapping("/agent-local-service/agent")
 public class AgentController {
 	
 	@Autowired
@@ -51,14 +51,14 @@ public class AgentController {
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
 		System.out.println("getAgent(" + id + ")");
 		
-		com.megatravel.agentlocalbackend.model.Agent agent = agentService.findOne();
+		com.megatravel.agentlocalbackend.model.Agent agent = agentService.findOne(id);
 		if (agent == null) {
 			GetAgentResponse agentResponse = agentClient.getAgent(id);
 			AgentDTO agentDTO = agentResponse.getAgent();
-			return new ResponseEntity<>(agentDTO, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(agentDTO, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(new AgentDTO(), HttpStatus.OK);
+		return new ResponseEntity<>(new AgentDTO(), HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/e/{email}", method = RequestMethod.GET)

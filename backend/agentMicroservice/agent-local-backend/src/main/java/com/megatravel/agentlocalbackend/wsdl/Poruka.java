@@ -8,12 +8,13 @@
 
 package com.megatravel.agentlocalbackend.wsdl;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -58,7 +59,7 @@ public class Poruka {
     protected long idPoruke;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar datumSlanja;
+    protected Date datumSlanja;
     protected long posiljalac;
     @XmlElement(required = true)
     protected String tipPosiljaoca;
@@ -68,7 +69,7 @@ public class Poruka {
     @XmlElement(required = true)
     protected String sadrzaj;
     @XmlElement(required = true)
-    protected String status;
+    protected StatusPoruke status;
 
     /**
      * Gets the value of the idPoruke property.
@@ -91,10 +92,10 @@ public class Poruka {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public XMLGregorianCalendar getDatumSlanja() {
+    public Date getDatumSlanja() {
         return datumSlanja;
     }
 
@@ -103,10 +104,10 @@ public class Poruka {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Date }
      *     
      */
-    public void setDatumSlanja(XMLGregorianCalendar value) {
+    public void setDatumSlanja(Date value) {
         this.datumSlanja = value;
     }
 
@@ -222,7 +223,7 @@ public class Poruka {
      *     {@link String }
      *     
      */
-    public String getStatus() {
+    public StatusPoruke getStatus() {
         return status;
     }
 
@@ -234,7 +235,7 @@ public class Poruka {
      *     {@link String }
      *     
      */
-    public void setStatus(String value) {
+    public void setStatus(StatusPoruke value) {
         this.status = value;
     }
 

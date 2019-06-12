@@ -28,7 +28,7 @@ import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.service.PorukeService;
 
 @RestController
-@RequestMapping("/poruke")
+@RequestMapping("/agent-local-service/poruke")
 public class PorukeController {
 	@Autowired
 	RestTemplateConfiguration config;

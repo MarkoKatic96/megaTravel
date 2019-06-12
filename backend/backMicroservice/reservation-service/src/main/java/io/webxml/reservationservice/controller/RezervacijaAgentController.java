@@ -31,7 +31,7 @@ import io.webxml.reservationservice.service.RezervacijaService;
 import io.webxml.reservationservice.service.SamostalnaRezervacijaService;
 
 @RestController
-@RequestMapping("/agent")
+@RequestMapping("/reservation-service/agent")
 public class RezervacijaAgentController {
 
 	@Autowired

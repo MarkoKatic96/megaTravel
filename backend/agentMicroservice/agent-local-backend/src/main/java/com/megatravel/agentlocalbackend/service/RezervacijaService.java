@@ -50,6 +50,10 @@ public class RezervacijaService {
 		}
 		return null;
 	}
+	
+	public Rezervacija findOne(Long id) {
+		return rezervacijaRepository.getOne(id);
+	}
 
 	public void remove(Long id) {
 		rezervacijaRepository.deleteById(id);

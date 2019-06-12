@@ -26,7 +26,7 @@ import com.megatravel.smestajservice.model.Smestaj;
 import com.megatravel.smestajservice.service.SmestajService;
 
 @RestController
-@RequestMapping("/smestaj")
+@RequestMapping("/smestaj-service/smestaj")
 public class SmestajController {
 	
 	@Autowired

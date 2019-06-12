@@ -20,7 +20,7 @@ import io.xws.adminservice.service.ISmestajService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/accommodation")
+@RequestMapping("/admin-service/accommodation")
 @Api(tags = "")
 public class SmestajController 
 {

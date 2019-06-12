@@ -29,7 +29,6 @@ import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.dto.LokalneRezervacijeDTO;
 import com.megatravel.agentlocalbackend.dto.RezervacijaDTO;
 import com.megatravel.agentlocalbackend.dto.SamostalnaRezervacijaDTO;
-import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.model.PotvrdaRezervacije;
 import com.megatravel.agentlocalbackend.model.Rezervacija;
 import com.megatravel.agentlocalbackend.service.AgentService;
@@ -37,7 +36,7 @@ import com.megatravel.agentlocalbackend.service.RezervacijaService;
 import com.megatravel.agentlocalbackend.service.SamostalnaRezervacijaService;
 
 @RestController
-@RequestMapping("/rezervacije")
+@RequestMapping("/agent-local-service/rezervacije")
 public class RezervacijeController {
 	@Autowired
 	RestTemplateConfiguration config;
@@ -96,12 +95,13 @@ public class RezervacijeController {
 	public ResponseEntity<RezervacijaDTO> potvrdiRezervacija(@RequestBody PotvrdaRezervacije potvrda, HttpServletRequest req) {
 		System.out.println("potvrdiRezervacija()");
 		
-		Agent agent = agentService.findOne();
+		/*Agent agent = agentService.findOne();
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
+		}*/
 		
-		Rezervacija rezervacija = rezervacijaService.findOne(potvrda.getRezervacijaId(), agent.getIdAgenta());
+		//Rezervacija rezervacija = rezervacijaService.findOne(potvrda.getRezervacijaId(), agent.getIdAgenta());
+		Rezervacija rezervacija = rezervacijaService.findOne(potvrda.getRezervacijaId());
 		if (rezervacija==null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

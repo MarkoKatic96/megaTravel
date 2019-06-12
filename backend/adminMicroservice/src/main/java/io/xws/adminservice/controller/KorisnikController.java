@@ -19,7 +19,7 @@ import io.xws.adminservice.service.IKorisnikService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/user")
+@RequestMapping("/admin-service/user")
 @Api(tags = "")
 public class KorisnikController
 {

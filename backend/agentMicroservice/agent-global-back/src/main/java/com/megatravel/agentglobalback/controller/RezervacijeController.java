@@ -9,7 +9,7 @@ import com.megatravel.agentglobalback.service.RezervacijaService;
 import com.megatravel.agentglobalback.service.SamostalnaRezervacijaService;
 
 @RestController
-@RequestMapping("/rezervacije")
+@RequestMapping("/agent-global-service/rezervacije")
 public class RezervacijeController {
 
 	@Autowired

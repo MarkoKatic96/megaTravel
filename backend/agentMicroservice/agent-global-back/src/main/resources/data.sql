@@ -1,0 +1,1 @@
+insert into agent (datum_clanstva, email, ime, lozinka, poslovni_maticni_broj, prezime) values ('2019-5-8-12-34-28', 'agent@megatravel.com', 'Pera', 'secretpassword', 15684984965, 'Peric');

@@ -21,6 +21,7 @@ import io.webxml.korisnikservice.service.KorisnikService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/korisnik-service")
 public class KorisnikController {
 
 	@Autowired
