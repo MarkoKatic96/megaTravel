@@ -1,5 +1,7 @@
 # megaTravel
 
+![Docker services running...](services.png?raw=true "Docker services running...")
+
 ## Imena servisa i njihovi portovi:
 - Administratorski backend mikroservis - admin-service [port:8300]
 - Glavni agentski backend mikroservis - agent-global-service [port:8400]
