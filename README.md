@@ -14,3 +14,4 @@
 - Backend mikroservis za rejting - rating-service [port:8900]
 - Backend mikroservis za rezervacije - reservation-service [port:8300]
 - Backend mikroservis za smestaj - smestaj-service [port:8600]
+- Zuul API gateway - zuul-gateway [port:8762]
