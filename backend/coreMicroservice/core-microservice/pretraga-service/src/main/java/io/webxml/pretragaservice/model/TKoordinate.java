@@ -15,11 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TKoordinate", propOrder = {
-    "latitude",
-    "Longitude"
-})
-
+@XmlType(name = "TKoordinate")
 public class TKoordinate {
 
 	private Long koordinateId;

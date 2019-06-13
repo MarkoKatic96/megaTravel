@@ -95,13 +95,13 @@
 
 	<build>
 	
-		<pluginManagement>    
+		<!-- <pluginManagement>    -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
+		</plugins>
 			<!-- 			
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
@@ -157,13 +157,9 @@
 			        </execution>
 			    </executions>
 			</plugin>
-			
-
-			
-
-		-->
-
 		</plugins>
 		</pluginManagement>
+		
+		-->
 	</build>
 </project>

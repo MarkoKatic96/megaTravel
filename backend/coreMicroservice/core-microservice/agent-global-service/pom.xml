@@ -9,9 +9,9 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.megatravel</groupId>
-	<artifactId>agent-global-back</artifactId>
+	<artifactId>agent-global-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>agent-global-back</name>
+	<name>agent-global-service</name>
 	<description>Main backend microservice for Agent</description>
 
 	<properties>
