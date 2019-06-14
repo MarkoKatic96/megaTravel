@@ -109,6 +109,18 @@ public class KorisnikController
 	}
 	
 	/*
+	 * Deblokiranje korisnika
+	 * Vraca TRUE ako je uspesno deblokiran
+	 */
+	@PutMapping("/unblockuser/{id}")
+	public ResponseEntity<Boolean> updateDeblokirajKorisnika(@PathVariable("id") Long id)
+	{
+		System.out.println("updateDeblokirajKorisnika()");
+		
+		return (!korService.updateDeblokirajKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
+	/*
 	 * Brisanje korisnika
 	 * Vraca TRUE ako je uspesno obrisan
 	 */
