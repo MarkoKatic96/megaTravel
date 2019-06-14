@@ -7,8 +7,11 @@ import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 import com.megatravel.agentlocalbackend.wsdl.AgentPrijavaDTO;
 import com.megatravel.agentlocalbackend.wsdl.AgentRegistracijaDTO;
+import com.megatravel.agentlocalbackend.wsdl.EditRequest;
+import com.megatravel.agentlocalbackend.wsdl.EditResponse;
 import com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailRequest;
 import com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailResponse;
+import com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailResponse.Agent;
 import com.megatravel.agentlocalbackend.wsdl.GetAgentRequest;
 import com.megatravel.agentlocalbackend.wsdl.GetAgentResponse;
 import com.megatravel.agentlocalbackend.wsdl.LoginRequest;
@@ -75,6 +78,19 @@ public class AgentClient extends WebServiceGatewaySupport {
 				.marshalSendAndReceive("http://localhost:8400/ws/agents", request,
 						new SoapActionCallback(
 								"https://megatravel.com/SignUpRequest"));
+
+		return response;
+	}
+	
+	public EditResponse getEdit(Agent agent) {
+		
+		EditRequest request = new EditRequest();
+		request.setAgent(agent);
+
+		EditResponse response = (EditResponse) getWebServiceTemplate()
+				.marshalSendAndReceive("http://localhost:8400/ws/agents", request,
+						new SoapActionCallback(
+								"https://megatravel.com/EditRequest"));
 
 		return response;
 	}

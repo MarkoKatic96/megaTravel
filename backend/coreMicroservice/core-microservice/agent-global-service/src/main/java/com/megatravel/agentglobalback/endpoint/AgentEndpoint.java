@@ -13,6 +13,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.megatravel.agentglobalback.dto.AgentDTO;
 import com.megatravel.agentglobalback.model.Agent;
+import com.megatravel.agentglobalback.model.EditRequest;
+import com.megatravel.agentglobalback.model.EditResponse;
 import com.megatravel.agentglobalback.model.GetAgentByEmailRequest;
 import com.megatravel.agentglobalback.model.GetAgentByEmailResponse;
 import com.megatravel.agentglobalback.model.GetAgentRequest;
@@ -86,6 +88,36 @@ public class AgentEndpoint {
 			response.setJwt("");
 			return response;
 		}
+	}
+	
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "editRequest")
+	@ResponsePayload
+	public EditResponse edit(@RequestPayload EditRequest request) {
+		log.info("edit " + request.getAgent());
+		
+		EditResponse response = new EditResponse();
+		if (request.getAgent()==null) {
+			return response;
+		}
+		
+		Agent tempKorisnik = agentService.findByEmail(request.getAgent().getEmail());
+		if(tempKorisnik != null) {
+			if (tempKorisnik.getIdAgenta()!=request.getAgent().getIdAgenta()) {
+				//mora biti jedinstveni mail za korisnika
+				return response;
+			}
+		}
+		
+		tempKorisnik = agentService.findByPMB(request.getAgent().getPoslovniMaticniBroj());
+		if(tempKorisnik != null) {
+			if (tempKorisnik.getIdAgenta()!=request.getAgent().getIdAgenta()) {
+				//mora biti jedinstveni PMB za korisnika
+				return response;
+			}
+		}
+		
+		response.setAgent(new AgentDTO(agentService.save(request.getAgent())));
+		return response;
 	}
 	
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "signUpRequest")

@@ -18,7 +18,9 @@ import com.megatravel.agentlocalbackend.soap.AgentClient;
 import com.megatravel.agentlocalbackend.wsdl.AgentDTO;
 import com.megatravel.agentlocalbackend.wsdl.AgentPrijavaDTO;
 import com.megatravel.agentlocalbackend.wsdl.AgentRegistracijaDTO;
+import com.megatravel.agentlocalbackend.wsdl.EditResponse;
 import com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailResponse;
+import com.megatravel.agentlocalbackend.wsdl.GetAgentByEmailResponse.Agent;
 import com.megatravel.agentlocalbackend.wsdl.GetAgentResponse;
 import com.megatravel.agentlocalbackend.wsdl.LoginResponse;
 import com.megatravel.agentlocalbackend.wsdl.SignUpResponse;
@@ -130,6 +132,29 @@ public class AgentController {
 			return new ResponseEntity<>(jwt, HttpStatus.OK);
 		}
 		
+	}
+	
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<AgentDTO> edit(@RequestBody Agent noviAgent) {
+		System.out.println("edit(" + noviAgent.getEmail() + "," + noviAgent.getLozinka() + ")");
+		
+		EditResponse editResponse = agentClient.getEdit(noviAgent);
+		AgentDTO agentDTO = editResponse.getAgent();
+		if (agentDTO==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+		} else {
+			com.megatravel.agentlocalbackend.model.Agent a = new com.megatravel.agentlocalbackend.model.Agent();
+			a.setDatumClanstva(agentDTO.getDatumClanstva());
+			a.setEmail(agentDTO.getEmail());
+			a.setIdAgenta(agentDTO.getIdAgenta());
+			a.setIme(agentDTO.getIme());
+			a.setLozinka(noviAgent.getLozinka());
+			a.setPoslovniMaticniBroj(agentDTO.getPoslovniMaticniBroj());
+			a.setPrezime(agentDTO.getPrezime());
+			
+			agentService.save(a);
+			return new ResponseEntity<>(agentDTO, HttpStatus.OK);
+		}
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)

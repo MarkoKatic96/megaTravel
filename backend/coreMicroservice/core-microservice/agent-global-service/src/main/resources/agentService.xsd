@@ -91,6 +91,34 @@
   </xs:element>
 
   <xs:element name="TImage"/>
+  
+  <xs:element name="editRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="agent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="idAgenta" type="xs:long"/>
+              <xs:element name="ime" type="xs:string"/>
+              <xs:element name="prezime" type="xs:string"/>
+              <xs:element name="poslovniMaticniBroj" type="xs:long" minOccurs="0"/>
+              <xs:element name="datumClanstva" type="xs:date"/>
+              <xs:element name="email" type="xs:string"/>
+              <xs:element name="lozinka" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="editResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="agent" type="ns1:agentDTO"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 
   <xs:element name="getAgentByEmailRequest">
     <xs:complexType>
