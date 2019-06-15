@@ -2,6 +2,7 @@ package io.xws.adminservice.dto;
 
 import java.util.Date;
 
+import io.xws.adminservice.model.StatusKomentara;
 import lombok.Data;
 
 @Data
@@ -12,8 +13,8 @@ public class KomentarDTO
     protected long idRezervacije;
     protected long idKorisnika;
     protected String komentar;
-    protected Date datum;
-    protected boolean objavljen;
+    protected Date timestamp;
+    protected StatusKomentara status;
 	public long getIdKomentara() {
 		return idKomentara;
 	}
@@ -30,10 +31,13 @@ public class KomentarDTO
 		return komentar;
 	}
 	public Date getDatum() {
-		return datum;
+		return timestamp;
 	}
-	public boolean isObjavljen() {
-		return objavljen;
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	public StatusKomentara getStatus() {
+		return status;
 	}
 	public void setIdKomentara(long idKomentara) {
 		this.idKomentara = idKomentara;
@@ -50,11 +54,11 @@ public class KomentarDTO
 	public void setKomentar(String komentar) {
 		this.komentar = komentar;
 	}
-	public void setDatum(Date datum) {
-		this.datum = datum;
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
-	public void setObjavljen(boolean objavljen) {
-		this.objavljen = objavljen;
+	public void setStatus(StatusKomentara status) {
+		this.status = status;
 	}
 
 }

@@ -15,7 +15,7 @@ public class KorisnikDTO
     protected Date datumClanstva;
     protected boolean registrovan;
     protected boolean blokiran;
-    protected boolean aktiviran;
+    private String rola;
 	public long getIdKorisnik() {
 		return idKorisnik;
 	}
@@ -40,8 +40,8 @@ public class KorisnikDTO
 	public boolean isBlokiran() {
 		return blokiran;
 	}
-	public boolean isAktiviran() {
-		return aktiviran;
+	public String getRola() {
+		return rola;
 	}
 	public void setIdKorisnik(long idKorisnik) {
 		this.idKorisnik = idKorisnik;
@@ -67,7 +67,7 @@ public class KorisnikDTO
 	public void setBlokiran(boolean blokiran) {
 		this.blokiran = blokiran;
 	}
-	public void setAktiviran(boolean aktiviran) {
-		this.aktiviran = aktiviran;
+	public void setRola(String rola) {
+		this.rola = rola;
 	}
 }

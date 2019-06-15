@@ -15,22 +15,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TAdresa", propOrder = {
-    "grad",
-    "ulica",
-    "broj"
-})
-
+@XmlType(name = "TAdresa")
 public class TAdresa {
-
+	
 	private Long adresaId;
 	
 	private Smestaj smestaj;
 	
     @XmlElement(required = true)
     private String grad;
+    
     @XmlElement(required = true)
     private String ulica;
+    
+    @XmlElement(required = false)
     private int broj;
 
     /**

@@ -8,8 +8,9 @@
 
 package io.webxml.pretragaservice.model;
 
-import java.sql.Date;
+import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,36 +23,45 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "rezervacijaId",
     "smestajId",
+    "vlasnikId",
     "korisnikId",
     "odDatuma",
     "doDatuma",
-    "potvrdjenaRezervacija",
+    "statusRezervacije",
+    "updateTimestamp",
     "timestamp"
 })
 @XmlRootElement(name = "Rezervacija")
 public class Rezervacija {
 	
-    private Long rezervacijaId;
+	private Long rezervacijaId;
     
+	@NotNull
 	private Long smestajId;
 	
+	@NotNull
 	private Long vlasnikId;
     
+	@NotNull
 	private Long korisnikId;
 	
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
+    @NotNull
     private Date odDatuma;
     
     @XmlElement(name = "do", required = true)
     @XmlSchemaType(name = "dateTime")
+    @NotNull
     private Date doDatuma;
     
     @XmlElement(defaultValue = "false")
+    @NotNull
     private String statusRezervacije;
     
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
+    @NotNull
     private Date timestamp;
     
     private Date updateTimestamp;
@@ -59,8 +69,8 @@ public class Rezervacija {
     public Rezervacija() {
 	}
     
-    public Rezervacija(Long rezervacijaId, Long smestajId, Long vlasnikId, Long korisnikId, Date odDatuma,
-			 Date doDatuma, StatusRezervacije statusRezervacije) {
+    public Rezervacija(Long rezervacijaId, @NotNull Long smestajId, @NotNull Long vlasnikId, @NotNull Long korisnikId, @NotNull Date odDatuma,
+			@NotNull Date doDatuma, @NotNull StatusRezervacije statusRezervacije) {
 		super();
 		this.rezervacijaId = rezervacijaId;
 		this.smestajId = smestajId;

@@ -22,8 +22,7 @@
 		<module>agent-local-back</module>
 		<module>discovery-server</module>
 		<module>korisnik-service</module>
-		<module>poruke-agent-service</module>
-		<module>poruke-korisnik-service</module>
+		<module>poruke-service</module>
 		<module>pretraga-service</module>
 		<module>rating-service</module>
 		<module>reservation-service</module>

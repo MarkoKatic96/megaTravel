@@ -1,7 +1,5 @@
 package io.xws.adminservice.dto;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 import lombok.Data;
@@ -10,32 +8,28 @@ import lombok.Data;
 public class SmestajDTO 
 {
 	protected long idSmestaja;
-    protected String adresa;
-    protected float longitude;
-    protected float latitude;
+    protected TAdresaDTO adresa;
+    protected TKoordinateDTO koordinate;
     protected TipSmestajaDTO tipSmestaja;
     protected KategorijaSmestajaDTO kategorijaSmestaja;
     protected String opis;
-    protected BigInteger maxOsoba;
-    protected BigInteger maxDanaZaOtkazivanje;
-    protected BigDecimal cenaProlece;
-    protected BigDecimal cenaLeto;
-    protected BigDecimal cenaJesen;
-    protected BigDecimal cenaZima;
+    protected int maxOsoba;
+    protected int maxDanaZaOtkazivanje;
+    protected float cenaProlece;
+    protected float cenaLeto;
+    protected float cenaJesen;
+    protected float cenaZima;
     protected long vlasnik;
     protected List<DodatneUslugeDTO> listaDodatnihUsluga;
 //    protected Smestaj.ListaSlika listaSlika;
 	public long getIdSmestaja() {
 		return idSmestaja;
 	}
-	public String getAdresa() {
+	public TAdresaDTO getAdresa() {
 		return adresa;
 	}
-	public float getLongitude() {
-		return longitude;
-	}
-	public float getLatitude() {
-		return latitude;
+	public TKoordinateDTO getKoordinate() {
+		return koordinate;
 	}
 	public TipSmestajaDTO getTipSmestaja() {
 		return tipSmestaja;
@@ -46,22 +40,22 @@ public class SmestajDTO
 	public String getOpis() {
 		return opis;
 	}
-	public BigInteger getMaxOsoba() {
+	public int getMaxOsoba() {
 		return maxOsoba;
 	}
-	public BigInteger getMaxDanaZaOtkazivanje() {
+	public int getMaxDanaZaOtkazivanje() {
 		return maxDanaZaOtkazivanje;
 	}
-	public BigDecimal getCenaProlece() {
+	public float getCenaProlece() {
 		return cenaProlece;
 	}
-	public BigDecimal getCenaLeto() {
+	public float getCenaLeto() {
 		return cenaLeto;
 	}
-	public BigDecimal getCenaJesen() {
+	public float getCenaJesen() {
 		return cenaJesen;
 	}
-	public BigDecimal getCenaZima() {
+	public float getCenaZima() {
 		return cenaZima;
 	}
 	public long getVlasnik() {
@@ -73,14 +67,11 @@ public class SmestajDTO
 	public void setIdSmestaja(long idSmestaja) {
 		this.idSmestaja = idSmestaja;
 	}
-	public void setAdresa(String adresa) {
+	public void setAdresa(TAdresaDTO adresa) {
 		this.adresa = adresa;
 	}
-	public void setLongitude(float longitude) {
-		this.longitude = longitude;
-	}
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
+	public void setKoordinate(TKoordinateDTO koordinate) {
+		this.koordinate = koordinate;
 	}
 	public void setTipSmestaja(TipSmestajaDTO tipSmestaja) {
 		this.tipSmestaja = tipSmestaja;
@@ -91,22 +82,22 @@ public class SmestajDTO
 	public void setOpis(String opis) {
 		this.opis = opis;
 	}
-	public void setMaxOsoba(BigInteger maxOsoba) {
+	public void setMaxOsoba(int maxOsoba) {
 		this.maxOsoba = maxOsoba;
 	}
-	public void setMaxDanaZaOtkazivanje(BigInteger maxDanaZaOtkazivanje) {
+	public void setMaxDanaZaOtkazivanje(int maxDanaZaOtkazivanje) {
 		this.maxDanaZaOtkazivanje = maxDanaZaOtkazivanje;
 	}
-	public void setCenaProlece(BigDecimal cenaProlece) {
+	public void setCenaProlece(float cenaProlece) {
 		this.cenaProlece = cenaProlece;
 	}
-	public void setCenaLeto(BigDecimal cenaLeto) {
+	public void setCenaLeto(float cenaLeto) {
 		this.cenaLeto = cenaLeto;
 	}
-	public void setCenaJesen(BigDecimal cenaJesen) {
+	public void setCenaJesen(float cenaJesen) {
 		this.cenaJesen = cenaJesen;
 	}
-	public void setCenaZima(BigDecimal cenaZima) {
+	public void setCenaZima(float cenaZima) {
 		this.cenaZima = cenaZima;
 	}
 	public void setVlasnik(long vlasnik) {

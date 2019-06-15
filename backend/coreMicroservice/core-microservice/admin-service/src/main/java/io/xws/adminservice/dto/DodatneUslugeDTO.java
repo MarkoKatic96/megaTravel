@@ -6,17 +6,17 @@ import lombok.Data;
 public class DodatneUslugeDTO 
 {
 	protected long idDodatneUsluge;
-    protected String naziv;
+    protected String nazivDodatneUsluge;
 	public long getIdDodatneUsluge() {
 		return idDodatneUsluge;
 	}
-	public String getNaziv() {
-		return naziv;
+	public String getNazivDodatneUsluge() {
+		return nazivDodatneUsluge;
 	}
 	public void setIdDodatneUsluge(long idDodatneUsluge) {
 		this.idDodatneUsluge = idDodatneUsluge;
 	}
-	public void setNaziv(String naziv) {
-		this.naziv = naziv;
+	public void setNazivDodatneUsluge(String naziv) {
+		this.nazivDodatneUsluge = naziv;
 	}
 }

@@ -26,13 +26,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "samostalnaRezervacijaId",
-    "smestajId",
-    "odDatuma",
-    "doDatuma",
-    "timestamp"
-})
+@XmlType(name = "")
 @XmlRootElement(name = "Samostalna_rezervacija")
 @Entity
 public class SamostalnaRezervacija {

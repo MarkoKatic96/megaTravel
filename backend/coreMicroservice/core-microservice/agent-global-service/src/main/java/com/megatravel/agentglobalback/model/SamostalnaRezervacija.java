@@ -10,7 +10,6 @@ package com.megatravel.agentglobalback.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,15 +25,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "samostalnaRezervacijaId",
-    "smestajId",
-    "odDatuma",
-    "doDatuma",
-    "timestamp"
-})
+@XmlType(name = "")
 @XmlRootElement(name = "Samostalna_rezervacija")
-@Entity
 public class SamostalnaRezervacija {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +34,9 @@ public class SamostalnaRezervacija {
 	
 	@NotNull
     private Long smestajId;
+	
+	@NotNull
+	private Long vlasnikId;
 	
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
@@ -62,11 +57,12 @@ public class SamostalnaRezervacija {
     public SamostalnaRezervacija() {
 	}
     
-    public SamostalnaRezervacija(Long samostalnaRezervacijaId, @NotNull Long smestajId, @NotNull Date odDatuma,
+    public SamostalnaRezervacija(Long samostalnaRezervacijaId, @NotNull Long smestajId, @NotNull Long vlasnikId, @NotNull Date odDatuma,
 			@NotNull Date doDatuma) {
 		super();
 		this.samostalnaRezervacijaId = samostalnaRezervacijaId;
 		this.smestajId = smestajId;
+		this.vlasnikId = vlasnikId;
 		this.odDatuma = odDatuma;
 		this.doDatuma = doDatuma;
 		this.timestamp = new Date(System.currentTimeMillis());
@@ -86,6 +82,14 @@ public class SamostalnaRezervacija {
 
 	public void setDoDatuma(Date doDatuma) {
 		this.doDatuma = doDatuma;
+	}
+
+	public Long getVlasnikId() {
+		return vlasnikId;
+	}
+
+	public void setVlasnikId(Long vlasnikId) {
+		this.vlasnikId = vlasnikId;
 	}
 
 	/**

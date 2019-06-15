@@ -8,72 +8,65 @@
 
 package com.megatravel.agentlocalbackend.model;
 
-import javax.persistence.Entity;
+import java.math.BigDecimal;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TKoordinate", propOrder = {
-    "latitude",
-    "Longitude"
-})
-@Entity
+@XmlType(name = "TKoordinate")
 public class TKoordinate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
 	private Long koordinateId;
 	
 	@OneToOne
+	@XmlElement(required = true)
 	private Smestaj smestaj;
 	
-    private int latitude;
-    private int Longitude;
-
-    /**
-     * Gets the value of the latitude property.
-     * 
-     */
-    public int getLatitude() {
-        return latitude;
-    }
-
-    /**
-     * Sets the value of the latitude property.
-     * 
-     */
-    public void setLatitude(int value) {
-        this.latitude = value;
-    }
-
-    /**
-     * Gets the value of the Longitude property.
-     * 
-     */
-    public int getLongitude() {
-        return Longitude;
-    }
-
-    /**
-     * Sets the value of the Longitude property.
-     * 
-     */
-    public void setLongitude(int value) {
-        this.Longitude = value;
-    }
+	@XmlElement(required = true)
+    private BigDecimal latitude;
+	
+	@XmlElement(required = true)
+    private BigDecimal longitude;
 
 	public Long getKoordinateId() {
 		return koordinateId;
+	}
+
+	public Smestaj getSmestaj() {
+		return smestaj;
+	}
+
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
 	}
 
 	public void setKoordinateId(Long koordinateId) {
 		this.koordinateId = koordinateId;
 	}
 
+	public void setSmestaj(Smestaj smestaj) {
+		this.smestaj = smestaj;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
 }

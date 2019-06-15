@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -31,17 +34,13 @@ import javax.xml.bind.annotation.XmlType;
 })
 @XmlRootElement(name = "Smestaj")
 public class Smestaj {
-	
-    private Long idSmestaja;
+	private Long idSmestaja;
 	
     @XmlElement(required = true)
     private TAdresa adresa;
     
     @XmlElement(required = true)
-    private BigDecimal latitude;
-    
-    @XmlElement(required = true)
-    private BigDecimal longitude;
+    private TKoordinate koordinate;
     
     @XmlElement(required = true)
     private TipSmestaja tipSmestaja;
@@ -70,6 +69,7 @@ public class Smestaj {
     @XmlElement(required = true)
     private float cenaZima;
     
+    @NotNull
     private Long vlasnik;
     
     @XmlList
@@ -83,29 +83,6 @@ public class Smestaj {
     public Smestaj() {
 	}
 
-	public Smestaj(Long idSmestaja, TAdresa adresa, BigDecimal latitude, BigDecimal longitude, TipSmestaja tipSmestaja,
-			KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje, int cenaProlece,
-			int cenaLeto, int cenaJesen, int cenaZima, Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga,
-			Set<TImage> listaSlika) {
-		super();
-		this.idSmestaja = idSmestaja;
-		this.adresa = adresa;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.tipSmestaja = tipSmestaja;
-		this.kategorijaSmestaja = kategorijaSmestaja;
-		this.opis = opis;
-		this.maxOsoba = maxOsoba;
-		this.maxDanaZaOtkazivanje = maxDanaZaOtkazivanje;
-		this.cenaProlece = cenaProlece;
-		this.cenaLeto = cenaLeto;
-		this.cenaJesen = cenaJesen;
-		this.cenaZima = cenaZima;
-		this.vlasnik = vlasnik;
-		this.listaDodatnihUsluga = listaDodatnihUsluga;
-		this.listaSlika = listaSlika;
-	}
-
 	public Long getIdSmestaja() {
 		return idSmestaja;
 	}
@@ -113,43 +90,49 @@ public class Smestaj {
 	public void setIdSmestaja(Long idSmestaja) {
 		this.idSmestaja = idSmestaja;
 	}
-
+	
+	@JsonIgnore
 	public TAdresa getAdresa() {
 		return adresa;
 	}
 
+	@JsonIgnore
 	public void setAdresa(TAdresa adresa) {
 		this.adresa = adresa;
 	}
 
 	public BigDecimal getLatitude() {
-		return latitude;
+		return koordinate.getLatitude();
 	}
 
 	public void setLatitude(BigDecimal latitude) {
-		this.latitude = latitude;
+		koordinate.setLatitude(latitude);
 	}
 
 	public BigDecimal getLongitude() {
-		return longitude;
+		return koordinate.getLongitude();
 	}
 
 	public void setLongitude(BigDecimal longitude) {
-		this.longitude = longitude;
+		koordinate.setLongitude(longitude);
 	}
 
+	@JsonIgnore
 	public TipSmestaja getTipSmestaja() {
 		return tipSmestaja;
 	}
 
+	@JsonIgnore
 	public void setTipSmestaja(TipSmestaja tipSmestaja) {
 		this.tipSmestaja = tipSmestaja;
 	}
 
+	@JsonIgnore
 	public KategorijaSmestaja getKategorijaSmestaja() {
 		return kategorijaSmestaja;
 	}
 
+	@JsonIgnore
 	public void setKategorijaSmestaja(KategorijaSmestaja kategorijaSmestaja) {
 		this.kategorijaSmestaja = kategorijaSmestaja;
 	}
@@ -248,6 +231,7 @@ public class Smestaj {
      * 
      * 
      */
+	@JsonIgnore
     public Set<DodatneUsluge> getListaDodatnihUsluga() {
         if (listaDodatnihUsluga == null) {
             listaDodatnihUsluga = new HashSet<DodatneUsluge>();
@@ -255,6 +239,7 @@ public class Smestaj {
         return this.listaDodatnihUsluga;
     }
 
+	@JsonIgnore
     public void setListaDodatnihUsluga(Set<DodatneUsluge> listaDodatnihUsluga) {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 	}
@@ -282,4 +267,5 @@ public class Smestaj {
     public void setListaSlika(Set<TImage> value) {
         this.listaSlika = value;
     }
+
 }

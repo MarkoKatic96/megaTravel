@@ -17,8 +17,8 @@ public class DTOKomentarConverter
 		dto.setIdRezervacije(model.getIdRezervacije());
 		dto.setIdKorisnika(model.getIdKorisnika());
 		dto.setKomentar(model.getKomentar());
-		dto.setDatum(model.getDatum());
-		dto.setObjavljen(model.isObjavljen());
+		dto.setTimestamp(model.getTimestamp());
+		dto.setStatus(model.getStatus());
 		
 		return dto;
 	}
@@ -32,8 +32,8 @@ public class DTOKomentarConverter
 		bean.setIdRezervacije(dto.getIdRezervacije());
 		bean.setIdKorisnika(dto.getIdKorisnika());
 		bean.setKomentar(dto.getKomentar());
-		bean.setDatum(dto.getDatum());
-		bean.setObjavljen(dto.isObjavljen());
+		bean.setTimestamp(dto.getDatum());
+		bean.setStatus(dto.getStatus());
 		
 		return bean;
 	}

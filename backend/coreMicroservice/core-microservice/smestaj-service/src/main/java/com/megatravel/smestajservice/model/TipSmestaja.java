@@ -17,7 +17,7 @@ public class TipSmestaja {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idTipaSmestaja;
+	private Long tipSmestajaId;
 	
 	@NotNull
 	private String nazivTipaSmestaja;
@@ -26,14 +26,6 @@ public class TipSmestaja {
 	private List<Smestaj> smestaji;
 	
 	public TipSmestaja() {}
-
-	public Long getIdTipaSmestaja() {
-		return idTipaSmestaja;
-	}
-
-	public void setIdTipaSmestaja(Long idTipaSmestaja) {
-		this.idTipaSmestaja = idTipaSmestaja;
-	}
 
 	public String getNazivTipaSmestaja() {
 		return nazivTipaSmestaja;
@@ -49,5 +41,13 @@ public class TipSmestaja {
 
 	public void setSmestaji(List<Smestaj> smestaji) {
 		this.smestaji = smestaji;
+	}
+
+	public Long getTipSmestajaId() {
+		return tipSmestajaId;
+	}
+
+	public void setTipSmestajaId(Long tipSmestajaId) {
+		this.tipSmestajaId = tipSmestajaId;
 	}
 }

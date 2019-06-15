@@ -13,7 +13,7 @@ public class DTOKategorijaSmestajaConverter
 	{
 		KategorijaSmestajaDTO dto = new KategorijaSmestajaDTO();
 		
-		dto.setIdKategorijeSmestaja(model.getIdKategorijeSmestaja());
+		dto.setIdKategorijeSmestaja(model.getId());
 		dto.setNaziv(model.getNaziv());
 		
 		return dto;
@@ -23,7 +23,7 @@ public class DTOKategorijaSmestajaConverter
 	{
 		KategorijaSmestaja bean = new KategorijaSmestaja();
 		
-		bean.setIdKategorijeSmestaja(dto.getIdKategorijeSmestaja());
+		bean.setId(dto.getIdKategorijeSmestaja());
 		bean.setNaziv(dto.getNaziv());
 		
 		return bean;

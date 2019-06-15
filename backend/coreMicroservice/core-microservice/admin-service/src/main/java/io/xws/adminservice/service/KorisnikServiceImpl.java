@@ -53,7 +53,7 @@ public class KorisnikServiceImpl implements IKorisnikService
 		{
 			for(Korisnik kor : korisnici.get())
 			{
-				if(!kor.isAktiviran())
+				if(!kor.isRegistrovan() || kor.isBlokiran())
 					continue;
 				else
 					aktivirani.add(korConv.convertToDTO(kor));
@@ -75,7 +75,7 @@ public class KorisnikServiceImpl implements IKorisnikService
 		{
 			for(Korisnik kor : korisnici.get())
 			{
-				if(kor.isAktiviran())
+				if(!kor.isRegistrovan() || kor.isBlokiran())
 					continue;
 				else
 					neaktivirani.add(korConv.convertToDTO(kor));
@@ -97,7 +97,7 @@ public class KorisnikServiceImpl implements IKorisnikService
 		{
 			for(Korisnik kor : korisnici.get())
 			{
-				if(kor.isBlokiran())
+				if(!kor.isBlokiran())
 					continue;
 				else
 					blokirani.add(korConv.convertToDTO(kor));
@@ -114,9 +114,9 @@ public class KorisnikServiceImpl implements IKorisnikService
 	{
 		Optional<Korisnik> korisnik = korRepo.findById(id);
 		
-		if(korisnik.isPresent() && !korisnik.get().isAktiviran())
+		if(korisnik.isPresent() && !korisnik.get().isRegistrovan())
 		{
-			korisnik.get().setAktiviran(true);
+			korisnik.get().setRegistrovan(true);
 			korRepo.save(korisnik.get());
 			return true;
 		}
@@ -140,6 +140,20 @@ public class KorisnikServiceImpl implements IKorisnikService
 			return false;
 	}
 	
+	@Override
+	public boolean updateDeblokirajKorisnika(Long id) 
+	{
+		Optional<Korisnik> korisnik = korRepo.findById(id);
+
+		if(korisnik.isPresent() && korisnik.get().isBlokiran())
+		{
+			korisnik.get().setBlokiran(false);
+			korRepo.save(korisnik.get());
+			return true;
+		}
+		else
+			return false;
+	}	
 
 	@Override
 	public boolean deleteKorisnika(Long id)

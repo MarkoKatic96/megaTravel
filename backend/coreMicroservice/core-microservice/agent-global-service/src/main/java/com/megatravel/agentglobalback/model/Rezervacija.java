@@ -10,7 +10,6 @@ package com.megatravel.agentglobalback.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,26 +25,31 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
+@XmlType(name = "", propOrder = {
+    "rezervacijaId",
+    "smestajId",
+    "vlasnikId",
+    "korisnikId",
+    "odDatuma",
+    "doDatuma",
+    "statusRezervacije",
+    "updateTimestamp",
+    "timestamp"
+})
 @XmlRootElement(name = "Rezervacija")
-@Entity
 public class Rezervacija {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(required = true)
     private Long rezervacijaId;
     
 	@NotNull
-	@XmlElement(required = true)
 	private Long smestajId;
 	
 	@NotNull
-	@XmlElement(required = true)
 	private Long vlasnikId;
     
 	@NotNull
-	@XmlElement(required = true)
 	private Long korisnikId;
 	
     @XmlElement(required = true)
@@ -58,7 +62,7 @@ public class Rezervacija {
     @NotNull
     private Date doDatuma;
     
-    @XmlElement(defaultValue = "false", required = true)
+    @XmlElement(defaultValue = "false")
     @NotNull
     private String statusRezervacije;
     
@@ -68,8 +72,6 @@ public class Rezervacija {
     @CreationTimestamp
     private Date timestamp;
     
-    @NotNull
-    @XmlElement(required = true)
     private Date updateTimestamp;
 
     public Rezervacija() {

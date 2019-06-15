@@ -2,6 +2,7 @@ package io.webxml.pretragaservice.model;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 
 public class KategorijaSmestaja {
@@ -9,7 +10,7 @@ public class KategorijaSmestaja {
 	private Long id;
 	
 	@XmlElement(required = true)
-
+	@NotNull
 	private String naziv;
 	
 	private List<Smestaj> smestaji;

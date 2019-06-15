@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -31,6 +32,7 @@ import org.hibernate.annotations.CreationTimestamp;
 public class Agent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
     private Long idAgenta;
 	
 	@NotNull
@@ -159,7 +161,7 @@ public class Agent {
      * 
      * @return
      *     possible object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
     public @NotNull Date getDatumClanstva() {
@@ -171,7 +173,7 @@ public class Agent {
      * 
      * @param value
      *     allowed object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
     public void setDatumClanstva(@NotNull Date value) {

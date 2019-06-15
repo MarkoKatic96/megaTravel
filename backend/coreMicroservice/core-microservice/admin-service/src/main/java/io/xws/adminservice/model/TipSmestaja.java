@@ -2,55 +2,50 @@ package io.xws.adminservice.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
+import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlElement;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class TipSmestaja 
-{
+@XmlType(name = "TipSmestaja")
+public class TipSmestaja {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long idTipaSmestaja;
-    
-    @XmlElement(required = true)
-    protected String naziv;
-    
-    @OneToMany(mappedBy="tipSmestaja")
-    protected List<Smestaj> listaSmestaja;
+	private Long tipSmestajaId;
+	
+	@NotNull
+	private String nazivTipaSmestaja;
+	
+	@OneToMany(mappedBy="tipSmestaja", cascade=CascadeType.ALL)
+	private List<Smestaj> smestaji;
+	
+	public TipSmestaja() {}
 
-	public long getIdTipaSmestaja() {
-		return idTipaSmestaja;
+	public String getNazivTipaSmestaja() {
+		return nazivTipaSmestaja;
 	}
 
-	public String getNaziv() {
-		return naziv;
+	public void setNazivTipaSmestaja(String nazivTipaSmestaja) {
+		this.nazivTipaSmestaja = nazivTipaSmestaja;
+	}
+	
+	public List<Smestaj> getSmestaji() {
+		return smestaji;
 	}
 
-	public List<Smestaj> getListaSmestaja() {
-		return listaSmestaja;
+	public void setSmestaji(List<Smestaj> smestaji) {
+		this.smestaji = smestaji;
 	}
 
-	public void setIdTipaSmestaja(long idTipaSmestaja) {
-		this.idTipaSmestaja = idTipaSmestaja;
+	public Long getTipSmestajaId() {
+		return tipSmestajaId;
 	}
 
-	public void setNaziv(String naziv) {
-		this.naziv = naziv;
+	public void setTipSmestajaId(Long tipSmestajaId) {
+		this.tipSmestajaId = tipSmestajaId;
 	}
-
-	public void setListaSmestaja(List<Smestaj> listaSmestaja) {
-		this.listaSmestaja = listaSmestaja;
-	}
-    
 }

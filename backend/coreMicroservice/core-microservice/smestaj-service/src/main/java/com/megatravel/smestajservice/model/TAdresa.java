@@ -20,11 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TAdresa", propOrder = {
-    "grad",
-    "ulica",
-    "broj"
-})
+@XmlType(name = "TAdresa")
 @Entity
 public class TAdresa {
 	@Id
@@ -36,8 +32,11 @@ public class TAdresa {
 	
     @XmlElement(required = true)
     private String grad;
+    
     @XmlElement(required = true)
     private String ulica;
+    
+    @XmlElement(required = false)
     private int broj;
 
     /**

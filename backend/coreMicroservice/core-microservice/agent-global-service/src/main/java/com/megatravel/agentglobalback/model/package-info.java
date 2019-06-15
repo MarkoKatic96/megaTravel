@@ -6,8 +6,8 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(
-		xmlns = {@XmlNs(prefix="ns3", namespaceURI="https://megatravel.com")},
-		namespace = "https://megatravel.com",
+		xmlns = {@XmlNs(prefix="ns3", namespaceURI="asdf")},
+		namespace = "asdf",
 		elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
 		attributeFormDefault = javax.xml.bind.annotation.XmlNsForm.UNSET
 		)

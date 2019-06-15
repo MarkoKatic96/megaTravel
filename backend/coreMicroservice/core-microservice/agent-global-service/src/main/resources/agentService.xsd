@@ -3,18 +3,12 @@
 
 <xs:element name="Agent" nillable="true" type="xs:anyType"/>
 
-  <xs:element name="DodatneUsluge" type="ns1:DodatneUsluge"/>
-
-  <xs:element name="KategorijaSmestaja" type="ns1:KategorijaSmestaja"/>
-
-  <xs:element name="Poruka" type="ns1:Poruka"/>
-
   <xs:element name="PotvrdaRezervacije">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="potvrdaRezervacijeId" type="xs:long"/>
-        <xs:element name="rezervacijaId" type="xs:long"/>
-        <xs:element name="statusRezervacije" type="ns1:statusRezervacije"/>
+        <xs:element name="potvrdaRezervacijeId" type="xs:long" minOccurs="0"/>
+        <xs:element name="rezervacijaId" type="xs:long" minOccurs="0"/>
+        <xs:element name="statusRezervacije" type="ns1:statusRezervacije" minOccurs="0"/>
         <xs:element name="timestamp" type="xs:dateTime"/>
       </xs:sequence>
     </xs:complexType>
@@ -33,15 +27,15 @@
   <xs:element name="Rezervacija">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="rezervacijaId" type="xs:long"/>
-        <xs:element name="smestajId" type="xs:long"/>
-        <xs:element name="vlasnikId" type="xs:long"/>
-        <xs:element name="korisnikId" type="xs:long"/>
+        <xs:element name="rezervacijaId" type="xs:long" minOccurs="0"/>
+        <xs:element name="smestajId" type="xs:long" minOccurs="0"/>
+        <xs:element name="vlasnikId" type="xs:long" minOccurs="0"/>
+        <xs:element name="korisnikId" type="xs:long" minOccurs="0"/>
         <xs:element name="odDatuma" type="xs:dateTime"/>
         <xs:element name="do" type="xs:dateTime"/>
-        <xs:element name="statusRezervacije" type="xs:string" default="false"/>
+        <xs:element name="statusRezervacije" type="xs:string" default="false" minOccurs="0"/>
+        <xs:element name="updateTimestamp" type="xs:dateTime" minOccurs="0"/>
         <xs:element name="timestamp" type="xs:dateTime"/>
-        <xs:element name="updateTimestamp" type="xs:dateTime"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -51,6 +45,7 @@
       <xs:sequence>
         <xs:element name="samostalnaRezervacijaId" type="xs:long" minOccurs="0"/>
         <xs:element name="smestajId" type="xs:long" minOccurs="0"/>
+        <xs:element name="vlasnikId" type="xs:long" minOccurs="0"/>
         <xs:element name="odDatuma" type="xs:dateTime"/>
         <xs:element name="doDatuma" type="xs:dateTime"/>
         <xs:element name="timestamp" type="xs:dateTime"/>
@@ -61,12 +56,11 @@
   <xs:element name="Smestaj">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="idSmestaja" type="xs:long"/>
+        <xs:element name="idSmestaja" type="xs:long" minOccurs="0"/>
         <xs:element name="adresa" type="ns1:TAdresa"/>
-        <xs:element name="latitude" type="xs:decimal"/>
-        <xs:element name="longitude" type="xs:decimal"/>
+        <xs:element name="koordinate" type="ns1:TKoordinate"/>
         <xs:element name="tipSmestaja" type="ns1:TipSmestaja"/>
-        <xs:element name="kategorijaSmestaja" type="ns1:KategorijaSmestaja"/>
+        <xs:element ref="ns1:kategorijaSmestaja"/>
         <xs:element name="opis" type="xs:string"/>
         <xs:element name="maxOsoba" type="xs:int"/>
         <xs:element name="maxDanaZaOtkazivanje" type="xs:int"/>
@@ -76,22 +70,11 @@
         <xs:element name="cenaZima" type="xs:float"/>
         <xs:element name="vlasnik" type="xs:long" minOccurs="0"/>
         <xs:element name="listaDodatnihUsluga" type="ns1:DodatneUsluge" maxOccurs="unbounded"/>
-        <xs:element name="listaSlika" maxOccurs="unbounded">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="idImage" type="xs:long"/>
-              <xs:element name="smestaj" minOccurs="0"/>
-              <xs:element name="name" type="xs:string"/>
-              <xs:element name="bytes" type="xs:base64Binary"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="listaSlika" type="ns1:TImage" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="TImage"/>
-  
   <xs:element name="editRequest">
     <xs:complexType>
       <xs:sequence>
@@ -131,19 +114,7 @@
   <xs:element name="getAgentByEmailResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="agent">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="idAgenta" type="xs:long"/>
-              <xs:element name="ime" type="xs:string"/>
-              <xs:element name="prezime" type="xs:string"/>
-              <xs:element name="poslovniMaticniBroj" type="xs:long" minOccurs="0"/>
-              <xs:element name="datumClanstva" type="xs:date"/>
-              <xs:element name="email" type="xs:string"/>
-              <xs:element name="lozinka" type="xs:string"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="agent"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -160,6 +131,16 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element name="agent" type="ns1:agentDTO"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="kategorijaSmestaja">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:long" minOccurs="0"/>
+        <xs:element name="naziv" type="xs:string"/>
+        <xs:element name="smestaji" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -222,13 +203,17 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:complexType name="getLoginResponse">
-    <xs:sequence/>
+  <xs:complexType name="TipSmestaja">
+    <xs:sequence>
+      <xs:element name="nazivTipaSmestaja" type="xs:string" minOccurs="0"/>
+      <xs:element name="smestaji" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="tipSmestajaId" type="xs:long" minOccurs="0"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="TAdresa">
     <xs:sequence>
-      <xs:element name="adresaId" type="xs:long"/>
+      <xs:element name="adresaId" type="xs:long" minOccurs="0"/>
       <xs:element name="smestaj" minOccurs="0"/>
       <xs:element name="grad" type="xs:string"/>
       <xs:element name="ulica" type="xs:string"/>
@@ -236,40 +221,44 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="TipSmestaja">
+  <xs:complexType name="TKoordinate">
     <xs:sequence>
-      <xs:element name="idTipaSmestaja" type="xs:long"/>
-      <xs:element name="nazivTipaSmestaja" type="xs:string"/>
-      <xs:element name="smestaji" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="KategorijaSmestaja">
-    <xs:sequence>
-      <xs:element name="id" type="xs:long"/>
-      <xs:element name="naziv" type="xs:string"/>
-      <xs:element name="smestaji" maxOccurs="unbounded"/>
+      <xs:element name="koordinateId" type="xs:long"/>
+      <xs:element name="smestaj"/>
+      <xs:element name="latitude" type="xs:decimal"/>
+      <xs:element name="longitude" type="xs:decimal"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="DodatneUsluge">
     <xs:sequence>
-      <xs:element name="idDodatneUsluge" type="xs:long"/>
-      <xs:element name="nazivDodatneUsluge" type="xs:string"/>
-      <xs:element name="listaSmestaja" maxOccurs="unbounded"/>
+      <xs:element name="idDodatneUsluge" type="xs:long" minOccurs="0"/>
+      <xs:element name="listaSmestaja" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="nazivDodatneUsluge" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="Poruka">
+  <xs:complexType name="TImage">
     <xs:sequence>
-      <xs:element name="idPoruke" type="xs:long"/>
-      <xs:element name="datumSlanja" type="xs:dateTime"/>
-      <xs:element name="posiljalac" type="xs:long"/>
-      <xs:element name="tipPosiljaoca" type="xs:string"/>
-      <xs:element name="primalac" type="xs:long"/>
-      <xs:element name="tipPrimaoca" type="xs:string"/>
-      <xs:element name="sadrzaj" type="xs:string"/>
-      <xs:element name="status" type="xs:string"/>
+      <xs:element name="idImage" type="xs:long" minOccurs="0"/>
+      <xs:element name="smestaj" minOccurs="0"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="bytes" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getLoginResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="poruka">
+    <xs:sequence>
+      <xs:element name="datumSlanja" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="idPoruke" type="xs:long" minOccurs="0"/>
+      <xs:element name="posiljalac" type="xs:long" minOccurs="0"/>
+      <xs:element name="primalac" type="xs:long" minOccurs="0"/>
+      <xs:element name="sadrzaj" type="xs:string" minOccurs="0"/>
+      <xs:element name="status" type="ns1:statusPoruke" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -277,14 +266,12 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType name="TKoordinate">
-    <xs:sequence>
-      <xs:element name="koordinateId" type="xs:long"/>
-      <xs:element name="smestaj"/>
-      <xs:element name="latitude" type="xs:int"/>
-      <xs:element name="Longitude" type="xs:int"/>
-    </xs:sequence>
-  </xs:complexType>
+  <xs:simpleType name="statusPoruke">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="POSLATA"/>
+      <xs:enumeration value="PROCITANA"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="statusRezervacije">
     <xs:restriction base="xs:string">
@@ -297,41 +284,25 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="statusPoruke">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="POSLATA"/>
-      <xs:enumeration value="PROCITANA"/>
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="tipOsobe">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AGENT"/>
       <xs:enumeration value="KORISNIK"/>
+      <xs:enumeration value="ADMIN"/>
     </xs:restriction>
   </xs:simpleType>
-
-  <xs:complexType name="rezervacijaDTO">
+  
+  <xs:complexType name="agentDTO">
     <xs:sequence>
-      <xs:element name="doDatuma" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="korisnikId" type="xs:long" minOccurs="0"/>
-      <xs:element name="odDatuma" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="rezervacijaId" type="xs:long" minOccurs="0"/>
-      <xs:element name="smestajId" type="xs:long" minOccurs="0"/>
-      <xs:element name="statusRezervacije" type="ns1:statusRezervacije" minOccurs="0"/>
-      <xs:element name="timestamp" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="updateTimestamp" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="vlasnikId" type="xs:long" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="agentPrijavaDTO">
-    <xs:sequence>
+      <xs:element name="datumClanstva" type="xs:dateTime" minOccurs="0"/>
       <xs:element name="email" type="xs:string" minOccurs="0"/>
-      <xs:element name="lozinka" type="xs:string" minOccurs="0"/>
+      <xs:element name="idAgenta" type="xs:long" minOccurs="0"/>
+      <xs:element name="ime" type="xs:string" minOccurs="0"/>
+      <xs:element name="poslovniMaticniBroj" type="xs:long" minOccurs="0"/>
+      <xs:element name="prezime" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
-
+  
   <xs:complexType name="porukaDTO">
     <xs:sequence>
       <xs:element name="datumSlanja" type="xs:dateTime" minOccurs="0"/>
@@ -342,6 +313,40 @@
       <xs:element name="status" type="ns1:statusPoruke" minOccurs="0"/>
       <xs:element name="tipPosiljaoca" type="xs:string" minOccurs="0"/>
       <xs:element name="tipPrimaoca" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="novaPorukaDTO">
+    <xs:sequence>
+      <xs:element name="primalac" type="xs:long" minOccurs="0"/>
+      <xs:element name="sadrzaj" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="agentRegistracijaDTO">
+    <xs:sequence>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="idAgenta" type="xs:long" minOccurs="0"/>
+      <xs:element name="ime" type="xs:string" minOccurs="0"/>
+      <xs:element name="poslovniMaticniBroj" type="xs:long" minOccurs="0"/>
+      <xs:element name="prezime" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="samostalnaRezervacijaDTO">
+    <xs:sequence>
+      <xs:element name="doDatuma" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="odDatuma" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="samostalnaRezervacijaId" type="xs:long" minOccurs="0"/>
+      <xs:element name="smestajId" type="xs:long" minOccurs="0"/>
+      <xs:element name="timestamp" type="xs:dateTime" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="agentPrijavaDTO">
+    <xs:sequence>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="lozinka" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -396,17 +401,6 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="agentDTO">
-    <xs:sequence>
-      <xs:element name="datumClanstva" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="email" type="xs:string" minOccurs="0"/>
-      <xs:element name="idAgenta" type="xs:long" minOccurs="0"/>
-      <xs:element name="ime" type="xs:string" minOccurs="0"/>
-      <xs:element name="poslovniMaticniBroj" type="xs:long" minOccurs="0"/>
-      <xs:element name="prezime" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="lokalneRezervacijeDTO">
     <xs:sequence>
       <xs:element name="doDatuma" type="xs:dateTime" minOccurs="0"/>
@@ -422,30 +416,25 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="novaPorukaDTO">
-    <xs:sequence>
-      <xs:element name="primalac" type="xs:long" minOccurs="0"/>
-      <xs:element name="sadrzaj" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="samostalnaRezervacijaDTO">
+  <xs:complexType name="rezervacijaDTO">
     <xs:sequence>
       <xs:element name="doDatuma" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="korisnikId" type="xs:long" minOccurs="0"/>
       <xs:element name="odDatuma" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="samostalnaRezervacijaId" type="xs:long" minOccurs="0"/>
+      <xs:element name="rezervacijaId" type="xs:long" minOccurs="0"/>
       <xs:element name="smestajId" type="xs:long" minOccurs="0"/>
+      <xs:element name="statusRezervacije" type="ns1:statusRezervacije" minOccurs="0"/>
       <xs:element name="timestamp" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="updateTimestamp" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="vlasnikId" type="xs:long" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
-
-  <xs:complexType name="agentRegistracijaDTO">
+  
+  <xs:complexType name="KategorijaSmestaja">
     <xs:sequence>
-      <xs:element name="email" type="xs:string" minOccurs="0"/>
-      <xs:element name="idAgenta" type="xs:long" minOccurs="0"/>
-      <xs:element name="ime" type="xs:string" minOccurs="0"/>
-      <xs:element name="poslovniMaticniBroj" type="xs:long" minOccurs="0"/>
-      <xs:element name="prezime" type="xs:string" minOccurs="0"/>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="naziv" type="xs:string"/>
+      <xs:element name="smestaji" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

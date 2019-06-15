@@ -8,7 +8,6 @@
 
 package com.megatravel.agentglobalback.model;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,15 +20,12 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TAdresa")
-@Entity
 public class TAdresa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(required = true)
 	private Long adresaId;
 	
 	@OneToOne
-	@XmlElement(required = false)
 	private Smestaj smestaj;
 	
     @XmlElement(required = true)
@@ -38,7 +34,7 @@ public class TAdresa {
     @XmlElement(required = true)
     private String ulica;
     
-    @XmlElement(required = true)
+    @XmlElement(required = false)
     private int broj;
 
     /**

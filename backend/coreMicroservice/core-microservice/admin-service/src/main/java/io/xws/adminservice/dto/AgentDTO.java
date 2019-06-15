@@ -10,7 +10,7 @@ public class AgentDTO
     protected Long idAgenta;
     protected String ime;
     protected String prezime;
-    protected String poslovniMaticniBroj;
+    protected Long poslovniMaticniBroj;
     protected Date datumClanstva;
     protected String email;
     protected String lozinka;
@@ -23,7 +23,7 @@ public class AgentDTO
 	public String getPrezime() {
 		return prezime;
 	}
-	public String getPoslovniMaticniBroj() {
+	public Long getPoslovniMaticniBroj() {
 		return poslovniMaticniBroj;
 	}
 	public Date getDatumClanstva() {
@@ -44,8 +44,8 @@ public class AgentDTO
 	public void setPrezime(String prezime) {
 		this.prezime = prezime;
 	}
-	public void setPoslovniMaticniBroj(String poslovniMaticniBroj) {
-		this.poslovniMaticniBroj = poslovniMaticniBroj;
+	public void setPoslovniMaticniBroj(Long long1) {
+		this.poslovniMaticniBroj = long1;
 	}
 	public void setDatumClanstva(Date datumClanstva) {
 		this.datumClanstva = datumClanstva;

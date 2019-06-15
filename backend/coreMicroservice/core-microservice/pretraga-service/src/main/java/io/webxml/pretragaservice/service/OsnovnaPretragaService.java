@@ -88,9 +88,9 @@ public class OsnovnaPretragaService {
 		}
 		
 		if(op.getTipSmestaja()!=null) {
-			Long tipSmestaja = op.getTipSmestaja();
+			String tipSmestaja = op.getTipSmestaja();
 			for (SmestajKorisnikDTO smestaj : returnLista) {
-				if(smestaj.getTipSmestaja().getIdTipaSmestaja()==tipSmestaja) {
+				if(smestaj.getTipSmestaja().toString().equals(tipSmestaja)) {
 					listaSmestaja.add(smestaj);
 				}
 			}			

@@ -1,6 +1,5 @@
 package com.megatravel.agentlocalbackend.model;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,20 +11,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "idAgenta",
-    "ime",
-    "prezime",
-    "poslovniMaticniBroj",
-    "datumClanstva",
-    "email",
-    "lozinka"
-})
+@XmlType(name = "")
 @XmlRootElement(name = "Agent")
-@Entity
 public class NeaktiviranAgent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
     private Long idNeaktiviranogAgenta;
 	
 	@NotNull
@@ -37,6 +28,7 @@ public class NeaktiviranAgent {
     private String prezime;
 	
 	@NotNull
+	@XmlElement(required = true)
     private Long poslovniMaticniBroj;
 
 	@NotNull

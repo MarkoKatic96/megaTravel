@@ -18,6 +18,8 @@ public interface IKorisnikService
 	public boolean updateAktivirajKorisnika(Long id);
 
 	public boolean updateBlokirajKorisnika(Long id);
+	
+	public boolean updateDeblokirajKorisnika(Long id);
 
 	public boolean deleteKorisnika(Long id);
 

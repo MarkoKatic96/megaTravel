@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
-import io.xws.adminservice.model.NeregistrovaniAgent;
+import io.xws.adminservice.model.NeaktiviranAgent;
 import io.xws.adminservice.service.IAgentService;
 
 @RestController
@@ -32,13 +32,13 @@ public class AgentController
 	 * To znamo na osnovu toga sto im je lozinka prazno polje (ovo ispravi)
 	 */
 	@GetMapping("/allrequests")
-	public ResponseEntity<List<NeregistrovaniAgent>> getAllZahteviNeregAgenata()
+	public ResponseEntity<List<NeaktiviranAgent>> getAllZahteviNeregAgenata()
 	{
 		System.out.println("getAllZahteviAgenata()");
 		
-		List<NeregistrovaniAgent> agenti = agentService.getAllZahteviNeregAgenata();
+		List<NeaktiviranAgent> agenti = agentService.getAllZahteviNeregAgenata();
 		
-		return (agenti.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<NeregistrovaniAgent>>(agenti, HttpStatus.OK);
+		return (agenti.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<NeaktiviranAgent>>(agenti, HttpStatus.OK);
 	}
 	
 	/*

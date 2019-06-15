@@ -1,7 +1,9 @@
 package io.xws.adminservice.converter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,12 @@ public class DTOSmestajConverter
 	private DTODodatneUslugeConverter uslugeConv;
 	
 	@Autowired
+	private DTOTAdresaConverter adrConv;
+	
+	@Autowired
+	private DTOTKoordinateConverter koordConv;
+	
+	@Autowired
 	private DTOKategorijaSmestajaConverter katConv;
 
 	public SmestajDTO convertToDTO(Smestaj model)
@@ -28,9 +36,8 @@ public class DTOSmestajConverter
 		SmestajDTO dto = new SmestajDTO();
 		
 		dto.setIdSmestaja(model.getIdSmestaja());
-		dto.setAdresa(model.getAdresa());
-		dto.setLongitude(model.getLongitude());
-		dto.setLatitude(model.getLatitude());
+		dto.setAdresa(adrConv.convertToDTO(model.getAdresa()));
+		dto.setKoordinate(koordConv.convertToDTO(model.getKoordinate()));
 		dto.setTipSmestaja(tipConv.convertToDTO(model.getTipSmestaja()));
 		dto.setKategorijaSmestaja(katConv.convertToDTO(model.getKategorijaSmestaja()));
 		dto.setOpis(model.getOpis());
@@ -59,9 +66,8 @@ public class DTOSmestajConverter
 		Smestaj bean = new Smestaj(); 
 		
 		bean.setIdSmestaja(dto.getIdSmestaja());
-		bean.setAdresa(dto.getAdresa());
-		bean.setLongitude(dto.getLongitude());
-		bean.setLatitude(dto.getLatitude());
+		bean.setAdresa(adrConv.convertFromDTO(dto.getAdresa()));
+		bean.setKoordinate(koordConv.convertFromDTO(dto.getKoordinate()));
 		bean.setTipSmestaja(tipConv.convertFromDTO(dto.getTipSmestaja()));
 		bean.setKategorijaSmestaja(katConv.convertFromDTO(dto.getKategorijaSmestaja()));
 		bean.setOpis(dto.getOpis());
@@ -73,7 +79,7 @@ public class DTOSmestajConverter
 		bean.setCenaZima(dto.getCenaZima());
 		bean.setVlasnik(dto.getVlasnik());
 		
-		List<DodatneUsluge> listDto = new ArrayList<DodatneUsluge>();
+		Set<DodatneUsluge> listDto = new HashSet<DodatneUsluge>();
 		
 		for(DodatneUslugeDTO tip : dto.getListaDodatnihUsluga())
 		{

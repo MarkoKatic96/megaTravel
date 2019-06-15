@@ -11,35 +11,24 @@ package com.megatravel.agentglobalback.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DodatneUsluge")
-@XmlRootElement(name = "DodatneUsluge")
-@Entity
 public class DodatneUsluge {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(required = true)
 	private Long idDodatneUsluge;
 	
 	@NotNull
-	@XmlElement(required = true)
 	private String nazivDodatneUsluge;
 	
 	@ManyToMany(mappedBy = "listaDodatnihUsluga")
-	@XmlElement(required = true)
 	private List<Smestaj> listaSmestaja;
 	
 	public DodatneUsluge() {
@@ -76,49 +65,5 @@ public class DodatneUsluge {
 	public void setListaSmestaja(List<Smestaj> listaSmestaja) {
 		this.listaSmestaja = listaSmestaja;
 	}
-	
-	/*
-    @XmlEnumValue("Parking")
-    PARKING("Parking"),
-    @XmlEnumValue("WiFi")
-    WI_FI("WiFi"),
-    @XmlEnumValue("Dorucak")
-    DORUCAK("Dorucak"),
-    @XmlEnumValue("Polupansion")
-    POLUPANSION("Polupansion"),
-    @XmlEnumValue("Pansion")
-    PANSION("Pansion"),
-    @XmlEnumValue("AllIncluded")
-    ALL_INCLUDED("AllIncluded"),
-    @XmlEnumValue("DozvoljeniKucniLjubimci")
-    DOZVOLJENI_KUCNI_LJUBIMCI("DozvoljeniKucniLjubimci"),
-    TV("TV"),
-    @XmlEnumValue("MiniKuhinjaIliKuhinja")
-    MINI_KUHINJA_ILI_KUHINJA("MiniKuhinjaIliKuhinja"),
-    @XmlEnumValue("PrivatnoKupatilo")
-    PRIVATNO_KUPATILO("PrivatnoKupatilo"),
-    @XmlEnumValue("BesplatnoOtkazivanje")
-    BESPLATNO_OTKAZIVANJE("BesplatnoOtkazivanje");
-    
-    private final String value;
-
-    DodatneUsluge(String v) {
-        value = v;
-    }
-
-    public String value() {
-        return value;
-    }
-
-    public static DodatneUsluge fromValue(String v) {
-        for (DodatneUsluge c: DodatneUsluge.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
-	*/
-	
 	
 }

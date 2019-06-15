@@ -1,9 +1,7 @@
 package io.xws.adminservice.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +9,10 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import io.xws.adminservice.converter.DTOAgentConverter;
-import io.xws.adminservice.dto.AgentDTO;
-import io.xws.adminservice.dto.NeregistrovaniAgentDTO;
 import io.xws.adminservice.model.Agent;
-import io.xws.adminservice.model.NeregistrovaniAgent;
+import io.xws.adminservice.model.NeaktiviranAgent;
 import io.xws.adminservice.repository.AgentRepository;
-import io.xws.adminservice.repository.NeregistrovaniAgentRepository;
+import io.xws.adminservice.repository.NeaktiviranAgentRepository;
 
 @Service
 public class AgentServiceImpl implements IAgentService
@@ -28,7 +24,7 @@ public class AgentServiceImpl implements IAgentService
 	private DTOAgentConverter agentConv;
 	
 	@Autowired
-	private NeregistrovaniAgentRepository neregRepo;
+	private NeaktiviranAgentRepository neregRepo;
 	
 	@Autowired
 	private MailServiceImpl mailService;
@@ -36,9 +32,9 @@ public class AgentServiceImpl implements IAgentService
 	
 	
 	@Override
-	public List<NeregistrovaniAgent> getAllZahteviNeregAgenata()
+	public List<NeaktiviranAgent> getAllZahteviNeregAgenata()
 	{
-		Optional<List<NeregistrovaniAgent>> agenti = Optional.of(neregRepo.findAll());
+		Optional<List<NeaktiviranAgent>> agenti = Optional.of(neregRepo.findAll());
 		
 		if(agenti.isPresent())
 		{
@@ -52,7 +48,7 @@ public class AgentServiceImpl implements IAgentService
 	@Override
 	public String createPotvrdiZahtev(Long id)
 	{
-		Optional<NeregistrovaniAgent> nereg = neregRepo.findById(id);
+		Optional<NeaktiviranAgent> nereg = neregRepo.findById(id);
 		//treba validacija za poslovni broj i email
 		
 		if(!nereg.isPresent())
@@ -126,11 +122,11 @@ public class AgentServiceImpl implements IAgentService
 	@Override
 	public boolean deleteOdbijZahtev(Long id)
 	{
-		Optional<NeregistrovaniAgent> agent = neregRepo.findById(id);
+		Optional<NeaktiviranAgent> agent = neregRepo.findById(id);
 		
 		if(agent.isPresent())
 		{
-			neregRepo.deleteById(agent.get().getIdNeregAgenta());
+			neregRepo.deleteById(agent.get().getIdNeaktiviranogAgenta());
 			return true;
 		}
 		else

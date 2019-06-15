@@ -8,7 +8,6 @@
 
 package com.megatravel.agentglobalback.model;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,23 +17,18 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
-@XmlRootElement(name = "TImage")
-@Entity
+@XmlType(name = "TImage")
 public class TImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(required = true)
     private Long idImage;
 	
 	@ManyToOne
 	@NotNull
-	@XmlElement(required = false)
     private Smestaj smestaj;
     
 	@XmlElement(required = true)

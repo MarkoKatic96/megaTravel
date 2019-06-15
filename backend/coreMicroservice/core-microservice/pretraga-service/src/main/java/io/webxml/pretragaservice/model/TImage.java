@@ -8,6 +8,7 @@
 
 package io.webxml.pretragaservice.model;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -25,12 +26,15 @@ public class TImage {
 
     private Long idImage;
 	
+	@NotNull
     private Smestaj smestaj;
     
 	@XmlElement(required = true)
+	@NotNull
     private String name;
     
     @XmlElement(required = true)
+    @NotNull
     private byte[] bytes;
 
     /**

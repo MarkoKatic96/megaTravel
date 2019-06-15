@@ -12,8 +12,8 @@ public class DTOTipSmestajaConverter
 	{
 		TipSmestajaDTO dto = new TipSmestajaDTO();
 		
-		dto.setIdTipaSmestaja(model.getIdTipaSmestaja());
-		dto.setNaziv(model.getNaziv());
+		dto.setIdTipaSmestaja(model.getTipSmestajaId());
+		dto.setNaziv(model.getNazivTipaSmestaja());
 		
 		return dto;
 	}
@@ -22,8 +22,8 @@ public class DTOTipSmestajaConverter
 	{
 		TipSmestaja bean = new TipSmestaja();
 		
-		bean.setIdTipaSmestaja(dto.getIdTipaSmestaja());
-		bean.setNaziv(dto.getNaziv());
+		bean.setTipSmestajaId(dto.getIdTipaSmestaja());
+		bean.setNazivTipaSmestaja(dto.getNaziv());
 		
 		return bean;
 	}

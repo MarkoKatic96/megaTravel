@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import io.xws.adminservice.converter.DTOKomentarConverter;
 import io.xws.adminservice.dto.KomentarDTO;
 import io.xws.adminservice.model.Komentar;
+import io.xws.adminservice.model.StatusKomentara;
 import io.xws.adminservice.repository.KomentarRepository;
 
 @Service
@@ -32,9 +33,7 @@ public class KomentarServiceImpl implements IKomentarService
 		{
 			for(Komentar kom : komentari.get())
 			{
-				if(kom.isObjavljen())
-					continue;
-				else
+				if(kom.getStatus()==StatusKomentara.NEOBJAVLJEN)
 					dtoList.add(komentConv.convertToDTO(kom));
 			}
 			
@@ -51,7 +50,7 @@ public class KomentarServiceImpl implements IKomentarService
 		
 		if(komentar.isPresent())
 		{
-			komentar.get().setObjavljen(true);
+			komentar.get().setStatus(StatusKomentara.OBJAVLJEN);
 			komentRepo.save(komentar.get());
 			return true;
 		}
@@ -60,16 +59,18 @@ public class KomentarServiceImpl implements IKomentarService
 	}
 
 	@Override
-	public boolean deleteKomentar(Long id)
+	public boolean blockKomentar(Long id)
 	{
 		Optional<Komentar> komentar = komentRepo.findById(id);
 		
 		if(komentar.isPresent())
 		{
-			//moze se obrisati samo ako nije objavljen
-			if(!komentar.get().isObjavljen())
+			//moze se blokirati samo ako nije blokiran
+			if(komentar.get().getStatus()!=StatusKomentara.BLOKIRAN)
 			{
-				komentRepo.delete(komentar.get());
+				Komentar k = komentar.get();
+				k.setStatus(StatusKomentara.BLOKIRAN);
+				komentRepo.save(komentar.get());
 				return true;
 			}
 			else

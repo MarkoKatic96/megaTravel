@@ -20,7 +20,7 @@ public class DTOKorisnikConverter
 		dto.setDatumClanstva(model.getDatumClanstva());
 		dto.setRegistrovan(model.isRegistrovan());
 		dto.setBlokiran(model.isBlokiran());
-		dto.setAktiviran(model.isAktiviran());
+		dto.setRola(model.getRola());
 		
 		return dto;
 	}
@@ -37,7 +37,7 @@ public class DTOKorisnikConverter
 		bean.setDatumClanstva(dto.getDatumClanstva());
 		bean.setRegistrovan(dto.isRegistrovan());
 		bean.setBlokiran(dto.isBlokiran());
-		bean.setAktiviran(dto.isAktiviran());
+		bean.setRola(dto.getRola());
 		
 		return bean;
 	}

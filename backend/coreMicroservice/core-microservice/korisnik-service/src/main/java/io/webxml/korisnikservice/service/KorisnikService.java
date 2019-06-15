@@ -57,6 +57,9 @@ public class KorisnikService {
 		}
 		try {
 			if(k.getLozinka().equals(lozinka)) {
+				if (k.isBlokiran()) {
+					return null;
+				}
 				String jwt = jwtTokenProvider.createToken(email);
 				ObjectMapper mapper = new ObjectMapper();
 				return mapper.writeValueAsString(jwt);

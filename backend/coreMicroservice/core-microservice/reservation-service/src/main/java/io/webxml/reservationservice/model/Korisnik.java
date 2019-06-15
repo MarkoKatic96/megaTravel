@@ -9,7 +9,6 @@
 package io.webxml.reservationservice.model;
 
 import java.util.Date;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,58 +19,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for anonymous complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType>
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="idKorisnik">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}long">
- *               &lt;minInclusive value="0"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="email" type="{https://github.com/MarkoKatic96/megaTravel/xmlkorisnik}TEmail"/>
- *         &lt;element name="ime">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="60"/>
- *               &lt;minLength value="1"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="prezime">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;minLength value="1"/>
- *               &lt;maxLength value="60"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="lozinka" type="{https://github.com/MarkoKatic96/megaTravel/xmlkorisnik}TLozinka"/>
- *         &lt;element name="datumClanstva" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="registrovan" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="listaRezervacija">
- *           &lt;simpleType>
- *             &lt;list itemType="{http://www.w3.org/2001/XMLSchema}long" />
- *           &lt;/simpleType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "idKorisnik",
@@ -81,6 +28,7 @@ import javax.xml.bind.annotation.XmlType;
     "lozinka",
     "datumClanstva",
     "registrovan",
+    "blokiran",
     "rola"
     //"listaRezervacija"
 })
@@ -90,22 +38,33 @@ public class Korisnik {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idKorisnik;
-    @XmlElement(required = true)
+    
+	@XmlElement(required = true)
     private String email;
-    @XmlElement(required = true)
+    
+	@XmlElement(required = true)
     private String ime;
-    @XmlElement(required = true)
+    
+	@XmlElement(required = true)
     private String prezime;
-    @XmlElement(required = true)
+    
+	@XmlElement(required = true)
     private String lozinka;
-    @XmlElement(required = true)
+    
+	@XmlElement(required = true)
     @XmlSchemaType(name = "date")
     private Date datumClanstva;
-    @XmlElement(defaultValue = "false")
+    
+	@XmlElement(defaultValue = "false")
     private boolean registrovan;
-    @XmlElement(defaultValue = "KORISNIK")
+	
+	@XmlElement(defaultValue = "false")
+    private boolean blokiran;
+    
+	@XmlElement(defaultValue = "KORISNIK")
     private String rola;
-    /*@XmlList
+    
+	/*@XmlList
     @XmlElement(type = Long.class)
     private List<Long> listaRezervacija;*/
 
@@ -253,6 +212,7 @@ public class Korisnik {
         return registrovan;
     }
 
+    
     /**
      * Sets the value of the registrovan property.
      * 
@@ -260,6 +220,14 @@ public class Korisnik {
     public void setRegistrovan(boolean value) {
         this.registrovan = value;
     }
+
+	public boolean isBlokiran() {
+		return blokiran;
+	}
+
+	public void setBlokiran(boolean blokiran) {
+		this.blokiran = blokiran;
+	}
 
 	public String getRola() {
 		return rola;

@@ -13,7 +13,7 @@ public class DTODodatneUslugeConverter
 		DodatneUslugeDTO dto = new DodatneUslugeDTO();
 		
 		dto.setIdDodatneUsluge(model.getIdDodatneUsluge());
-		dto.setNaziv(model.getNaziv());
+		dto.setNazivDodatneUsluge(model.getNazivDodatneUsluge());
 		
 		return dto;
 	}
@@ -23,7 +23,7 @@ public class DTODodatneUslugeConverter
 		DodatneUsluge bean = new DodatneUsluge(); 
 		
 		bean.setIdDodatneUsluge(dto.getIdDodatneUsluge());
-		bean.setNaziv(dto.getNaziv());
+		bean.setNazivDodatneUsluge(dto.getNazivDodatneUsluge());
 		
 		return bean;
 	}

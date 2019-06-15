@@ -2,21 +2,68 @@ package io.webxml.reservationservice.model;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "idAgenta",
+    "ime",
+    "prezime",
+    "poslovniMaticniBroj",
+    "datumClanstva",
+    "email",
+    "lozinka"
+})
+@XmlRootElement(name = "Agent")
 public class Agent {
-	private Long idAgenta;
-	private String ime;
-	private String prezime;
-	private Long poslovniMaticniBroj;
-	private Date datumClanstva;
-	private String email;
-	private String lozinka;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlElement(required = true)
+    private Long idAgenta;
+	
+	@NotNull
+    @XmlElement(required = true)
+    private String ime;
+	
+	@NotNull
+    @XmlElement(required = true)
+    private String prezime;
+	
+	@NotNull
+    private Long poslovniMaticniBroj;
+	
+	@NotNull
+    @XmlElement(required = true)
+    @XmlSchemaType(name = "date")
+	@CreationTimestamp
+    private Date datumClanstva;
+	
+	@NotNull
+    @XmlElement(required = true)
+    private String email;
+	
+	@NotNull
+    @XmlElement(required = true)
+    private String lozinka;
 	
     public Agent() {
 		super();
 	}
 
-	public Agent(Long idAgenta, String ime, String prezime, Long poslovniMaticniBroj,
-			String email, String lozinka) {
+	public Agent(Long idAgenta, @NotNull String ime, @NotNull String prezime, @NotNull Long poslovniMaticniBroj,
+			@NotNull String email, @NotNull String lozinka) {
 		super();
 		this.idAgenta = idAgenta;
 		this.ime = ime;
@@ -112,10 +159,10 @@ public class Agent {
      * 
      * @return
      *     possible object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Date getDatumClanstva() {
+    public @NotNull Date getDatumClanstva() {
         return datumClanstva;
     }
 
@@ -124,10 +171,10 @@ public class Agent {
      * 
      * @param value
      *     allowed object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumClanstva(Date value) {
+    public void setDatumClanstva(@NotNull Date value) {
         this.datumClanstva = value;
     }
 

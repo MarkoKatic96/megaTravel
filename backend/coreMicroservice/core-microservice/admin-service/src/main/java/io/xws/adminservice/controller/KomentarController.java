@@ -18,7 +18,7 @@ import io.xws.adminservice.dto.KomentarDTO;
 import io.xws.adminservice.service.IKomentarService;
 
 @RestController
-@CrossOrigin(origins = "https://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/admin-service/comment")
 @Api(tags = "")
 public class KomentarController 
@@ -55,12 +55,12 @@ public class KomentarController
 	 * Blokiranje komentara (zapravo je brisanje komentara)
 	 * Vraca TRUE ako je uspesno blokiran (obrisan)
 	 */
-	@DeleteMapping("/removecomm/{id}")
-	public ResponseEntity<Boolean> deleteKomentar(@PathVariable("id") Long id)
+	@DeleteMapping("/blockcomm/{id}")
+	public ResponseEntity<Boolean> blockKomentar(@PathVariable("id") Long id)
 	{
 		System.out.println("deleteKomentar()");
 		
-		return (!komentService.deleteKomentar(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return (!komentService.blockKomentar(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
 	}
 	

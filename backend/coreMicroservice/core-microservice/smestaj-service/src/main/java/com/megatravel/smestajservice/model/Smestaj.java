@@ -58,11 +58,10 @@ public class Smestaj {
     @JoinColumn(name = "adresa_id")
     private TAdresa adresa;
     
+    @OneToOne
+    @JoinColumn(name = "koordinate_id")
     @XmlElement(required = true)
-    private BigDecimal latitude;
-    
-    @XmlElement(required = true)
-    private BigDecimal longitude;
+    private TKoordinate koordinate;
     
     @XmlElement(required = true)
     @Enumerated(EnumType.STRING)
@@ -132,19 +131,19 @@ public class Smestaj {
 	}
 
 	public BigDecimal getLatitude() {
-		return latitude;
+		return koordinate.getLatitude();
 	}
 
 	public void setLatitude(BigDecimal latitude) {
-		this.latitude = latitude;
+		koordinate.setLatitude(latitude);
 	}
 
 	public BigDecimal getLongitude() {
-		return longitude;
+		return koordinate.getLongitude();
 	}
 
 	public void setLongitude(BigDecimal longitude) {
-		this.longitude = longitude;
+		koordinate.setLongitude(longitude);
 	}
 
 	@JsonIgnore
@@ -301,8 +300,8 @@ public class Smestaj {
     public void update(SmestajDTO s) {
 		this.idSmestaja = s.getIdSmestaja();
 		this.adresa = s.getAdresa();
-		this.longitude = s.getLongitude();
-		this.latitude = s.getLatitude();
+		koordinate.setLongitude(s.getLongitude());
+		koordinate.setLatitude(s.getLatitude());
 		this.tipSmestaja = s.getTipSmestaja();
 		this.kategorijaSmestaja = s.getKategorijaSmestaja();
 		this.opis = s.getOpis();
@@ -315,5 +314,5 @@ public class Smestaj {
 		this.vlasnik = s.getVlasnik();
 		this.listaDodatnihUsluga = s.getListaDodatnihUsluga();
 		this.listaSlika = s.getListaSlika();
-}
+    }
 }

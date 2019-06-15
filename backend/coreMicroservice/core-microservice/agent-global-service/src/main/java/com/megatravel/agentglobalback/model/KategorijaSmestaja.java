@@ -3,7 +3,6 @@ package com.megatravel.agentglobalback.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,14 +15,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "KategorijaSmestaja")
-@XmlRootElement(name = "KategorijaSmestaja")
-@Entity
+@XmlType(name = "")
+@XmlRootElement(name = "kategorijaSmestaja")
 public class KategorijaSmestaja {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(required = true)
 	private Long id;
 	
 	@XmlElement(required = true)
@@ -31,7 +28,6 @@ public class KategorijaSmestaja {
 	private String naziv;
 	
 	@OneToMany(mappedBy="kategorijaSmestaja", cascade=CascadeType.ALL)
-	@XmlElement(required = true)
 	private List<Smestaj> smestaji;
 	
 	

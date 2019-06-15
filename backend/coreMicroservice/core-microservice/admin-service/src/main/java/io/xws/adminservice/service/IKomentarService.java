@@ -10,6 +10,6 @@ public interface IKomentarService {
 
 	public boolean updateObjaviKomentar(Long id);
 
-	public boolean deleteKomentar(Long id);
+	public boolean blockKomentar(Long id);
 
 }

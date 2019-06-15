@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -21,19 +20,19 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.megatravel.agentlocalbackend.dto.SmestajDTO;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = "Smestaj")
-@Entity
 public class Smestaj {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(required = true)
     private Long idSmestaja;
 	
     @XmlElement(required = true)
@@ -41,11 +40,10 @@ public class Smestaj {
     @JoinColumn(name = "adresa_id")
     private TAdresa adresa;
     
+    @OneToOne
+    @JoinColumn(name = "koordinate_id")
     @XmlElement(required = true)
-    private BigDecimal latitude;
-    
-    @XmlElement(required = true)
-    private BigDecimal longitude;
+    private TKoordinate koordinate;
     
     @XmlElement(required = true)
     @Enumerated(EnumType.STRING)
@@ -80,42 +78,20 @@ public class Smestaj {
     private float cenaZima;
     
     @NotNull
-    @XmlElement(required = false)
     private Long vlasnik;
     
+    @XmlList
     @XmlElement(required = true)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="tipsmestaja_id"))
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     
+    @XmlList
     @XmlElement(required = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
     private Set<TImage> listaSlika = new HashSet<>();
     
     public Smestaj() {
-	}
-
-	public Smestaj(Long idSmestaja, TAdresa adresa, BigDecimal latitude, BigDecimal longitude, TipSmestaja tipSmestaja,
-			KategorijaSmestaja kategorijaSmestaja, String opis, int maxOsoba, int maxDanaZaOtkazivanje, int cenaProlece,
-			int cenaLeto, int cenaJesen, int cenaZima, @NotNull Long vlasnik, Set<DodatneUsluge> listaDodatnihUsluga,
-			Set<TImage> listaSlika) {
-		super();
-		this.idSmestaja = idSmestaja;
-		this.adresa = adresa;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.tipSmestaja = tipSmestaja;
-		this.kategorijaSmestaja = kategorijaSmestaja;
-		this.opis = opis;
-		this.maxOsoba = maxOsoba;
-		this.maxDanaZaOtkazivanje = maxDanaZaOtkazivanje;
-		this.cenaProlece = cenaProlece;
-		this.cenaLeto = cenaLeto;
-		this.cenaJesen = cenaJesen;
-		this.cenaZima = cenaZima;
-		this.vlasnik = vlasnik;
-		this.listaDodatnihUsluga = listaDodatnihUsluga;
-		this.listaSlika = listaSlika;
 	}
 
 	public Long getIdSmestaja() {
@@ -125,43 +101,49 @@ public class Smestaj {
 	public void setIdSmestaja(Long idSmestaja) {
 		this.idSmestaja = idSmestaja;
 	}
-
+	
+	@JsonIgnore
 	public TAdresa getAdresa() {
 		return adresa;
 	}
 
+	@JsonIgnore
 	public void setAdresa(TAdresa adresa) {
 		this.adresa = adresa;
 	}
 
 	public BigDecimal getLatitude() {
-		return latitude;
+		return koordinate.getLatitude();
 	}
 
 	public void setLatitude(BigDecimal latitude) {
-		this.latitude = latitude;
+		koordinate.setLatitude(latitude);
 	}
 
 	public BigDecimal getLongitude() {
-		return longitude;
+		return koordinate.getLongitude();
 	}
 
 	public void setLongitude(BigDecimal longitude) {
-		this.longitude = longitude;
+		koordinate.setLongitude(longitude);
 	}
 
+	@JsonIgnore
 	public TipSmestaja getTipSmestaja() {
 		return tipSmestaja;
 	}
 
+	@JsonIgnore
 	public void setTipSmestaja(TipSmestaja tipSmestaja) {
 		this.tipSmestaja = tipSmestaja;
 	}
 
+	@JsonIgnore
 	public KategorijaSmestaja getKategorijaSmestaja() {
 		return kategorijaSmestaja;
 	}
 
+	@JsonIgnore
 	public void setKategorijaSmestaja(KategorijaSmestaja kategorijaSmestaja) {
 		this.kategorijaSmestaja = kategorijaSmestaja;
 	}
@@ -260,6 +242,7 @@ public class Smestaj {
      * 
      * 
      */
+	@JsonIgnore
     public Set<DodatneUsluge> getListaDodatnihUsluga() {
         if (listaDodatnihUsluga == null) {
             listaDodatnihUsluga = new HashSet<DodatneUsluge>();
@@ -267,6 +250,7 @@ public class Smestaj {
         return this.listaDodatnihUsluga;
     }
 
+	@JsonIgnore
     public void setListaDodatnihUsluga(Set<DodatneUsluge> listaDodatnihUsluga) {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 	}
@@ -298,8 +282,8 @@ public class Smestaj {
     public void update(SmestajDTO s) {
 		this.idSmestaja = s.getIdSmestaja();
 		this.adresa = s.getAdresa();
-		this.longitude = s.getLongitude();
-		this.latitude = s.getLatitude();
+		koordinate.setLongitude(s.getLongitude());
+		koordinate.setLatitude(s.getLatitude());
 		this.tipSmestaja = s.getTipSmestaja();
 		this.kategorijaSmestaja = s.getKategorijaSmestaja();
 		this.opis = s.getOpis();
@@ -312,5 +296,5 @@ public class Smestaj {
 		this.vlasnik = s.getVlasnik();
 		this.listaDodatnihUsluga = s.getListaDodatnihUsluga();
 		this.listaSlika = s.getListaSlika();
-}
+    }
 }

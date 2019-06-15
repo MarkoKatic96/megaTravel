@@ -66,9 +66,9 @@ public class SmestajServiceImpl implements ISmestajService
 	@Override
 	public TipSmestajaDTO createTipSmestaja(TipSmestajaDTO dto)
 	{
-		Optional<TipSmestaja> tip = tipSmRepo.findById(dto.getIdTipaSmestaja());
+		TipSmestaja tip = tipSmRepo.findByNaziv(dto.getNaziv());
 		
-		if(tip.isPresent())
+		if(tip != null)
 			return null;
 		else
 		{
@@ -84,7 +84,7 @@ public class SmestajServiceImpl implements ISmestajService
 		
 		if(bean.isPresent())
 		{
-			bean.get().setNaziv(tipSmConv.convertFromDTO(updateDto).getNaziv());
+			bean.get().setNazivTipaSmestaja(tipSmConv.convertFromDTO(updateDto).getNazivTipaSmestaja());
 			
 			tipSmRepo.save(bean.get());
 			
@@ -209,7 +209,7 @@ public class SmestajServiceImpl implements ISmestajService
 		
 		if(bean.isPresent())
 		{
-			bean.get().setNaziv(uslugeConv.convertFromDTO(updateDto).getNaziv());
+			bean.get().setNazivDodatneUsluge(uslugeConv.convertFromDTO(updateDto).getNazivDodatneUsluge());
 			
 			uslugeRepo.save(bean.get());
 			

@@ -8,8 +8,6 @@
 
 package io.xws.adminservice.model;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +16,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 import lombok.AllArgsConstructor;
@@ -26,15 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "idAdmina",
-    "ime",
-    "prezime",
-    "poslovniMaticniBroj",
-    "datumClanstva",
-    "email",
-    "lozinka"
-})
+@XmlType(name = "")
 @XmlRootElement(name = "Admin")
 @Entity
 @Data
@@ -52,11 +41,7 @@ public class Admin
     
     @XmlElement(required = true)
     protected String prezime;
-//    
-//    @XmlElement(required = true)
-//    @XmlSchemaType(name = "date")
-//    protected Date datumClanstva;
-    
+
     @XmlElement(required = true)
     protected String email;
     

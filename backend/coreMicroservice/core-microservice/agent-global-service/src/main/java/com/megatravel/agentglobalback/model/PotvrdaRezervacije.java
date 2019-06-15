@@ -10,7 +10,6 @@ package com.megatravel.agentglobalback.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,18 +24,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = "PotvrdaRezervacije")
-@Entity
 public class PotvrdaRezervacije {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(required = true)
 	private Long potvrdaRezervacijeId;
     
-	@XmlElement(required = true)
 	private Long rezervacijaId;
     
-	@XmlElement(required = true)
     private StatusRezervacije statusRezervacije;
  
     @XmlElement(required = true)

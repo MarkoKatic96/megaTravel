@@ -10,7 +10,6 @@ package com.megatravel.agentlocalbackend.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,14 +28,15 @@ import org.hibernate.annotations.CreationTimestamp;
 @XmlType(name = "", propOrder = {
     "rezervacijaId",
     "smestajId",
+    "vlasnikId",
     "korisnikId",
     "odDatuma",
     "doDatuma",
-    "potvrdjenaRezervacija",
+    "statusRezervacije",
+    "updateTimestamp",
     "timestamp"
 })
 @XmlRootElement(name = "Rezervacija")
-@Entity
 public class Rezervacija {
 	
 	@Id
@@ -72,7 +72,6 @@ public class Rezervacija {
     @CreationTimestamp
     private Date timestamp;
     
-    @NotNull
     private Date updateTimestamp;
 
     public Rezervacija() {

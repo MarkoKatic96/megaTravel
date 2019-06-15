@@ -49,7 +49,7 @@ services:
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8000"
+      - "8000:8000"
     depends_on:
       - discovery
    #   - db      
@@ -77,7 +77,7 @@ services:
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8400"
+      - "8400:8400"
     depends_on:
       - discovery
     links:
@@ -92,7 +92,7 @@ services:
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8500"
+      - "8500:8500"
     depends_on:
       - discovery
     links:
@@ -107,37 +107,22 @@ services:
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8100"
+      - "8100:8100"
     depends_on:
       - discovery
     links:
       - discovery:discovery
 
-  poruke-agent-service:
-    image: poruke-agent-service
-    container_name: poruke-agent-service
+  poruke-service:
+    image: poruke-service
+    container_name: poruke-service
     build:
-      context: ./poruke-agent-service
+      context: ./poruke-service
       dockerfile: Dockerfile
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8700"
-    depends_on:
-      - discovery
-    links:
-      - discovery:discovery
-
-  poruke-korisnik-service:
-    image: poruke-korisnik-service
-    container_name: poruke-korisnik-service
-    build:
-      context: ./poruke-korisnik-service
-      dockerfile: Dockerfile
-    environment: 
-      eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
-    ports:
-      - "8800"
+      - "8700:8700"
     depends_on:
       - discovery
     links:
@@ -152,7 +137,7 @@ services:
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8200"
+      - "8200:8200"
     depends_on:
       - discovery
     links:
@@ -167,7 +152,7 @@ services:
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8200"
+      - "8900:8900"
     depends_on:
       - discovery
     links:
@@ -182,7 +167,7 @@ services:
     environment: 
       eureka.client.serviceUrl.defaultZone: http://discovery:8761/eureka
     ports:
-      - "8300"
+      - "8300:8300"
     depends_on:
       - discovery
     links:
