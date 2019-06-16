@@ -1,4 +1,4 @@
-/*package com.megatravel.agentlocalbackend.jwt;
+package com.megatravel.agentlocalbackend.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,4 +21,4 @@ public class JwtTokenFilterConfigurer extends SecurityConfigurerAdapter<DefaultS
 		http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
-}*/
+}

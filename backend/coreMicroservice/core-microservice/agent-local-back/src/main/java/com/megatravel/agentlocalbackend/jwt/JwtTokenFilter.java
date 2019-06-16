@@ -1,4 +1,4 @@
-/*package com.megatravel.agentlocalbackend.jwt;
+package com.megatravel.agentlocalbackend.jwt;
 
 import java.io.IOException;
 
@@ -35,4 +35,3 @@ public class JwtTokenFilter extends GenericFilterBean {
 	}
 
 }
-*/

@@ -15,8 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.megatravel.agentglobalback.dto.AgentDTO;
 import com.megatravel.agentglobalback.dto.AgentPrijavaDTO;
 import com.megatravel.agentglobalback.dto.AgentRegistracijaDTO;
+import com.megatravel.agentglobalback.jwt.JwtTokenUtils;
 import com.megatravel.agentglobalback.model.Agent;
 import com.megatravel.agentglobalback.model.NeaktiviranAgent;
+import com.megatravel.agentglobalback.model.RevokedTokens;
+import com.megatravel.agentglobalback.repository.RevokedTokensRepository;
 import com.megatravel.agentglobalback.service.AgentService;
 import com.megatravel.agentglobalback.service.NeaktiviranAgentService;
 
@@ -30,11 +33,11 @@ public class AgentController {
 	@Autowired
 	AgentService agentService;
 	
-	//@Autowired
-	//JwtTokenUtils jwtTokenUtils;
+	@Autowired
+	JwtTokenUtils jwtTokenUtils;
 	
-	//@Autowired
-	//Oprivate RevokedTokensRepository revokedTokensRepository;
+	@Autowired
+	private RevokedTokensRepository revokedTokensRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
@@ -128,7 +131,7 @@ public class AgentController {
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public ResponseEntity<Void> signout(HttpServletRequest req) {
 		System.out.println("signout()");
-		/*
+		
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -138,7 +141,7 @@ public class AgentController {
 		}
 		
 		revokedTokensRepository.save(new RevokedTokens(null, token));
-		*/
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -146,6 +149,10 @@ public class AgentController {
 	public ResponseEntity<Boolean> validateToken(@RequestBody String token) {
 		System.out.println("validateToken()");
 	
+		if (revokedTokensRepository.findOne(token) != null) {
+			return new ResponseEntity<Boolean>(new Boolean(false), HttpStatus.OK);
+		}
+		
 		return new ResponseEntity<>(new Boolean(true), HttpStatus.OK);
 	}
 	

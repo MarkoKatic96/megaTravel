@@ -1,9 +1,29 @@
 package com.megatravel.agentglobalback.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.megatravel.agentglobalback.dto.LokalneRezervacijeDTO;
+import com.megatravel.agentglobalback.dto.RezervacijaDTO;
+import com.megatravel.agentglobalback.dto.SamostalnaRezervacijaDTO;
+import com.megatravel.agentglobalback.jwt.JwtTokenUtils;
+import com.megatravel.agentglobalback.model.Agent;
+import com.megatravel.agentglobalback.model.PotvrdaRezervacije;
+import com.megatravel.agentglobalback.model.Rezervacija;
+import com.megatravel.agentglobalback.model.SamostalnaRezervacija;
 import com.megatravel.agentglobalback.service.AgentService;
 import com.megatravel.agentglobalback.service.RezervacijaService;
 import com.megatravel.agentglobalback.service.SamostalnaRezervacijaService;
@@ -20,7 +40,7 @@ public class RezervacijeController {
 	
 	@Autowired
 	AgentService agentService;
-	/*
+	
 	@Autowired
 	JwtTokenUtils jwtTokenUtils;
 	
@@ -36,7 +56,7 @@ public class RezervacijeController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		SamostalnaRezervacija s = new SamostalnaRezervacija(null, rezDTO.getSmestajId(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma());
+		SamostalnaRezervacija s = new SamostalnaRezervacija(null, rezDTO.getSmestajId(), agent.getIdAgenta(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma());
 		SamostalnaRezervacija retVal = samostalnaRezervacijaService.save(s);
 		
 		return new ResponseEntity<>(new SamostalnaRezervacijaDTO(retVal), HttpStatus.CREATED);
@@ -141,5 +161,4 @@ public class RezervacijeController {
 		
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
-	*/
 }

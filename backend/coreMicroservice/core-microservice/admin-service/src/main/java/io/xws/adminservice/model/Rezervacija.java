@@ -10,6 +10,7 @@ package io.xws.adminservice.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "rezervacijaId",

@@ -10,5 +10,5 @@ import io.xws.adminservice.model.TipSmestaja;
 @Repository
 public interface TipSmestajaRepository extends JpaRepository<TipSmestaja, Long> 
 {
-	public TipSmestaja findByNaziv(String naziv);
+	public TipSmestaja findByNazivTipaSmestaja(String nazivTipaSmestaja);
 }

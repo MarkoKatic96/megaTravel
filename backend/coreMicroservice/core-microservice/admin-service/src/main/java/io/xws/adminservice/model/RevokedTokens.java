@@ -3,6 +3,7 @@ package io.xws.adminservice.model;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = "RevokedTokens")
+@Entity
 public class RevokedTokens {
 
 	@Id

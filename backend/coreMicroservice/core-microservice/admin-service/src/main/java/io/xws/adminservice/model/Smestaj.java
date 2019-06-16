@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -45,6 +46,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
     "listaSlika"
 })
 @XmlRootElement(name = "Smestaj")
+@Entity
 public class Smestaj {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-/*package com.megatravel.agentlocalbackend.jwt;
+package com.megatravel.agentlocalbackend.jwt;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -10,14 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.megatravel.agentlocalbackend.model.TipOsobe;
-import com.megatravel.agentlocalbackend.repository.RevokedTokensRepository;
 import com.megatravel.agentlocalbackend.security.AgentDetails;
 
 import io.jsonwebtoken.Claims;
@@ -30,14 +32,14 @@ public class JwtTokenUtils {
 	@Value("${security.jwt.token.secret-key:secret-key}")
 	private String secretKey;
 
-	@Value("${security.jwt.token.expire-length:604800000}")
-	private long validityInMilliseconds = 604800000;	// 7 days in ms
+	@Value("${security.jwt.token.expire-length:28800000}")
+	private long validityInMilliseconds = 28800000;	// 8h in ms
 
 	@Autowired
 	private AgentDetails agentDetails;
 	
 	@Autowired
-	private RevokedTokensRepository revokedTokensRepository;
+	private RestTemplate restTemplate;
 
 	@PostConstruct
 	protected void init() {
@@ -91,8 +93,14 @@ public class JwtTokenUtils {
 			
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			
-			if (revokedTokensRepository.findOne(token) != null) {
-				System.out.println("Token is revoked - security warning!");
+			
+			ResponseEntity<Boolean> ok = restTemplate.postForEntity("http://agent-global-service/agent/token", token, Boolean.class);
+			if (ok.getStatusCode() != HttpStatus.OK) {
+				return false;
+			}
+			
+			if (!ok.getBody()) {
+				//System.out.println("Token is revoked - security warning!");
 				return false;
 			}
 			
@@ -103,4 +111,4 @@ public class JwtTokenUtils {
 		}
 	}
 
-}*/
+}

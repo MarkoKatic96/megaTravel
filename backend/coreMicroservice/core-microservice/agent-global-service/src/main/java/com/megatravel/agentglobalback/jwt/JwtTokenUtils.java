@@ -1,4 +1,4 @@
-/*package com.megatravel.agentglobalback.jwt;
+package com.megatravel.agentglobalback.jwt;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -30,8 +30,8 @@ public class JwtTokenUtils {
 	@Value("${security.jwt.token.secret-key:secret-key}")
 	private String secretKey;
 
-	@Value("${security.jwt.token.expire-length:604800000}")
-	private long validityInMilliseconds = 604800000;	// 7 days in ms
+	@Value("${security.jwt.token.expire-length:28800000}")
+	private long validityInMilliseconds = 28800000;	// 8h in ms
 
 	@Autowired
 	private AgentDetails agentDetails;
@@ -103,4 +103,4 @@ public class JwtTokenUtils {
 		}
 	}
 
-}*/
+}

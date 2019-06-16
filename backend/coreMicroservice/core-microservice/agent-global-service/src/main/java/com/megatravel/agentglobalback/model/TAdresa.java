@@ -8,6 +8,7 @@
 
 package com.megatravel.agentglobalback.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TAdresa")
+@Entity
 public class TAdresa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

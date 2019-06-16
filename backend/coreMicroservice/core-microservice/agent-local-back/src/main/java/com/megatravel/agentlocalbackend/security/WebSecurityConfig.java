@@ -3,6 +3,7 @@ package com.megatravel.agentlocalbackend.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -14,12 +15,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.megatravel.agentlocalbackend.jwt.JwtTokenFilterConfigurer;
+import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
+
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	//@Autowired
-	//private JwtTokenUtils jwtTokenProvider;
+	@Autowired
+	private JwtTokenUtils jwtTokenProvider;
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -44,14 +48,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		//TODO 1: ono cemu neregistrovani korisnik sme da pristupi
-		http.authorizeRequests().antMatchers("/").permitAll();
+		http.authorizeRequests()
+		.antMatchers("/*", "agent/login", "/agent/login", "/agent/signup").permitAll()
+		.antMatchers(HttpMethod.PUT, "/*").permitAll()
+		.antMatchers(HttpMethod.POST, "/ws/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/ws/**").permitAll()
+		.anyRequest().authenticated();
 
 		
 		// If a user try to access a resource without having enough permissions
 		http.exceptionHandling().accessDeniedPage("/agent/login");
 
 		// Apply JWT
-		//http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+		http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 	}
 
 	@Override

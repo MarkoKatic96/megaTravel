@@ -1,8 +1,13 @@
 package com.megatravel.agentlocalbackend.controller;
 
+import java.nio.charset.Charset;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
+import com.megatravel.agentlocalbackend.jwt.JwtTokenUtils;
 import com.megatravel.agentlocalbackend.service.AgentService;
 import com.megatravel.agentlocalbackend.service.RezervacijaService;
 import com.megatravel.agentlocalbackend.soap.AgentClient;
@@ -43,12 +50,9 @@ public class AgentController {
 	@Autowired
 	AgentClient agentClient;
 	
-	//@Autowired
-	//JwtTokenUtils jwtTokenUtils;
+	@Autowired
+	JwtTokenUtils jwtTokenUtils;
 	
-	//@Autowired
-	//private RevokedTokensRepository revokedTokensRepository;
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<AgentDTO> getAgent(@PathVariable Long id) {
 		System.out.println("getAgent(" + id + ")");
@@ -206,7 +210,7 @@ public class AgentController {
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public ResponseEntity<Void> signout(HttpServletRequest request) {
 		System.out.println("signout()");
-		/*
+		
 		String signOutUrl = "https://localhost:8400/agent/signout";
 		
 		RestTemplate restTemplate = config.createRestTemplate();
@@ -218,16 +222,13 @@ public class AgentController {
 	                Void.class,
 	                request.getParameterMap());
 	        
+	        rezervacijaService.deleteAll();
+			agentService.deleteAll();
+			
 	        return exchange;
 	    } catch (Exception e) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
-	    */
-		rezervacijaService.deleteAll();
-		agentService.deleteAll();
-		
-		
-		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/token", method = RequestMethod.POST)

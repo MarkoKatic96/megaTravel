@@ -66,7 +66,7 @@ public class SmestajServiceImpl implements ISmestajService
 	@Override
 	public TipSmestajaDTO createTipSmestaja(TipSmestajaDTO dto)
 	{
-		TipSmestaja tip = tipSmRepo.findByNaziv(dto.getNaziv());
+		TipSmestaja tip = tipSmRepo.findByNazivTipaSmestaja(dto.getNaziv());
 		
 		if(tip != null)
 			return null;

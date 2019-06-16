@@ -15,12 +15,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.megatravel.agentglobalback.jwt.JwtTokenFilterConfigurer;
+import com.megatravel.agentglobalback.jwt.JwtTokenUtils;
+
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	//@Autowired
-	//private JwtTokenUtils jwtTokenProvider;
+	@Autowired
+	private JwtTokenUtils jwtTokenProvider;
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -50,15 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.PUT, "/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/ws/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/ws/**").permitAll()
-		//.anyRequest().authenticated();
-		.anyRequest().anonymous();
-
+		.anyRequest().authenticated();
 		
 		// If a user try to access a resource without having enough permissions
 		http.exceptionHandling().accessDeniedPage("/agent/login");
 
 		// Apply JWT
-		//http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+		http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 	}
 
 	@Override

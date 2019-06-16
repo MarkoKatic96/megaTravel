@@ -3,6 +3,7 @@ package com.megatravel.agentglobalback.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "TipSmestaja")
+@Entity
 public class TipSmestaja {
 	
 	@Id
