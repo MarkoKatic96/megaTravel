@@ -47,7 +47,7 @@ public class RezervacijaController {
 	@RequestMapping(value = "/rezervacije/{token}")
 	public ResponseEntity<List<Rezervacija>> getAllReservationsFromUser(@PathVariable("token") String token){
 		
-		Korisnik k = restTemplate.getForObject("http://korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
+		Korisnik k = restTemplate.getForObject("http://korisnik-service/korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
 		
 		if(k!=null) {
 			List<Rezervacija> rezervacije = rezervacijaService.getAllReservationsFromUser(k.getIdKorisnik());
@@ -61,7 +61,7 @@ public class RezervacijaController {
 	@RequestMapping(value = "/rezervisi/{token}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<Rezervacija> reserve(@PathVariable("token") String token, @RequestBody Rezervacija rezervacija){
 		
-		Korisnik k = restTemplate.getForObject("http://korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
+		Korisnik k = restTemplate.getForObject("http://korisnik-service/korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
 
 		if(k!=null) {
 			Rezervacija r = rezervacijaService.reserve(rezervacija);
@@ -74,7 +74,7 @@ public class RezervacijaController {
 	@RequestMapping(value = "/otkazi/{id}/{token}", method = RequestMethod.DELETE)
 	public ResponseEntity<Rezervacija> otkazi(@PathVariable("id") Long id, @PathVariable("token") String token, HttpServletRequest req){
 		
-		Korisnik k = restTemplate.getForObject("http://korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
+		Korisnik k = restTemplate.getForObject("http://korisnik-service/korisnik-service/getKorisnikByToken/" + token, Korisnik.class);
 
 		if(k!=null) {
 			Rezervacija r = rezervacijaService.otkaziRezervaciju(id);

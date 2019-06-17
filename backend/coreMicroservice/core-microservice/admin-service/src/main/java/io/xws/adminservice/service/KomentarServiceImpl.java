@@ -80,4 +80,22 @@ public class KomentarServiceImpl implements IKomentarService
 			return false;
 	}
 	
+	@Override
+	public Komentar createKomentar(KomentarDTO komentar) {
+		Komentar k = komentConv.convertFromDTO(komentar);
+		return komentRepo.save(k);		
+	}
+
+	@Override
+	public List<KomentarDTO> getAllObjavljeniKomentari() {
+		List<Komentar> lista = komentRepo.findAll();
+		List<KomentarDTO> retrunList = new ArrayList<KomentarDTO>();
+		for (Komentar komentar : lista) {
+			if(komentar.getStatus()==StatusKomentara.OBJAVLJEN) {
+				retrunList.add(komentConv.convertToDTO(komentar));
+			}
+		}
+		return retrunList;
+	}
+	
 }

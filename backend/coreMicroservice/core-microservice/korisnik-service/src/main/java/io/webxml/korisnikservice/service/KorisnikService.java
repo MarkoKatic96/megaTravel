@@ -45,6 +45,8 @@ public class KorisnikService {
 		if(k==null) {
 			korisnik.setRola("KORISNIK");
 			korisnik.setDatumClanstva(new Date());
+			korisnik.setBlokiran(false);
+			korisnik.setRegistrovan(false);
 			return korisnikRepository.save(korisnik);
 		}
 		return null;

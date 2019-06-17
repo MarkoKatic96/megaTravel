@@ -1,5 +1,6 @@
 package com.megatravel.smestajservice.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +119,24 @@ public class SmestajKorisnikController {
 		}
 
 		return new ResponseEntity<>(smestaj, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/prosekLat/{grad}", method = RequestMethod.GET)
+	public ResponseEntity<BigDecimal> prosekLat(@PathVariable("grad") String grad){
+		BigDecimal bd = smestajService.prosekLatitude(grad);
+		return new ResponseEntity<BigDecimal>(bd, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/prosekLong/{grad}", method = RequestMethod.GET)
+	public ResponseEntity<BigDecimal> prosekLong(@PathVariable("grad") String grad){
+		BigDecimal bd = smestajService.prosekLongitude(grad);
+		return new ResponseEntity<BigDecimal>(bd, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/rastojanje/{smestajId}", method = RequestMethod.GET)
+	public ResponseEntity<BigDecimal> rastojanje(@PathVariable("smestajId") Long smestajId){
+		BigDecimal bd = smestajService.rastojanje(smestajId);
+		return new ResponseEntity<BigDecimal>(bd, HttpStatus.OK);
 	}
 	
 }

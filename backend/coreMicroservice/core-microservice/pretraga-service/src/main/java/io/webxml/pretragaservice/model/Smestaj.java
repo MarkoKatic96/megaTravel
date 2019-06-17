@@ -101,18 +101,22 @@ public class Smestaj {
 		this.adresa = adresa;
 	}
 
+	@JsonIgnore
 	public BigDecimal getLatitude() {
 		return koordinate.getLatitude();
 	}
 
+	@JsonIgnore
 	public void setLatitude(BigDecimal latitude) {
 		koordinate.setLatitude(latitude);
 	}
 
+	@JsonIgnore
 	public BigDecimal getLongitude() {
 		return koordinate.getLongitude();
 	}
 
+	@JsonIgnore
 	public void setLongitude(BigDecimal longitude) {
 		koordinate.setLongitude(longitude);
 	}

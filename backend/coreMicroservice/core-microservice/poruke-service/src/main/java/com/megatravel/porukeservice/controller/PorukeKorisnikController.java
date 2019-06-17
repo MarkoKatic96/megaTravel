@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ import com.megatravel.porukeservice.service.PorukeService;
 
 @RestController
 @RequestMapping("/poruke-korisnik-service/poruke")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PorukeKorisnikController {
 	
 	@Autowired
@@ -132,14 +134,11 @@ public class PorukeKorisnikController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PorukaDTO> sendPoruka(@RequestBody NovaPorukaDTO novaPoruka, HttpServletRequest req) {
+	@RequestMapping(value = "/posalji/{token}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PorukaDTO> sendPoruka(@RequestBody NovaPorukaDTO novaPoruka, @PathVariable("token") String token) {
 		System.out.println("sendPoruka()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik/"+email, Korisnik.class);
+		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik-service/getKorisnikByToken/"+token, Korisnik.class);
 		if (korisnikEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}

@@ -11,7 +11,7 @@ import com.megatravel.smestajservice.model.TipSmestaja;
 @Repository
 public interface TipSmestajaRepository extends JpaRepository<TipSmestaja, Long>{
 
-	@Query(value = "SELECT id_tipa_smestaja, naziv_tipa_smestaja FROM tip_smestaja", nativeQuery=true)
+	@Query(value = "SELECT * FROM tip_smestaja", nativeQuery=true)
 	List<TipSmestaja> getAll();
 	
 }

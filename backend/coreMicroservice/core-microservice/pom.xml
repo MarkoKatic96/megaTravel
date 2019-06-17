@@ -18,7 +18,7 @@
 	
 	<modules>
 		<module>admin-service</module>
-		<module>agent-global-back</module>
+		<module>agent-global-service</module>
 		<module>agent-local-back</module>
 		<module>discovery-server</module>
 		<module>korisnik-service</module>

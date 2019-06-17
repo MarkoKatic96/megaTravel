@@ -73,6 +73,8 @@ public class RezervacijaService {
 				rezervacija.setTimestamp(new Date());
 				return rezervacijaRepository.save(rezervacija);
 			}
+		}else {
+			return rezervacijaRepository.save(rezervacija);
 		}
 		
 		return null;
@@ -103,7 +105,7 @@ public class RezervacijaService {
 	}
 
 	public List<Rezervacija> findAllAfter(Date timestamp, Long idAgenta) {
-		return rezervacijaRepository.findAllAfter(timestamp,idAgenta);
+		return rezervacijaRepository.findAfter(timestamp,idAgenta);
 	}
 
 	public boolean konfliktRezervacijaExists(Long idAgenta, Long smestajId, Date odDatuma, Date doDatuma) {

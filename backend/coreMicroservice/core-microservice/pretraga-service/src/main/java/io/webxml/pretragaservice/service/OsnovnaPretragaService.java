@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,7 +27,7 @@ public class OsnovnaPretragaService {
 	private RestTemplate restTemplate;
 	
 	public List<SmestajKorisnikDTO> osnovnaPretragaSmestaji(OsnovnaPretraga op){
-		SmestajiRestTemplate srt = restTemplate.getForObject("http://smestaj-service/smestaj-korisnik/all", SmestajiRestTemplate.class);
+		SmestajiRestTemplate srt = restTemplate.getForObject("http://smestaj-service/smestaj-service/smestaj-korisnik/all", SmestajiRestTemplate.class);
 		List<SmestajKorisnikDTO> lista = new ArrayList<SmestajKorisnikDTO>();
 		List<SmestajKorisnikDTO> listaSmestaja = new ArrayList<SmestajKorisnikDTO>();
 		List<SmestajKorisnikDTO> returnLista = new ArrayList<SmestajKorisnikDTO>();
@@ -59,7 +61,7 @@ public class OsnovnaPretragaService {
 		}
 		
 		if(op.getDatumDolaska()!=null && op.getDatumPolaska()!=null && op.getDatumDolaska().before(op.getDatumPolaska())) {
-			RezervacijeRestTemplate rrt = restTemplate.getForObject("http://reservation-service/rezervacije", RezervacijeRestTemplate.class);
+			RezervacijeRestTemplate rrt = restTemplate.getForObject("http://reservation-service/reservation-service/rezervacije", RezervacijeRestTemplate.class);
 			rezervacije = rrt.getRezervacijaList();//sve rezervacije
 			int zauzeto=0;
 			for (SmestajKorisnikDTO smestaj : returnLista) {
@@ -90,7 +92,7 @@ public class OsnovnaPretragaService {
 		if(op.getTipSmestaja()!=null) {
 			String tipSmestaja = op.getTipSmestaja();
 			for (SmestajKorisnikDTO smestaj : returnLista) {
-				if(smestaj.getTipSmestaja().toString().equals(tipSmestaja)) {
+				if(smestaj.getTipSmestaja().getTipSmestajaId().toString().equals(tipSmestaja)) {
 					listaSmestaja.add(smestaj);
 				}
 			}			

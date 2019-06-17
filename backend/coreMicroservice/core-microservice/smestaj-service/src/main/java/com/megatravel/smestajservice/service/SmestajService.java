@@ -1,5 +1,8 @@
 package com.megatravel.smestajservice.service;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -122,5 +125,55 @@ public class SmestajService {
 		}
 		
 		return null;
+	}
+	
+	public BigDecimal prosekLatitude(String grad) {
+		BigDecimal avgLat = new BigDecimal(0);
+		BigDecimal broj = new BigDecimal(0);
+		List<Smestaj> lista = smestajRepository.pronadjiSve();
+		for (Smestaj smestaj : lista) {
+			if(smestaj.getAdresa().getGrad().equals(grad)) {
+				avgLat = avgLat.add(smestaj.getLatitude());
+				broj = broj.add(new BigDecimal(1));
+			}
+		}
+		BigDecimal bd = avgLat.divide(broj);
+		return bd;
+	}
+	
+	public BigDecimal prosekLongitude(String grad) {
+		BigDecimal avgLong = new BigDecimal(0);
+		BigDecimal broj = new BigDecimal(0);
+		List<Smestaj> lista = smestajRepository.pronadjiSve();
+		for (Smestaj smestaj : lista) {
+			if(smestaj.getAdresa().getGrad().equals(grad)) {
+				avgLong = avgLong.add(smestaj.getLongitude());
+				broj = broj.add(new BigDecimal(1));
+			}
+		}
+		BigDecimal bd = avgLong.divide(broj);
+		return bd;
+	}
+	
+	public BigDecimal rastojanje(Long smestajId) {
+		Smestaj smestaj = smestajRepository.getOne(smestajId);
+		int r = 6371;
+		String grad = smestaj.getAdresa().getGrad();
+		double avgLat = prosekLatitude(grad).doubleValue();
+		double avgLong = prosekLongitude(grad).doubleValue();
+		double smestajLat = smestaj.getLatitude().doubleValue();
+		double smestajLong = smestaj.getLongitude().doubleValue();
+		
+		double latDistance = Math.toRadians(avgLat - smestajLat);
+		double longDistance = Math.toRadians(avgLong - smestajLong);
+	    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+	            + Math.cos(Math.toRadians(avgLat)) * Math.cos(Math.toRadians(smestajLat))
+	            * Math.sin(longDistance / 2) * Math.sin(longDistance / 2);
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	    double distance = r * c * 1000; // convert to meters
+	    double result = Math.sqrt(distance);
+	    BigDecimal bd = new BigDecimal(result, MathContext.DECIMAL64);
+	    BigDecimal returnBd = bd.setScale(0, RoundingMode.HALF_UP);
+	    return returnBd;
 	}
 }
