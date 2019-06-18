@@ -1,5 +1,6 @@
 package io.webxml.pretragaservice.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -134,23 +135,42 @@ public class OsnovnaPretragaService {
 	}
 	
 	public List<SmestajKorisnikDTO> sortSmestaji(List<SmestajKorisnikDTO> returnLista, String sort){
-		if(sort!=null && !sort.equals("")) {
-			if(sort.equals("cena")) {
+		if(sort!=null || !sort.equals("")) {
+			if(sort.equals("cena rastuca")) {
 				Collections.sort(returnLista, new Comparator<SmestajKorisnikDTO>() {
 					@Override public int compare(SmestajKorisnikDTO p1, SmestajKorisnikDTO p2) {
 			            return (int) (p1.getCena() - p2.getCena()); // Ascending
 			        }
 					
 				});
-			}else if(sort.equals("kategorija")) {
-				returnLista = compareCategory(returnLista);
+			}else if(sort.equals("cena opadajuca")) {
+				Collections.sort(returnLista, new Comparator<SmestajKorisnikDTO>() {
+					@Override public int compare(SmestajKorisnikDTO p1, SmestajKorisnikDTO p2) {
+			            return (int) (p2.getCena() - p1.getCena()); // Ascending
+			        }
+				});
+			}else if(sort.equals("kategorija opadajuca")) {
+				returnLista = compareCategoryDescending(returnLista);
+			}else if(sort.equals("kategorija rastuca")) {
+				returnLista = compareCategoryAscending(returnLista);
+			}else if(sort.equals("udaljenost")) {
+				for (SmestajKorisnikDTO smestajKorisnikDTO : returnLista) {
+					BigDecimal srt = restTemplate.getForObject("http://smestaj-service/smestaj-service/smestaj-korisnik/rastojanje/" + smestajKorisnikDTO.getIdSmestaja(), BigDecimal.class);
+					smestajKorisnikDTO.setLatitude(srt);
+				}
+				Collections.sort(returnLista, new Comparator<SmestajKorisnikDTO>() {
+					@Override public int compare(SmestajKorisnikDTO p1, SmestajKorisnikDTO p2) {
+			            return (int) (p1.getLatitude().intValue() - p2.getLatitude().intValue()); // Ascending
+			        }
+					
+				});
 			}
 		}
 		
 		return returnLista;
 	}
 	
-	public List<SmestajKorisnikDTO> compareCategory(List<SmestajKorisnikDTO> lista) {
+	public List<SmestajKorisnikDTO> compareCategoryDescending(List<SmestajKorisnikDTO> lista) {
 		List<SmestajKorisnikDTO> rLista = new ArrayList<SmestajKorisnikDTO>();
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
 			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("platinum")) {
@@ -174,5 +194,29 @@ public class OsnovnaPretragaService {
 		}
 		return rLista;
 	}
-
+	
+	public List<SmestajKorisnikDTO> compareCategoryAscending(List<SmestajKorisnikDTO> lista) {
+		List<SmestajKorisnikDTO> rLista = new ArrayList<SmestajKorisnikDTO>();
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("bronze")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("silver")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("gold")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("platinum")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		return rLista;
+	}
 }

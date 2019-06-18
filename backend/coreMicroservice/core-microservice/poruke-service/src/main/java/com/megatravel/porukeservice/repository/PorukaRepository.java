@@ -30,7 +30,7 @@ public interface PorukaRepository extends JpaRepository<Poruka, Long> {
 	@Query(value= "SELECT DISTINCT p FROM Poruka p WHERE (p.posiljalac = ?1 AND p.primalac = ?2) OR (p.primalac = ?1 AND p.posiljalac = ?2) ORDER BY p.datumSlanja DESC")
 	Page<Poruka> findAllWithAgent(Long idAgenta, Long idKorisnika, Pageable pageable);
 	
-	@Query(value= "SELECT DISTINCT p FROM Poruka p WHERE (p.primalac = ?1 AND p.status = 'POSLATA') ORDER BY p.datumSlanja DESC")
+	@Query(value= "SELECT DISTINCT p FROM Poruka p WHERE (p.primalac = ?1 AND p.status = 'POSLATA' AND p.tipPrimaoca = 'KORISNIK') ORDER BY p.datumSlanja DESC")
 	Page<Poruka> findAllNeprocitaneZaKorisnika(Long userId, Pageable pageable);
 
 	@Query(value= "SELECT DISTINCT p FROM Poruka p WHERE (p.posiljalac = ?1 AND p.primalac = ?2 AND p.status = 'POSLATA') ORDER BY p.datumSlanja DESC")

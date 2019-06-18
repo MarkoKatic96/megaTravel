@@ -38,8 +38,8 @@ public class PorukaDTO {
 		this.datumSlanja = p.getDatumSlanja();
 		this.posiljalac = p.getPosiljalac();
 		this.tipPosiljaoca = p.getTipPosiljaoca();
-		this.primalac = p.getPosiljalac();
-		this.tipPrimaoca = p.getTipPosiljaoca();
+		this.primalac = p.getPrimalac();
+		this.tipPrimaoca = p.getTipPrimaoca();
 		this.sadrzaj = p.getSadrzaj();
 		this.status = p.getStatus();
 	}

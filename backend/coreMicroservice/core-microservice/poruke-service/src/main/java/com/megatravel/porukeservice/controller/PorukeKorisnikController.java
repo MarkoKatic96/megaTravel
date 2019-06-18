@@ -43,14 +43,12 @@ public class PorukeKorisnikController {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@RequestMapping(value = "/{agentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PorukaDTO>> getPorukeWithAgent(@PathVariable Long agentId, Pageable page, HttpServletRequest req) {
+	@RequestMapping(value = "/{agentId}/{token}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PorukaDTO>> getPorukeWithAgent(@PathVariable("agentId") Long agentId, @PathVariable("token") String token, Pageable page) {
 		System.out.println("getPorukeWithAgent()");
+	
+		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik-service/getKorisnikByToken/"+token, Korisnik.class);
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik/"+email, Korisnik.class);
 		if (korisnikEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
@@ -75,14 +73,12 @@ public class PorukeKorisnikController {
 		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/neprocitane", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PorukaDTO>> getNeprocitanePoruke(Pageable page, HttpServletRequest req) {
+	@RequestMapping(value = "/neprocitane/{token}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PorukaDTO>> getNeprocitanePoruke(Pageable page, @PathVariable("token") String token) {
 		System.out.println("getNeprocitanePoruke()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
+		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik-service/getKorisnikByToken/"+token, Korisnik.class);
 		
-		ResponseEntity<Korisnik> korisnikEntity = restTemplate.getForEntity("http://korisnik-service/korisnik/"+email, Korisnik.class);
 		if (korisnikEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
