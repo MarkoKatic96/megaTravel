@@ -31,15 +31,7 @@ public class KorisnikController {
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping("/korisnici")
-	public ResponseEntity<List<Korisnik>> getKorisnici(HttpServletRequest req){
-		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		Korisnik korisnik = korisnikService.getKorisnikByEmail(email);
-		if (korisnik == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
+	public ResponseEntity<List<Korisnik>> getKorisnici(){
 		
 		List<Korisnik> korisnici = korisnikService.getAllKorisnici();
 		return (korisnici!=null) ? new ResponseEntity<List<Korisnik>>(korisnici, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);

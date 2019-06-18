@@ -73,7 +73,7 @@ public class KomentarController
 	}
 
 	@RequestMapping(value = "/all")
-	public List<KomentarDTO> getAll(){	//dodaj samo proveru da li su objavljeni
+	public List<KomentarDTO> getAll(){
 		return komentService.getAllObjavljeniKomentari();
 	}
 	

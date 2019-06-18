@@ -1,6 +1,7 @@
 package io.xws.adminservice.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +84,8 @@ public class KomentarServiceImpl implements IKomentarService
 	@Override
 	public Komentar createKomentar(KomentarDTO komentar) {
 		Komentar k = komentConv.convertFromDTO(komentar);
+		k.setStatus(StatusKomentara.NEOBJAVLJEN);
+		k.setTimestamp(new Date(System.currentTimeMillis()));
 		return komentRepo.save(k);		
 	}
 
