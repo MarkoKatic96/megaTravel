@@ -1,4 +1,4 @@
-package io.xws.adminservice.service;
+package com.megatravel.agentglobalback.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,30 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
-import io.xws.adminservice.converter.DTOAgentConverter;
-import io.xws.adminservice.model.Agent;
-import io.xws.adminservice.model.NeaktiviranAgent;
-import io.xws.adminservice.repository.AgentRepository;
-import io.xws.adminservice.repository.NeaktiviranAgentRepository;
+import com.megatravel.agentglobalback.model.Agent;
+import com.megatravel.agentglobalback.model.NeaktiviranAgent;
+import com.megatravel.agentglobalback.repository.AgentRepository;
+import com.megatravel.agentglobalback.repository.NeaktiviranAgentRepository;
 
 @Service
-public class AgentServiceImpl implements IAgentService
+public class AdminService 
 {
 	@Autowired
-	private AgentRepository agentRepo;
-	
-	@Autowired
-	private DTOAgentConverter agentConv;
-	
-	@Autowired
 	private NeaktiviranAgentRepository neregRepo;
+	
+	@Autowired
+	private AgentRepository agentRepo;
 	
 	@Autowired
 	private MailServiceImpl mailService;
 	
 	
 	
-	@Override
 	public List<NeaktiviranAgent> getAllZahteviNeregAgenata()
 	{
 		Optional<List<NeaktiviranAgent>> agenti = Optional.of(neregRepo.findAll());
@@ -45,7 +40,6 @@ public class AgentServiceImpl implements IAgentService
 	}
 
 
-	@Override
 	public String createPotvrdiZahtev(Long id)
 	{
 		Optional<NeaktiviranAgent> nereg = neregRepo.findById(id);
@@ -119,7 +113,6 @@ public class AgentServiceImpl implements IAgentService
 	}
 
 
-	@Override
 	public boolean deleteOdbijZahtev(Long id)
 	{
 		Optional<NeaktiviranAgent> agent = neregRepo.findById(id);
@@ -132,4 +125,5 @@ public class AgentServiceImpl implements IAgentService
 		else
 			return false;
 	}
+
 }

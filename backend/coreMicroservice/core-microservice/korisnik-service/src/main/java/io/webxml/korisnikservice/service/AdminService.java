@@ -1,40 +1,33 @@
-package io.xws.adminservice.service;
+package io.webxml.korisnikservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-import io.xws.adminservice.converter.DTOKorisnikConverter;
-import io.xws.adminservice.dto.KorisnikDTO;
-import io.xws.adminservice.model.Korisnik;
-import io.xws.adminservice.repository.KorisnikRepository;
+import io.webxml.korisnikservice.model.Korisnik;
+import io.webxml.korisnikservice.repository.KorisnikRepository;
 
 @Service
-public class KorisnikServiceImpl implements IKorisnikService
+public class AdminService
 {
-	
 	@Autowired
 	private KorisnikRepository korRepo;
 	
-	@Autowired
-	private DTOKorisnikConverter korConv;
 	
 	
-	@Override
-	public List<KorisnikDTO> getAllKorisnici()
+	public List<Korisnik> getAllKorisnici()
 	{
 		Optional<List<Korisnik>> korisnici = Optional.of(korRepo.findAll());
-		List<KorisnikDTO> sviKor = new ArrayList<KorisnikDTO>();
+		List<Korisnik> sviKor = new ArrayList<Korisnik>();
 		
 		if(korisnici.isPresent())
 		{
 			for(Korisnik kor : korisnici.get())
 			{
-				sviKor.add(korConv.convertToDTO(kor));
+				sviKor.add(kor);
 			}
 			return sviKor;
 		}
@@ -43,11 +36,10 @@ public class KorisnikServiceImpl implements IKorisnikService
 	}
 	
 	
-	@Override
-	public List<KorisnikDTO> getAllAktiviraniKorisnici()
+	public List<Korisnik> getAllAktiviraniKorisnici()
 	{
 		Optional<List<Korisnik>> korisnici = Optional.of(korRepo.findAll());
-		List<KorisnikDTO> aktivirani = new ArrayList<KorisnikDTO>();
+		List<Korisnik> aktivirani = new ArrayList<Korisnik>();
 		
 		if(korisnici.isPresent())
 		{
@@ -56,7 +48,7 @@ public class KorisnikServiceImpl implements IKorisnikService
 				if(!kor.isRegistrovan() || kor.isBlokiran())
 					continue;
 				else
-					aktivirani.add(korConv.convertToDTO(kor));
+					aktivirani.add(kor);
 			}
 			return aktivirani;
 		}
@@ -65,11 +57,10 @@ public class KorisnikServiceImpl implements IKorisnikService
 	}
 	
 
-	@Override
-	public List<KorisnikDTO> getAllNeaktiviraniKorisnici() 
+	public List<Korisnik> getAllNeaktiviraniKorisnici() 
 	{
 		Optional<List<Korisnik>> korisnici = Optional.of(korRepo.findAll());
-		List<KorisnikDTO> neaktivirani = new ArrayList<KorisnikDTO>();
+		List<Korisnik> neaktivirani = new ArrayList<Korisnik>();
 		
 		if(korisnici.isPresent())
 		{
@@ -78,7 +69,7 @@ public class KorisnikServiceImpl implements IKorisnikService
 				if(!kor.isRegistrovan() || kor.isBlokiran())
 					continue;
 				else
-					neaktivirani.add(korConv.convertToDTO(kor));
+					neaktivirani.add(kor);
 			}
 			return neaktivirani;
 		}
@@ -87,11 +78,10 @@ public class KorisnikServiceImpl implements IKorisnikService
 	}
 	
 	
-	@Override
-	public List<KorisnikDTO> getAllBlokiraniKorisnici()
+	public List<Korisnik> getAllBlokiraniKorisnici()
 	{
 		Optional<List<Korisnik>> korisnici = Optional.of(korRepo.findAll());
-		List<KorisnikDTO> blokirani = new ArrayList<KorisnikDTO>();
+		List<Korisnik> blokirani = new ArrayList<Korisnik>();
 		
 		if(korisnici.isPresent())
 		{
@@ -100,7 +90,7 @@ public class KorisnikServiceImpl implements IKorisnikService
 				if(!kor.isBlokiran())
 					continue;
 				else
-					blokirani.add(korConv.convertToDTO(kor));
+					blokirani.add(kor);
 			}
 			return blokirani;
 		}
@@ -109,7 +99,6 @@ public class KorisnikServiceImpl implements IKorisnikService
 	}
 	
 	
-	@Override
 	public boolean updateAktivirajKorisnika(Long id)
 	{
 		Optional<Korisnik> korisnik = korRepo.findById(id);
@@ -125,7 +114,6 @@ public class KorisnikServiceImpl implements IKorisnikService
 	}
 	
 
-	@Override
 	public boolean updateBlokirajKorisnika(Long id)
 	{
 		Optional<Korisnik> korisnik = korRepo.findById(id);
@@ -140,7 +128,6 @@ public class KorisnikServiceImpl implements IKorisnikService
 			return false;
 	}
 	
-	@Override
 	public boolean updateDeblokirajKorisnika(Long id) 
 	{
 		Optional<Korisnik> korisnik = korRepo.findById(id);
@@ -155,7 +142,6 @@ public class KorisnikServiceImpl implements IKorisnikService
 			return false;
 	}	
 
-	@Override
 	public boolean deleteKorisnika(Long id)
 	{
 		Optional<Korisnik> korisnik = korRepo.findById(id);
@@ -168,5 +154,4 @@ public class KorisnikServiceImpl implements IKorisnikService
 		else
 			return false;
 	}
-	
 }

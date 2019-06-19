@@ -1,4 +1,4 @@
-package io.xws.adminservice.controller;
+package com.megatravel.agentglobalback.controller;
 
 import java.util.List;
 
@@ -13,18 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.xws.adminservice.model.NeaktiviranAgent;
-import io.xws.adminservice.service.IAgentService;
+import com.megatravel.agentglobalback.model.NeaktiviranAgent;
+import com.megatravel.agentglobalback.service.AdminService;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/admin-service/agent")
-@Api(tags = "")
-public class AgentController 
+@RequestMapping("/agent-global-service/admin")
+public class AdminController 
 {
 	@Autowired
-	private IAgentService agentService;
+	private AdminService adminService;
 	
 	
 	/*
@@ -36,7 +35,7 @@ public class AgentController
 	{
 		System.out.println("getAllZahteviAgenata()");
 		
-		List<NeaktiviranAgent> agenti = agentService.getAllZahteviNeregAgenata();
+		List<NeaktiviranAgent> agenti = adminService.getAllZahteviNeregAgenata();
 		
 		return (agenti.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<NeaktiviranAgent>>(agenti, HttpStatus.OK);
 	}
@@ -50,7 +49,7 @@ public class AgentController
 	{
 		System.out.println("createPotvrdiZahtev()");
 		
-		String response = agentService.createPotvrdiZahtev(id);
+		String response = adminService.createPotvrdiZahtev(id);
 		
 		return (!response.equals("OK")) ? new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST) : new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		
@@ -64,10 +63,9 @@ public class AgentController
 	{
 		System.out.println("deleteOdbijZahtev()");
 		
-		return (!agentService.deleteOdbijZahtev(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return (!adminService.deleteOdbijZahtev(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
 	}
 	
-	//treba napraviti metode za 
 	
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.megatravel.agentglobalback.model.Agent;
 import com.megatravel.agentglobalback.model.NeaktiviranAgent;
 
-@EnableJpaRepositories(basePackageClasses= {Agent.class})
+@EnableJpaRepositories(basePackageClasses= {NeaktiviranAgent.class})
 @Repository
 public interface NeaktiviranAgentRepository extends JpaRepository<NeaktiviranAgent, Long> {
 	

@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class Komentar {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long idKomentara;

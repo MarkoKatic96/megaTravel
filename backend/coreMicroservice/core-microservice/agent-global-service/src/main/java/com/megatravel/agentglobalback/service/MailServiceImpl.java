@@ -1,4 +1,4 @@
-package io.xws.adminservice.service;
+package com.megatravel.agentglobalback.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import io.xws.adminservice.model.Agent;
+import com.megatravel.agentglobalback.model.Agent;
 
 @Service
 public class MailServiceImpl {

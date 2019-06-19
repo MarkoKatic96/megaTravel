@@ -1,4 +1,4 @@
-package io.xws.adminservice.controller;
+package io.webxml.korisnikservice.controller;
 
 import java.util.List;
 
@@ -13,18 +13,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.xws.adminservice.dto.KorisnikDTO;
-import io.xws.adminservice.service.IKorisnikService;
+import io.webxml.korisnikservice.model.Korisnik;
+import io.webxml.korisnikservice.service.AdminService;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/admin-service/user")
-@Api(tags = "")
-public class KorisnikController
+@RequestMapping("/korisnik-service/admin")
+public class AdminController
 {
 	@Autowired
-	private IKorisnikService korService;
+	private AdminService adminService;
 	
 	//pazi da na osnovu spiska koji povuces koristis te i te operacije
 	
@@ -32,13 +31,13 @@ public class KorisnikController
 	 * Vraca sve korisnike, generalni spisak
 	 */
 	@GetMapping("/all")
-	public ResponseEntity<List<KorisnikDTO>> getAllKorisnici()
+	public ResponseEntity<List<Korisnik>> getAllKorisnici()
 	{
 		System.out.println("getAllKorisnici()");
 		
-		List<KorisnikDTO> neaktivirani = korService.getAllKorisnici();
+		List<Korisnik> neaktivirani = adminService.getAllKorisnici();
 		
-		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<KorisnikDTO>>(neaktivirani, HttpStatus.OK);
+		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<Korisnik>>(neaktivirani, HttpStatus.OK);
 	}
 	
 	/*
@@ -46,39 +45,39 @@ public class KorisnikController
 	 * Moraju biti aktivirani!
 	 */
 	@GetMapping("/allactivated")
-	public ResponseEntity<List<KorisnikDTO>> getAllAktiviraniKorisnici()
+	public ResponseEntity<List<Korisnik>> getAllAktiviraniKorisnici()
 	{
 		System.out.println("getAllAktiviraniKorisnici()");
 		
-		List<KorisnikDTO> neaktivirani = korService.getAllAktiviraniKorisnici();
+		List<Korisnik> neaktivirani = adminService.getAllAktiviraniKorisnici();
 		
-		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<KorisnikDTO>>(neaktivirani, HttpStatus.OK);
+		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<Korisnik>>(neaktivirani, HttpStatus.OK);
 	}
 	
 	/*
 	 * Vraca sve neaktivirane korisnike (ZA AKTIVIRANJE, BRISANJE)
 	 */
 	@GetMapping("/allnotactivated")
-	public ResponseEntity<List<KorisnikDTO>> getAllNeaktiviraniKorisnici()
+	public ResponseEntity<List<Korisnik>> getAllNeaktiviraniKorisnici()
 	{
 		System.out.println("getAllNeaktiviraniKorisnici()");
 		
-		List<KorisnikDTO> neaktivirani = korService.getAllNeaktiviraniKorisnici();
+		List<Korisnik> neaktivirani = adminService.getAllNeaktiviraniKorisnici();
 		
-		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<KorisnikDTO>>(neaktivirani, HttpStatus.OK);
+		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<Korisnik>>(neaktivirani, HttpStatus.OK);
 	}
 
 	/*
 	 * Vraca sve blokirane (ZA DEBLOKIRANJE, BRISANJE)
 	 */
 	@GetMapping("/allblocked")
-	public ResponseEntity<List<KorisnikDTO>> getAllBlokiraniKorisnici()
+	public ResponseEntity<List<Korisnik>> getAllBlokiraniKorisnici()
 	{
 		System.out.println("getAllBlokiraniKorisnici()");
 		
-		List<KorisnikDTO> neaktivirani = korService.getAllBlokiraniKorisnici();
+		List<Korisnik> neaktivirani = adminService.getAllBlokiraniKorisnici();
 		
-		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<KorisnikDTO>>(neaktivirani, HttpStatus.OK);
+		return (neaktivirani.isEmpty()) ? new ResponseEntity<>(null, HttpStatus.NOT_FOUND) : new ResponseEntity<List<Korisnik>>(neaktivirani, HttpStatus.OK);
 	}
 	
 	////////////////////////////////////////////////////////
@@ -93,7 +92,7 @@ public class KorisnikController
 	{
 		System.out.println("updateAktivirajKorisnika()");
 		
-		return (!korService.updateAktivirajKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return (!adminService.updateAktivirajKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	/*
@@ -105,7 +104,7 @@ public class KorisnikController
 	{
 		System.out.println("updateBlokirajKorisnika()");
 		
-		return (!korService.updateBlokirajKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return (!adminService.updateBlokirajKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	/*
@@ -117,7 +116,7 @@ public class KorisnikController
 	{
 		System.out.println("updateDeblokirajKorisnika()");
 
-		return (!korService.updateDeblokirajKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return (!adminService.updateDeblokirajKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	/*
@@ -129,7 +128,7 @@ public class KorisnikController
 	{
 		System.out.println("deleteKorisnika()");
 		
-		return (!korService.deleteKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return (!adminService.deleteKorisnika(id)) ? new ResponseEntity<Boolean>(false, HttpStatus.METHOD_NOT_ALLOWED) : new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	

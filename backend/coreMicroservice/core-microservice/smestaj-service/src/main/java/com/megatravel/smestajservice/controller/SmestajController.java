@@ -54,7 +54,7 @@ public class SmestajController {
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-
+		
 		Page<Smestaj> smestaji = smestajService.getAll(agent.getIdAgenta(), page);
 		
 		HttpHeaders headers = new HttpHeaders();

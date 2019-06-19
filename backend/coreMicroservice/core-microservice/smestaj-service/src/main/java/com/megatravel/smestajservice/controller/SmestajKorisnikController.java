@@ -23,6 +23,7 @@ import com.megatravel.smestajservice.model.DodatneUsluge;
 import com.megatravel.smestajservice.model.KategorijaSmestaja;
 import com.megatravel.smestajservice.model.Smestaj;
 import com.megatravel.smestajservice.model.SmestajiRestTemplate;
+import com.megatravel.smestajservice.model.TipRestTemplate;
 import com.megatravel.smestajservice.model.TipSmestaja;
 import com.megatravel.smestajservice.service.SmestajService;
 
@@ -98,10 +99,30 @@ public class SmestajKorisnikController {
 		return new ResponseEntity<List<TipSmestaja>>(lista, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/allTipoviRest", method = RequestMethod.GET)
+	public ResponseEntity<TipRestTemplate> getAllTipoveRest(){
+		List<TipSmestaja> lista = smestajService.getAllTipove();
+		
+		TipRestTemplate srt = new TipRestTemplate();
+		srt.setTipovi(lista);
+		
+		return new ResponseEntity<TipRestTemplate>(srt, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/allKategorije", method = RequestMethod.GET)
 	public ResponseEntity<List<KategorijaSmestaja>> getAllKategorije(){
 		List<KategorijaSmestaja> lista = smestajService.getAllKategorije();
 		return new ResponseEntity<List<KategorijaSmestaja>>(lista, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/allKategorijeRest", method = RequestMethod.GET)
+	public ResponseEntity<TipRestTemplate> getAllKategorijeRest(){
+		List<KategorijaSmestaja> lista = smestajService.getAllKategorije();
+		
+		TipRestTemplate srt = new TipRestTemplate();
+		srt.setKategorije(lista);
+		
+		return new ResponseEntity<TipRestTemplate>(srt, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/allUsluge", method = RequestMethod.GET)
