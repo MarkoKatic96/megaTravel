@@ -66,7 +66,7 @@ public class AdminService
 		{
 			for(Korisnik kor : korisnici.get())
 			{
-				if(!kor.isRegistrovan() || kor.isBlokiran())
+				if(kor.isRegistrovan() || kor.isBlokiran())
 					continue;
 				else
 					neaktivirani.add(kor);
