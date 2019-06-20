@@ -3,6 +3,8 @@ package io.xws.adminservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.xws.adminservice.converter.DTOAdminConverter;
 import io.xws.adminservice.dto.AdminDTO;
 import io.xws.adminservice.dto.RegisterDTO;
@@ -37,16 +39,23 @@ public class AdminServiceImpl implements IAdminService
 	@Override
 	public String signin(String email, String lozinka) 
 	{
-//		try
-//		{
-//			authManager.authenticate(new UsernamePasswordAuthenticationToken(email, lozinka));
-//			System.out.println(jwt.createToken(email));
-//			return jwt.createToken(email);
-//		}
-//		catch (AuthenticationException e)
-//		{
-//			throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
-//		}
+		Admin k = adminRepo.findByEmail(email).get();
+		if(k==null) {
+			return null;
+		}
+		try {
+			if(k.getLozinka().equals(lozinka)) {
+//				if (k.isBlokiran()) {
+//					return null;
+//				}
+				String jwtRet = jwt.createToken(email);
+				ObjectMapper mapper = new ObjectMapper();
+				return mapper.writeValueAsString(jwtRet);
+			}
+		}catch (Exception e) {
+			return null;
+		}
+		
 		return null;
 		
 	}
@@ -75,6 +84,11 @@ public class AdminServiceImpl implements IAdminService
 //		return adminConv.convertToDTO(adminRepo.save(adminConv.convertFromDTO(admin)));
 		
 		return null;
+	}
+
+	public Admin getAdminByEmail(String email) {
+		
+		return adminRepo.findByEmail(email).get();
 	}
 		
 		
