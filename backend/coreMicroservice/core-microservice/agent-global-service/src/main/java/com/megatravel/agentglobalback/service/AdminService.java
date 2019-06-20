@@ -96,7 +96,8 @@ public class AdminService
 		agent.setPrezime(nereg.get().getPrezime());
 		agent.setEmail(nereg.get().getEmail());
 		agent.setLozinka(lozinka);
-		agent.setPoslovniMaticniBroj(nereg.get().getPoslovniMaticniBroj());
+		agent.setPoslovniMaticniBroj(nereg.get().getPoslovniMaticniBroj());\
+		agent.setDatumClanstva(new Date(id));
 		
 		neregRepo.delete(nereg.get());
 		agentRepo.save(agent);
