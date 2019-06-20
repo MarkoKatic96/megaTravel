@@ -1,5 +1,6 @@
 package com.megatravel.agentglobalback.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -96,7 +97,7 @@ public class AdminService
 		agent.setPrezime(nereg.get().getPrezime());
 		agent.setEmail(nereg.get().getEmail());
 		agent.setLozinka(lozinka);
-		agent.setPoslovniMaticniBroj(nereg.get().getPoslovniMaticniBroj());\
+		agent.setPoslovniMaticniBroj(nereg.get().getPoslovniMaticniBroj());
 		agent.setDatumClanstva(new Date(id));
 		
 		neregRepo.delete(nereg.get());
