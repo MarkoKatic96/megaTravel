@@ -64,6 +64,12 @@ public class Komentar {
 	public Date getTimestamp() {
 		return timestamp;
 	}
+	
+	
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
 
 	/**
      * Gets the value of the idKomentara property.
