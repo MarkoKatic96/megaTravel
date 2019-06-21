@@ -1,6 +1,7 @@
 package io.webxml.reservationservice.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -8,9 +9,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import io.webxml.reservationservice.model.Rezervacija;
 import io.webxml.reservationservice.model.SamostalnaRezervacija;
+import io.webxml.reservationservice.model.SmestajKorisnikDTO;
+import io.webxml.reservationservice.model.SmestajiRestTemplate;
 import io.webxml.reservationservice.model.StatusRezervacije;
 import io.webxml.reservationservice.repository.RezervacijaRepository;
 import io.webxml.reservationservice.repository.SamostalnaRezervacijaRepository;
@@ -23,6 +27,9 @@ public class RezervacijaService {
 	
 	@Autowired
 	SamostalnaRezervacijaRepository samostalnaRezervacijaRepository;
+	
+	@Autowired 
+	RestTemplate restTemplate;
 	
 	public List<Rezervacija> getAllReservations(){
 		
@@ -102,9 +109,25 @@ public class RezervacijaService {
 	public Rezervacija otkaziRezervaciju(Long id) {
 		Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
 		if(rezervacija.isPresent()) {
-			rezervacija.get().setStatusRezervacije(StatusRezervacije.OTKAZANA);
-			rezervacijaRepository.save(rezervacija.get());
-			return rezervacija.get();
+			SmestajiRestTemplate srt = restTemplate.getForObject("http://smestaj-service/smestaj-service/smestaj-korisnik/all", SmestajiRestTemplate.class);
+			List<SmestajKorisnikDTO> smestaji = new ArrayList<SmestajKorisnikDTO>();
+			smestaji = srt.getSmestajiList();
+			for (SmestajKorisnikDTO smestajKorisnikDTO : smestaji) {
+				if(smestajKorisnikDTO.getIdSmestaja()==rezervacija.get().getSmestajId()) {
+					Date sadasnjost = new Date();//koji je danas datum
+					Date datumOd = rezervacija.get().getOdDatuma();//datum kada pocinje rezervacija
+					Calendar c = Calendar.getInstance(); 
+					c.setTime(sadasnjost); 
+					c.add(Calendar.DATE, smestajKorisnikDTO.getMaxDanaZaOtkazivanje());//dodamo max dana za otkazivanje na danas
+					sadasnjost = c.getTime();
+					if(sadasnjost.before(datumOd)) {
+						smestajKorisnikDTO.getMaxDanaZaOtkazivanje();
+						rezervacija.get().setStatusRezervacije(StatusRezervacije.OTKAZANA);
+						rezervacijaRepository.save(rezervacija.get());
+						return rezervacija.get();
+					}
+				}
+			}
 		}
 		return null;
 	}
