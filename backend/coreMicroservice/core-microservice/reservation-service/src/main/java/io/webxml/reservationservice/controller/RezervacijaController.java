@@ -14,12 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import io.webxml.reservationservice.dto.RezervacijaDTO;
 import io.webxml.reservationservice.jwt.JwtTokenUtils;
 
 import io.webxml.reservationservice.model.Korisnik;
 import io.webxml.reservationservice.model.Rezervacija;
 import io.webxml.reservationservice.model.RezervacijeRestTemplate;
+import io.webxml.reservationservice.model.SamostalnaRezervacija;
+import io.webxml.reservationservice.model.SamostalnaRezervacijaRestTemplate;
+import io.webxml.reservationservice.repository.RezervacijaRepository;
+import io.webxml.reservationservice.repository.SamostalnaRezervacijaRepository;
 import io.webxml.reservationservice.service.RezervacijaService;
+import io.webxml.reservationservice.service.SamostalnaRezervacijaService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -28,6 +35,12 @@ public class RezervacijaController {
 	
 	@Autowired
 	private RezervacijaService rezervacijaService;
+	
+	@Autowired
+	SamostalnaRezervacijaRepository srs;
+	
+	@Autowired
+	RezervacijaRepository rr;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -42,6 +55,14 @@ public class RezervacijaController {
 		RezervacijeRestTemplate rrt = new RezervacijeRestTemplate();
 		rrt.setRezervacijaList(rezervacije);
 		return (!rezervacije.isEmpty()) ? new ResponseEntity<RezervacijeRestTemplate>(rrt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value = "/samostalneRezervacije")
+	public ResponseEntity<SamostalnaRezervacijaRestTemplate> getAllAgentReservations(){
+		List<SamostalnaRezervacija> rezervacije = srs.findAll();
+		SamostalnaRezervacijaRestTemplate rrt = new SamostalnaRezervacijaRestTemplate();
+		rrt.setSamostalnaRezervacijaList(rezervacije);
+		return (!rezervacije.isEmpty()) ? new ResponseEntity<SamostalnaRezervacijaRestTemplate>(rrt, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value = "/rezervacije/{token}")
@@ -82,5 +103,14 @@ public class RezervacijaController {
 		}else {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
+	}
+	
+	@RequestMapping(value = "/rezervacija/status/{id}", method = RequestMethod.GET)
+	public ResponseEntity<RezervacijaDTO> otkazi(@PathVariable("id") Long id){
+		
+		Rezervacija r = rr.getOne(id);
+		RezervacijaDTO dto = new RezervacijaDTO(r);
+		return new ResponseEntity<RezervacijaDTO>(dto, HttpStatus.OK);
+		
 	}
 }
