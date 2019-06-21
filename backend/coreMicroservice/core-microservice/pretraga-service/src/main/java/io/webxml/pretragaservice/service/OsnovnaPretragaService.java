@@ -126,6 +126,18 @@ public class OsnovnaPretragaService {
 			listaSmestaja.clear();
 		}
 		
+		if(op.getDanaZaOtkazivanje()>0) {
+			for (SmestajKorisnikDTO smestaj : returnLista) {
+				if(smestaj.getMaxDanaZaOtkazivanje()>=op.getDanaZaOtkazivanje()) {
+					listaSmestaja.add(smestaj);
+				}
+			}
+			
+			returnLista.clear();
+			returnLista.addAll(listaSmestaja);
+			listaSmestaja.clear();
+		}
+		
 		if(op.getTipSmestaja()!=null) {
 			String tipSmestaja = op.getTipSmestaja();
 			for (SmestajKorisnikDTO smestaj : returnLista) {
@@ -200,6 +212,25 @@ public class OsnovnaPretragaService {
 			        }
 					
 				});
+			}else if(sort.equals("ocena")) {
+				Float prosecna = new Float(0);
+				float f;
+				for (SmestajKorisnikDTO smestajKorisnikDTO : returnLista) {
+					prosecna = restTemplate.getForObject("http://rating-service/rating-service/ocena/" + smestajKorisnikDTO.getIdSmestaja(), Float.class);
+					if(prosecna!=null) {
+						f = prosecna.floatValue();
+					}else {
+						f=0f;
+					}
+					smestajKorisnikDTO.setCena(f);
+				}
+				/*Collections.sort(returnLista, new Comparator<SmestajKorisnikDTO>() {
+				    @Override
+				    public int compare(SmestajKorisnikDTO t, SmestajKorisnikDTO t1) {
+				        return Float.compare(t1.getCena(), t.getCena());
+				    }
+				});*/
+				returnLista.sort(Comparator.comparing(SmestajKorisnikDTO::getCena).reversed());
 			}
 		}
 		

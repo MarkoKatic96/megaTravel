@@ -65,13 +65,14 @@ public class OsnovnaPretraga {
     private Long kategorijaSmestaja;
     private List<Long> dodatneUsluge;
     private int udaljenost;
+    private int danaZaOtkazivanje;
     private String sort;
     
     public OsnovnaPretraga() {
 
   	}
     
-    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena, int brojOsoba, String tipSmestaja, Long kategorijaSmestaja, List<Long> dodatneUsluge, int udaljenost, String sort) {
+    public OsnovnaPretraga(String mesto, Date datumDolaska, Date datumPolaska, float cena, int brojOsoba, String tipSmestaja, Long kategorijaSmestaja, List<Long> dodatneUsluge, int udaljenost, int danaZaOtkazivanje, String sort) {
 		super();
 		this.mesto = mesto;
 		this.datumDolaska = datumDolaska;
@@ -83,6 +84,7 @@ public class OsnovnaPretraga {
 		this.dodatneUsluge = dodatneUsluge;
 		this.sort = sort;
 		this.udaljenost = udaljenost;
+		this.danaZaOtkazivanje = danaZaOtkazivanje;
 	}
 
 	/**
@@ -227,6 +229,14 @@ public class OsnovnaPretraga {
 
 	public void setUdaljenost(int udaljenost) {
 		this.udaljenost = udaljenost;
+	}
+
+	public int getDanaZaOtkazivanje() {
+		return danaZaOtkazivanje;
+	}
+
+	public void setDanaZaOtkazivanje(int danaZaOtkazivanje) {
+		this.danaZaOtkazivanje = danaZaOtkazivanje;
 	}
     
     
