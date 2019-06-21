@@ -34,7 +34,7 @@ public class PorukeService {
 		return porukaRepository.findAllWithAgent(agentId, userId, page);
 	}
 	
-	public Page<Poruka> findAllNeprocitane(Long userId, Pageable page) {
+	public Page<Poruka> findAllNeprocitaneZaKorisnika(Long userId, Pageable page) {
 		return porukaRepository.findAllNeprocitaneZaKorisnika(userId, page);
 	}
 

@@ -88,7 +88,7 @@ public class PorukeKorisnikController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		Page<Poruka> poruke = porukeService.findAllNeprocitane(korisnik.getIdKorisnik(), page);
+		Page<Poruka> poruke = porukeService.findAllNeprocitaneZaKorisnika(korisnik.getIdKorisnik(), page);
 		
 		HttpHeaders headers = new HttpHeaders();
 		long porukeTotal = poruke.getTotalElements();

@@ -90,7 +90,7 @@ public class PorukeAgentController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		
-		Page<Poruka> poruke = porukeService.findAllNeprocitane(agent.getIdAgenta(), page);
+		Page<Poruka> poruke = porukeService.findAllNeprocitaneZaAgenta(agent.getIdAgenta(), page);
 		
 		HttpHeaders headers = new HttpHeaders();
 		long porukeTotal = poruke.getTotalElements();
