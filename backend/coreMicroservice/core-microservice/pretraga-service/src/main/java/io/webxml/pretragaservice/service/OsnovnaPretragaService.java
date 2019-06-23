@@ -240,22 +240,32 @@ public class OsnovnaPretragaService {
 	public List<SmestajKorisnikDTO> compareCategoryDescending(List<SmestajKorisnikDTO> lista) {
 		List<SmestajKorisnikDTO> rLista = new ArrayList<SmestajKorisnikDTO>();
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("platinum")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("5 zvezdica")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("gold")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("4 zvezdice")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("silver")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("3 zvezdice")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("bronze")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("2 zvezdice")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("1 zvezdica")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("nekategorisan")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
@@ -264,23 +274,35 @@ public class OsnovnaPretragaService {
 	
 	public List<SmestajKorisnikDTO> compareCategoryAscending(List<SmestajKorisnikDTO> lista) {
 		List<SmestajKorisnikDTO> rLista = new ArrayList<SmestajKorisnikDTO>();
+		
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("bronze")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("1 zvezdica")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("silver")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("2 zvezdice")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("gold")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("3 zvezdice")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
 		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
-			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("platinum")) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("4 zvezdice")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("5 zvezdica")) {
+				rLista.add(smestajKorisnikDTO);
+			}
+		}
+		
+		for (SmestajKorisnikDTO smestajKorisnikDTO : lista) {
+			if(smestajKorisnikDTO.getKategorijaSmestaja().getNaziv().equals("nekategorisan")) {
 				rLista.add(smestajKorisnikDTO);
 			}
 		}
