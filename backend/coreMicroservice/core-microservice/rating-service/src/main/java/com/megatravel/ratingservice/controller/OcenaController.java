@@ -1,8 +1,12 @@
 package com.megatravel.ratingservice.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.megatravel.ratingservice.dto.NovaOcenaDTO;
@@ -34,11 +39,13 @@ public class OcenaController {
 	
 	@Autowired
 	RestTemplate restTemplate;
+	
+	RestTemplate rt = new RestTemplate();
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Ocena> createOcena(@RequestBody NovaOcenaDTO novaOcena){
+	public ResponseEntity<String> createOcena(@RequestBody NovaOcenaDTO novaOcena){
 		
-		ResponseEntity<RezervacijaDTO> rezervacijaEntity = restTemplate.getForEntity("http://reservation-service/reservation-service/rezervacija/status/"+novaOcena.getIdRezervacija(), RezervacijaDTO.class);
+		/*ResponseEntity<RezervacijaDTO> rezervacijaEntity = restTemplate.getForEntity("http://reservation-service/reservation-service/rezervacija/status/"+novaOcena.getIdRezervacija(), RezervacijaDTO.class);
 		if (rezervacijaEntity.getStatusCode() != HttpStatus.OK) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
@@ -66,8 +73,17 @@ public class OcenaController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 
-		ocena = ocenaService.save(ocena);
-		return new ResponseEntity<>(ocena, HttpStatus.CREATED);
+		ocena = ocenaService.save(ocena);*/ 
+		
+		Ocena ocena = new Ocena((long)44, novaOcena.getIdSmestaj(), novaOcena.getIdRezervacija(), novaOcena.getIdKorisnik(), novaOcena.getOcena());
+		String url = "http://localhost:8010/cloud-demo/us-central1/createOcena";
+		HttpEntity<Ocena> request = new HttpEntity<>(ocena);
+		ResponseEntity<String> response = rt
+		  .exchange(url, HttpMethod.POST, request, String.class);
+		  
+		String s = response.getBody();
+		  
+		return new ResponseEntity<String>(s, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -100,11 +116,28 @@ public class OcenaController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Float> getAverageOcenaForSmestaj(@PathVariable Long id) {
-		float ocena = ocenaService.getAverageOcenaForSmestaj(id);
-		if (ocena>0 && ocena<6) {
-			return new ResponseEntity<>(new Float(ocena),HttpStatus.OK);
+		
+		String url = "http://localhost:8010/cloud-demo/us-central1/getOcene?id=" + id;
+		ResponseEntity<Ocena[]> response = rt.getForEntity(url, Ocena[].class);
+		Ocena[] o = response.getBody();
+		List<Ocena> lista = Arrays.asList(o);
+		int broj = lista.size();
+		float zbir = 0;
+		for (Ocena ocena : lista) {
+			zbir+=ocena.getOcena();
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		float prosek = zbir/broj;
+		Float returnFloat = new Float(prosek); 
+		return new ResponseEntity<Float>(returnFloat, HttpStatus.OK);
 		
 	}
+	
+	/*@RequestMapping(value = "/getOcena", method = RequestMethod.GET)
+	public ResponseEntity<Ocena[]> getOcena() {
+		
+		String url = "http://localhost:8010/cloud-demo/us-central1/getOcene";
+		ResponseEntity<Ocena[]> response = rt.getForEntity(url, Ocena[].class);
+		return new ResponseEntity<Ocena[]>(response.getBody(), HttpStatus.OK);
+		
+	}*/
 }

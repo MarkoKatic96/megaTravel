@@ -2,6 +2,7 @@ package com.megatravel.ratingservice.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,21 +13,24 @@ import javax.validation.constraints.NotNull;
 public class Ocena {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="idOcena")
     protected Long idOcena;
     
     @NotNull
+    @Column(name="idSmestaj")
     protected Long idSmestaj;
     
     @NotNull
+    @Column(name="idRezervacija")
     protected Long idRezervacija;
     
     @NotNull
+    @Column(name="idKorisnik")
     protected Long idKorisnik;
     
     @NotNull
     protected short ocena;
     
-    @NotNull
     protected Date timestamp;
 
     public Ocena() { }
