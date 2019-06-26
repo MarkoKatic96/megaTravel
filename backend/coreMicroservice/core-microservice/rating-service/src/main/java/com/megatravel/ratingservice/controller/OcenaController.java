@@ -74,10 +74,12 @@ public class OcenaController {
 		}
 
 		ocena = ocenaService.save(ocena);*/ 
-		
-		Ocena ocena = new Ocena((long)44, novaOcena.getIdSmestaj(), novaOcena.getIdRezervacija(), novaOcena.getIdKorisnik(), novaOcena.getOcena());
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		Ocena ocena = new Ocena(null, novaOcena.getIdSmestaj(), novaOcena.getIdRezervacija(), novaOcena.getIdKorisnik(), novaOcena.getOcena());
+		ocena.setTimestamp(null);
 		String url = "http://localhost:8010/cloud-demo/us-central1/createOcena";
-		HttpEntity<Ocena> request = new HttpEntity<>(ocena);
+		HttpEntity<Ocena> request = new HttpEntity<>(ocena, headers);
 		ResponseEntity<String> response = rt
 		  .exchange(url, HttpMethod.POST, request, String.class);
 		  
@@ -87,9 +89,9 @@ public class OcenaController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Ocena> editDeleteOcena(@RequestBody Ocena novaOcena){
+	public ResponseEntity<String> editDeleteOcena(@RequestBody Ocena novaOcena){
 		
-		if (novaOcena.getOcena()<0 || novaOcena.getOcena()>5) {
+		/*if (novaOcena.getOcena()<0 || novaOcena.getOcena()>5) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		
@@ -111,7 +113,18 @@ public class OcenaController {
 		
 		ocena.setOcena(novaOcena.getOcena());
 		ocena = ocenaService.save(ocena);
-		return new ResponseEntity<>(ocena, HttpStatus.CREATED);
+		return new ResponseEntity<>(ocena, HttpStatus.CREATED);*/
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		novaOcena.setTimestamp(null);
+		String url = "http://localhost:8010/cloud-demo/us-central1/editDeleteOcena";
+		HttpEntity<Ocena> request = new HttpEntity<>(novaOcena, headers);
+		ResponseEntity<String> response = rt
+		  .exchange(url, HttpMethod.POST, request, String.class);
+		  
+		String s = response.getBody();
+		  
+		return new ResponseEntity<String>(s, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

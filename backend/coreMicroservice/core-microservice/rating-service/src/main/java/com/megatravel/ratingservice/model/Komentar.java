@@ -34,10 +34,10 @@ public class Komentar {
 	@NotNull
     protected String komentar;
 	
-	@NotNull
+
     protected Date timestamp;
 	
-	@NotNull
+    @NotNull
     protected StatusKomentara status;
     
     public Komentar() {	}
