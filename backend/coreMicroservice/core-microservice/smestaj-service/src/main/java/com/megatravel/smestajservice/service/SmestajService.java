@@ -65,8 +65,8 @@ public class SmestajService {
 		return lista;
 	} 
 	
-	public Page<Smestaj> getAll(Long idVlasnika,Pageable page) {
-		return smestajRepository.findAllFromMe(idVlasnika, page);
+	public List<Smestaj> getAll(Long idVlasnika) {
+		return smestajRepository.findAllFromMe(idVlasnika);
 	}
 	
 	public Page<Smestaj> getAllInGrad(String grad,Pageable page) {
@@ -95,6 +95,10 @@ public class SmestajService {
 	
 	public List<TipSmestaja> getAllTipove() {
 		return tipSmestajaRepository.getAll();
+	}
+	
+	public Optional<TipSmestaja> getTip(Long id) {
+		return tipSmestajaRepository.findById(id);
 	}
 	
 	public List<KategorijaSmestaja> getAllKategorije() {

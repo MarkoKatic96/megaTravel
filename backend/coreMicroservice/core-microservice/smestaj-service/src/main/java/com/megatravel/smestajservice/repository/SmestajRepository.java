@@ -16,7 +16,7 @@ import com.megatravel.smestajservice.model.Smestaj;
 public interface SmestajRepository extends JpaRepository<Smestaj, Long> {
 	
 	@Query(value= "SELECT DISTINCT s FROM Smestaj s WHERE s.vlasnik = ?1 ORDER BY s.idSmestaja")
-	Page<Smestaj> findAllFromMe(Long idVlasnika, Pageable page);
+	List<Smestaj> findAllFromMe(Long idVlasnika);
 	
 	@Query(value = "SELECT * FROM Smestaj", nativeQuery = true)
 	List<Smestaj> pronadjiSve();

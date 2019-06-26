@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ import io.webxml.reservationservice.service.RezervacijaService;
 import io.webxml.reservationservice.service.SamostalnaRezervacijaService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/reservation-service/agent")
 public class RezervacijaAgentController {
 
@@ -128,6 +130,7 @@ public class RezervacijaAgentController {
 			HttpServletRequest req) {
 		System.out.println("getRezervacijeUpdate()");
 		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -140,7 +143,7 @@ public class RezervacijaAgentController {
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		
+		*/
 		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date;
@@ -151,7 +154,7 @@ public class RezervacijaAgentController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		} 
 		
-		List<Rezervacija> rezervacije = rezervacijaService.findAllAfter(date, agent.getIdAgenta());
+		List<Rezervacija> rezervacije = rezervacijaService.findAllAfter(date, (long)1);//agent.getIdAgenta());
 		List<RezervacijaDTO> retVal = new ArrayList<>();
 		
 		for (Rezervacija rez : rezervacije) {

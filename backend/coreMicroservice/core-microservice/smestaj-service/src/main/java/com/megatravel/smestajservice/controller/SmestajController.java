@@ -2,16 +2,15 @@ package com.megatravel.smestajservice.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +22,11 @@ import com.megatravel.smestajservice.dto.SmestajDTO;
 import com.megatravel.smestajservice.jwt.JwtTokenUtils;
 import com.megatravel.smestajservice.model.Agent;
 import com.megatravel.smestajservice.model.Smestaj;
+import com.megatravel.smestajservice.model.TipSmestaja;
 import com.megatravel.smestajservice.service.SmestajService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/smestaj-service/smestaj")
 public class SmestajController {
 	
@@ -39,9 +40,10 @@ public class SmestajController {
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req, Pageable page) {
+	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req) {
 		System.out.println("getAllSmestaj()");
 		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -54,12 +56,12 @@ public class SmestajController {
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
+		*/
+		List<Smestaj> smestaji = smestajService.getAll((long)1);//agent.getIdAgenta());
 		
-		Page<Smestaj> smestaji = smestajService.getAll(agent.getIdAgenta(), page);
-		
-		HttpHeaders headers = new HttpHeaders();
-		long korisniciTotal = smestaji.getTotalElements();
-		headers.add("X-Total-Count", String.valueOf(korisniciTotal));
+		//HttpHeaders headers = new HttpHeaders();
+		//long korisniciTotal = smestaji.getTotalElements();
+		//headers.add("X-Total-Count", String.valueOf(korisniciTotal));
 
 		List<SmestajDTO> retVal = new ArrayList<SmestajDTO>();
 
@@ -68,7 +70,7 @@ public class SmestajController {
 			retVal.add(smestajDTO);
 		}
 
-		return new ResponseEntity<>(retVal, headers, HttpStatus.OK);
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -100,7 +102,7 @@ public class SmestajController {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> create(@RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("create()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -131,11 +133,16 @@ public class SmestajController {
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 		this.listaSlika = listaSlika;
 		 */
+		Optional<TipSmestaja> tip =smestajService.getTip(smestajDTO.getTipSmestaja().getTipSmestajaId());
+		if(!tip.isPresent()) {
+			return new ResponseEntity<SmestajDTO>(HttpStatus.NOT_FOUND);
+		}
+		
 		Smestaj s = new Smestaj();
 		s.setAdresa(smestajDTO.getAdresa());
 		s.setLatitude(smestajDTO.getLatitude());
 		s.setLongitude(smestajDTO.getLongitude());
-		s.setTipSmestaja(smestajDTO.getTipSmestaja());
+		s.setTipSmestaja(tip.get());
 		s.setKategorijaSmestaja(smestajDTO.getKategorijaSmestaja());
 		s.setOpis(smestajDTO.getOpis());
 		s.setMaxOsoba(smestajDTO.getMaxOsoba());
@@ -144,7 +151,7 @@ public class SmestajController {
 		s.setCenaLeto(smestajDTO.getCenaLeto());
 		s.setCenaJesen(smestajDTO.getCenaJesen());
 		s.setCenaZima(smestajDTO.getCenaZima());
-		s.setVlasnik(agent.getIdAgenta());
+		s.setVlasnik((long)1);//agent.getIdAgenta());
 		s.setListaDodatnihUsluga(smestajDTO.getListaDodatnihUsluga());
 		s.setListaSlika(smestajDTO.getListaSlika());
 

@@ -17,6 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ import com.megatravel.agentlocalbackend.service.RezervacijaService;
 import com.megatravel.agentlocalbackend.service.SamostalnaRezervacijaService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/agent-local-service/rezervacije")
 public class RezervacijeController {
 	@Autowired
@@ -129,7 +131,7 @@ public class RezervacijeController {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String dateString = format.format( oldestDate );
 		
-		String getRezervacijeUrl = "http://localhost:8300/agent/update/" + dateString;
+		String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/" + dateString;
 		
 		RestTemplate restTemplate = config.createRestTemplate();
 		HttpHeaders head = new HttpHeaders();
