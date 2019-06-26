@@ -83,6 +83,7 @@ public class AgentController {
 			} else {
 				agent = new com.megatravel.agentlocalbackend.model.Agent(agentNovi.getIdAgenta(), agentNovi.getIme(), agentNovi.getPrezime(), agentNovi.getPoslovniMaticniBroj(), agentNovi.getEmail(), agentNovi.getLozinka());
 				agent.setDatumClanstva(agentNovi.getDatumClanstva());
+				rezervacijaService.deleteAll();
 				agentService.deleteAll();
 				agentService.save(agent);
 			}

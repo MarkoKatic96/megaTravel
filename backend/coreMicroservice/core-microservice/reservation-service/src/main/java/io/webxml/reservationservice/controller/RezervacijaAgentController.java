@@ -145,7 +145,7 @@ public class RezervacijaAgentController {
 		}
 		*/
 		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		Date date;
 		try {
 			date = format.parse ( timestamp );

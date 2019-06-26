@@ -10,6 +10,12 @@ package com.megatravel.agentglobalback.model;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
+import com.megatravel.agentglobalback.dto.AgentDTO;
+import com.megatravel.agentglobalback.dto.AgentPrijavaDTO;
+import com.megatravel.agentglobalback.dto.AgentRegistracijaDTO;
+import com.megatravel.agentglobalback.dto.LokalneRezervacijeDTO;
+import com.megatravel.agentglobalback.dto.NovaPorukaDTO;
+
 
 
 /**
@@ -61,6 +67,87 @@ public class ObjectFactory {
         return new Agent();
     }
     
+    public LoginRequest createLoginRequest() {
+    	return new LoginRequest();
+    }
     
-
+    public LoginResponse createLoginResponse() {
+    	return new LoginResponse();
+    }
+    
+    public AgentPrijavaDTO createAgentPrijavaDTO() {
+    	return new AgentPrijavaDTO();
+    }
+    
+    public AgentDTO createAgentDTO() {
+    	return new AgentDTO();
+    }
+    
+    public AgentRegistracijaDTO createAgentRegistracijaDTO() {
+    	return new AgentRegistracijaDTO();
+    }
+    
+    public EditRequest createEditRequest() {
+    	return new EditRequest();
+    }
+    
+    public GetAgentByEmailRequest createGetAgentByEmailRequest() {
+    	return new GetAgentByEmailRequest();
+    }
+    
+    public GetAgentByEmailResponse createGetAgentByEmailResponse() {
+    	return new GetAgentByEmailResponse();
+    }
+    
+    public KategorijaSmestaja createKategorijaSmestaja() {
+    	return new KategorijaSmestaja();
+    }
+    
+    public LokalneRezervacijeDTO createLokalneRezervacijeDTO() {
+    	return new LokalneRezervacijeDTO();
+    }
+    
+    public NovaPorukaDTO createNovaPorukaDTO() {
+    	return new NovaPorukaDTO();
+    }
+    
+    public ValidateTokenResponse createValidateTokenResponse() {
+    	return new ValidateTokenResponse();
+    }
+    
+    public ValidateTokenRequest createValidateTokenRequest() {
+    	return new ValidateTokenRequest();
+    }
+    
+    public TipSmestaja createTipSmestaja() {
+    	return new TipSmestaja();
+    }
+    
+    public TAdresa createTAdresa() {
+    	return new TAdresa();
+    }
+    
+    public Smestaj createSmestaj() {
+    	return new Smestaj();
+    }
+    
+    public SignUpResponse createSignUpResponse() {
+    	return new SignUpResponse();
+    }
+    
+    public SignUpRequest createSignUpRequest() {
+    	return new SignUpRequest();
+    }
+    
+    public SamostalnaRezervacija createSamostalnaRezervacija() {
+    	return new SamostalnaRezervacija();
+    }
+    
+    public Rezervacija createRezervacija() {
+    	return new Rezervacija();
+    }
+    
+    public Poruka createPoruka() {
+    	return new Poruka();
+    }
 }

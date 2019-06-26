@@ -12,7 +12,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.megatravel.agentlocalbackend.Singleton;
-import com.megatravel.agentlocalbackend.configuration.RestTemplateConfiguration;
 import com.megatravel.agentlocalbackend.dto.LokalneRezervacijeDTO;
 import com.megatravel.agentlocalbackend.dto.RezervacijaDTO;
 import com.megatravel.agentlocalbackend.dto.SamostalnaRezervacijaDTO;
@@ -41,7 +39,7 @@ import com.megatravel.agentlocalbackend.service.SamostalnaRezervacijaService;
 @RequestMapping("/agent-local-service/rezervacije")
 public class RezervacijeController {
 	@Autowired
-	RestTemplateConfiguration config;
+	RestTemplate restTemplate;
 	
 	@Autowired
 	SamostalnaRezervacijaService samostalnaRezervacijaService;
@@ -60,7 +58,7 @@ public class RezervacijeController {
 		System.out.println("createRezervacija()");
 		String url = "https://reservation-service/agent"; 
 		
-		RestTemplate restTemplate = config.createRestTemplate();
+		//RestTemplate restTemplate = config.createRestTemplate();
 		
 	    try {
 	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
@@ -79,7 +77,7 @@ public class RezervacijeController {
 		System.out.println("deleteRezervacija()");
 		
 		String url = "https://reservation-service/agent/" + id; 
-		RestTemplate restTemplate = config.createRestTemplate();
+		//RestTemplate restTemplate = config.createRestTemplate();
 		
 		try {
 	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
@@ -116,7 +114,7 @@ public class RezervacijeController {
 	}
 	
 	@RequestMapping(value = "/updatedb", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> getRezervacijeUpdate(HttpServletRequest req) {
+	public ResponseEntity<List<RezervacijaDTO>> getRezervacijeUpdate(HttpServletRequest req) {
 		System.out.println("getRezervacijeUpdate()");
 		
 		Date oldestDate = rezervacijaService.findOldestDate();
@@ -128,34 +126,39 @@ public class RezervacijeController {
 		
 		System.out.println("oldestDate(): " + oldestDate.toString());
 		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		String dateString = format.format( oldestDate );
+		System.out.println(dateString);
+		//String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/null";// + dateString;
 		
-		String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/" + dateString;
+		String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/1999-01-01-00-00-00";// + dateString;
 		
-		RestTemplate restTemplate = config.createRestTemplate();
-		HttpHeaders head = new HttpHeaders();
-		head.set("Accept", "application/json");
 	    try {
-	    	String body = IOUtils.toString(req.getInputStream(), Charset.forName(req.getCharacterEncoding()));
-	        ResponseEntity<List<RezervacijaDTO>> exchange = restTemplate.exchange(getRezervacijeUrl,
-	        		HttpMethod.GET,
-	        		new HttpEntity<>(body,head),
-	                new ParameterizedTypeReference<List<RezervacijaDTO>>(){});
-	        
-	        List<RezervacijaDTO> ret = exchange.getBody();
+	    	ResponseEntity<List<RezervacijaDTO>> response = restTemplate.exchange(
+	    			  getRezervacijeUrl,
+	    			  HttpMethod.GET,
+	    			  null,
+	    			  new ParameterizedTypeReference<List<RezervacijaDTO>>(){});
+	        List<RezervacijaDTO> ret = response.getBody();
 	        
 	        if(ret.isEmpty()) {
-	        	return new ResponseEntity<>(false, HttpStatus.OK);
+	        	return new ResponseEntity<>(HttpStatus.OK);
 	        }
 	        //cuva se promenjene rezervacije ili povlaci Rezervacije u lokalnu bazu. Ako se nesto novo procitalo vraca true sto klijentu
 	        //govori da refresuje view i onda povlaci rezervacije iz lokalne baze
 	        rezervacijaService.saveAll(ret);
-	        return new ResponseEntity<>(true, HttpStatus.OK);
+	        
+	        List<RezervacijaDTO> rezList = new ArrayList<>();
+	        List<Rezervacija> rezervacije = rezervacijaService.findAll();
+	        for (Rezervacija rezervacija : rezervacije) {
+	        	rezList.add(new RezervacijaDTO(rezervacija));
+			}
+	        
+	        return new ResponseEntity<>(rezList, HttpStatus.OK);
 	        
 	    } catch (Exception e) {
 	    	e.printStackTrace();
-	        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
 		
 	}
@@ -165,7 +168,7 @@ public class RezervacijeController {
 		System.out.println("sendRezervacijeUpdate()");
 		
 		String url = "https://reservation-service/agent/update"; 
-		RestTemplate restTemplate = config.createRestTemplate();
+		//RestTemplate restTemplate = config.createRestTemplate();
 		
 		List<LokalneRezervacijeDTO> send = new ArrayList<>();
 		List<Rezervacija> zaUpdate = Singleton.getInstance().getRezZaUpdate();

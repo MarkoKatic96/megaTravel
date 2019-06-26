@@ -22,12 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TImage", propOrder = {
-    "idImage",
-    "idSmestaja",
-    "name",
-    "bytes"
-})
+@XmlType(name = "TImage")
 @Entity
 public class TImage {
 	@Id

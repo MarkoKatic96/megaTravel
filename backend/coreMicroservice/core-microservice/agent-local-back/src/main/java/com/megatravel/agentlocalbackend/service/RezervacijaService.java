@@ -38,6 +38,10 @@ public class RezervacijaService {
 		return rezervacijaRepository.save(r);
 	}
 	
+	public List<Rezervacija> findAll() {
+		return rezervacijaRepository.findAll();
+	}
+	
 	public Rezervacija findOne(Long idRezervacije, Long idAgenta) {
 		Rezervacija rez = rezervacijaRepository.getOne(idRezervacije);
 		if (rez!=null) {

@@ -82,13 +82,11 @@ public class Smestaj {
     @NotNull
     private Long vlasnik;
     
-    @XmlList
     @XmlElement(required = true)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="tipsmestaja_id"))
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     
-    @XmlList
     @XmlElement(required = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "smestaj")
     private Set<TImage> listaSlika = new HashSet<>();
