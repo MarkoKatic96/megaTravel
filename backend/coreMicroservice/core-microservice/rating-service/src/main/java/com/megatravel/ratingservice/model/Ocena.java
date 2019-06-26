@@ -50,6 +50,14 @@ public class Ocena {
 		return timestamp;
 	}
 	
+	public void setIdOcena(Long idOcena) {
+		this.idOcena = idOcena;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	/**
      * Gets the value of the idOcena property.
      * 
