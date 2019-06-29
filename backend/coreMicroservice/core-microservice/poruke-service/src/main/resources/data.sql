@@ -1,0 +1,1 @@
+INSERT INTO `poruka` (`id_poruke`,`datum_slanja`,`posiljalac`,`primalac`,`sadrzaj`,`status`,`tip_posiljaoca`,`tip_primaoca`) VALUES (1,'2019-06-29 17:33:45',1,1,'Hello agent 007','POSLATA','KORISNIK','AGENT');

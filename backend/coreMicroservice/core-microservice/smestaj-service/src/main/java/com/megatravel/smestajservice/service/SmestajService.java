@@ -141,6 +141,9 @@ public class SmestajService {
 				broj = broj.add(new BigDecimal(1));
 			}
 		}
+		if(broj.compareTo(BigDecimal.ZERO)==0) {
+			return avgLat;
+		}
 		BigDecimal bd = avgLat.divide(broj);
 		return bd;
 	}
@@ -154,6 +157,9 @@ public class SmestajService {
 				avgLong = avgLong.add(smestaj.getLongitude());
 				broj = broj.add(new BigDecimal(1));
 			}
+		}
+		if(broj.compareTo(BigDecimal.ZERO)==0) {
+			return avgLong;
 		}
 		BigDecimal bd = avgLong.divide(broj);
 		return bd;

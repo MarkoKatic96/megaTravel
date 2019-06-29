@@ -1,0 +1,1 @@
+INSERT INTO `db_xml_wix`.`admin` (`id_admina`, `email`, `ime`, `lozinka`, `prezime`) VALUES ('1', 'admin@megatravel.com', 'admin', 'admin', 'admin');
