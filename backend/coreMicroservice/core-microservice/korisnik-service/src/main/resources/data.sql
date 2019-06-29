@@ -1,14 +1,5 @@
-INSERT INTO `db_xml_korisnik`.`dodatne_usluge` (`id_dodatne_usluge`, `naziv_dodatne_usluge`) VALUES ('1', 'aa');
-
-INSERT INTO `db_xml_korisnik`.`dodatne_usluge` (`id_dodatne_usluge`, `naziv_dodatne_usluge`) VALUES ('2', 'bb');
-
-INSERT INTO `db_xml_korisnik`.`kategorija_smestaja` (`id`, `naziv`) VALUES ('1', '1 zvezda');
-
-INSERT INTO `db_xml_korisnik`.`kategorija_smestaja` (`id`, `naziv`) VALUES ('2', '2 zvezde');
-
-INSERT INTO `db_xml_korisnik`.`smestaj` (`id_smestaja`, `adresa`, `cena_jesen`, `cena_leto`, `cena_prolece`, `cena_zima`, `latitude`, `longitude`, `max_dana_za_otkazivanje`, `max_osoba`, `opis`, `vlasnik`, `kategorija_smestaja`, `tip_smestaja`) VALUES ('4', '4', '4', '4', '4', '4', '4', '4', '4', '4', '4', '4', '1', '1');
-
-INSERT INTO `db_xml_korisnik`.`smestaj` (`id_smestaja`, `adresa`, `cena_jesen`, `cena_leto`, `cena_prolece`, `cena_zima`, `latitude`, `longitude`, `max_dana_za_otkazivanje`, `max_osoba`, `opis`, `vlasnik`, `kategorija_smestaja`, `tip_smestaja`) VALUES ('5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '2', '2');
-INSERT INTO `db_xml_korisnik`.`tip_smestaja` (`id_tipa_smestaja`, `naziv_tipa_smestaja`) VALUES ('1', 'dvokrevetna');
-
-INSERT INTO `db_xml_korisnik`.`tip_smestaja` (`id_tipa_smestaja`, `naziv_tipa_smestaja`) VALUES ('2', 'trokrevetna');
+INSERT INTO `db_xml_wix`.`korisnik` (`id_korisnik`,`blokiran`,`datum_clanstva`,`email`,`ime`,`lozinka`,`prezime`,`registrovan`,`rola`) VALUES (1,b'0','2002-02-02 00:00:00','marko@megatravel.com','Marko','marko','Katic',b'1','KORISNIK');
+INSERT INTO `db_xml_wix`.`korisnik` (`id_korisnik`,`blokiran`,`datum_clanstva`,`email`,`ime`,`lozinka`,`prezime`,`registrovan`,`rola`) VALUES (2,b'1','2002-02-02 00:00:00','nikola@megatravel.com','Nikola','nikola','Maric',b'1','KORISNIK');
+INSERT INTO `db_xml_wix`.`korisnik` (`id_korisnik`,`blokiran`,`datum_clanstva`,`email`,`ime`,`lozinka`,`prezime`,`registrovan`,`rola`) VALUES (3,b'0','2002-02-02 00:00:00','boris@megatravel.com','Boris','boris','Bibic',b'0','KORISNIK');
+INSERT INTO `db_xml_wix`.`korisnik` (`id_korisnik`,`blokiran`,`datum_clanstva`,`email`,`ime`,`lozinka`,`prezime`,`registrovan`,`rola`) VALUES (4,b'0','2002-02-02 00:00:00','igor@megatravel.com','Igor','igor','Lovric',b'0','KORISNIK');
+INSERT INTO `db_xml_wix`.`korisnik` (`id_korisnik`,`blokiran`,`datum_clanstva`,`email`,`ime`,`lozinka`,`prezime`,`registrovan`,`rola`) VALUES (5,b'1','2002-02-02 00:00:00','sale@megatravel.com','Sale','sale','Pare',b'1','KORISNIK');

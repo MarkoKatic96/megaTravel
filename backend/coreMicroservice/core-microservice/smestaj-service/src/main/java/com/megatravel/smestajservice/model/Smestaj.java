@@ -101,7 +101,7 @@ public class Smestaj {
     @XmlList
     @XmlElement(required = true)
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="tipsmestaja_id"))
+    @JoinTable(name = "smestaj_usluge", joinColumns = @JoinColumn(name="smestaj_id"), inverseJoinColumns = @JoinColumn(name="usluga_id"))
     private Set<DodatneUsluge> listaDodatnihUsluga = new HashSet<>();
     
     @XmlList

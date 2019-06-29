@@ -1,1 +1,7 @@
-insert into agent (datum_clanstva, email, ime, lozinka, poslovni_maticni_broj, prezime) values ('2019-5-8-12-34-28', 'agent@megatravel.com', 'Pera', 'secretpassword', 15684984965, 'Peric');
+INSERT INTO `db_xml_wix`.`neaktiviran_agent` (`id_neaktiviranog_agenta`, `email`, `ime`, `prezime`, `poslovni_maticni_broj`) VALUES ('213', 'maricn007@gmail.com', 'Maric', 'Nikola', '104123');
+INSERT INTO `db_xml_wix`.`neaktiviran_agent` (`id_neaktiviranog_agenta`, `email`, `ime`, `prezime`, `poslovni_maticni_broj`) VALUES ('122', 'maricnikola752@gmail.com', 'Nik', 'Mar', '109492');
+INSERT INTO `db_xml_wix`.`neaktiviran_agent` (`id_neaktiviranog_agenta`, `email`, `ime`, `prezime`, `poslovni_maticni_broj`) VALUES ('1253', 'borisbibic1996@gmail.com', 'Boris', 'Bibic', '104413');
+
+INSERT INTO `db_xml_wix`.`agent` (`id_agenta`, `datum_clanstva`, `email`, `ime`, `lozinka`, `poslovni_maticni_broj`, `prezime`) VALUES ('1', '2003-3-3', 'agent1@megatravel.com', 'Sale', '123', '5448974189', 'Stanic');
+INSERT INTO `db_xml_wix`.`agent` (`id_agenta`, `datum_clanstva`, `email`, `ime`, `lozinka`, `poslovni_maticni_broj`, `prezime`) VALUES ('2', '2003-3-3', 'agent2@megatravel.com', 'Sale', '123', '5491876878', 'Staric');
+INSERT INTO `db_xml_wix`.`agent` (`id_agenta`, `datum_clanstva`, `email`, `ime`, `lozinka`, `poslovni_maticni_broj`, `prezime`) VALUES ('3', '2003-3-3', 'agent3@megatravel.com', 'Sale', '123', '8979889892', 'Stapic');
