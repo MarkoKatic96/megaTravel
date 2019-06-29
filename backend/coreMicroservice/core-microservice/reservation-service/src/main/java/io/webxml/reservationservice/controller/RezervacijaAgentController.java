@@ -48,14 +48,11 @@ public class RezervacijaAgentController {
 	@Autowired
 	JwtTokenUtils jwtTokenUtils;
 	
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<SamostalnaRezervacijaDTO> createRezervacija(@RequestBody SamostalnaRezervacijaDTO rezDTO, HttpServletRequest req) {
+	@RequestMapping(value = "/{email}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SamostalnaRezervacijaDTO> createRezervacija(@PathVariable String email,@RequestBody SamostalnaRezervacijaDTO rezDTO, HttpServletRequest req) {
 		System.out.println("createRezervacija()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent/e/"+email, Agent.class);
+		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
@@ -66,8 +63,11 @@ public class RezervacijaAgentController {
 		}
 		
 		SamostalnaRezervacija s = new SamostalnaRezervacija(null, rezDTO.getSmestajId(), agent.getIdAgenta(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma());
-		SamostalnaRezervacija retVal = samostalnaRezervacijaService.save(s);
+		if(samostalnaRezervacijaService.konfliktRezervacijaExists(agent.getIdAgenta(), rezDTO.getSmestajId(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma())) {
+			return new ResponseEntity<SamostalnaRezervacijaDTO>(HttpStatus.CONFLICT);
+		}
 		
+		SamostalnaRezervacija retVal = samostalnaRezervacijaService.save(s);
 		return new ResponseEntity<>(new SamostalnaRezervacijaDTO(retVal), HttpStatus.CREATED);
 	}
 	
@@ -97,14 +97,11 @@ public class RezervacijaAgentController {
 		}
 	}
 	
-	@RequestMapping(value = "/potvrdi", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RezervacijaDTO> potvrdiRezervacija(@RequestBody PotvrdaRezervacije potvrda, HttpServletRequest req) {
+	@RequestMapping(value = "/potvrdi/{email}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RezervacijaDTO> potvrdiRezervacija(@PathVariable String email, @RequestBody PotvrdaRezervacije potvrda, HttpServletRequest req) {
 		System.out.println("potvrdiRezervacija()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent/e/"+email, Agent.class);
+		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}

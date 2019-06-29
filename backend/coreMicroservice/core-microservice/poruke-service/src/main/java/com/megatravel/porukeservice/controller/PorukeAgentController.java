@@ -41,14 +41,12 @@ public class PorukeAgentController {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PorukaDTO>> getPorukeWithKorisnik(@PathVariable Long userId, Pageable page, HttpServletRequest req) {
+	@RequestMapping(value = "/{userId}/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PorukaDTO>> getPorukeWithKorisnik(@PathVariable Long userId, @PathVariable Long email, Pageable page, HttpServletRequest req) {
 		System.out.println("getPorukeWithKorisnik()");
 		
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
 		
-		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent/e/"+email, Agent.class);
+		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}

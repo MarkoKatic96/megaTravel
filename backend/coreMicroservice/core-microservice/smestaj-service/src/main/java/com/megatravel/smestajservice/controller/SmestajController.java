@@ -39,15 +39,11 @@ public class SmestajController {
 	@Autowired
 	JwtTokenUtils jwtTokenUtils;
 	
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(HttpServletRequest req) {
+	@RequestMapping(value = "/all/{email}", method = RequestMethod.GET)
+	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(@PathVariable String email, HttpServletRequest req) {
 		System.out.println("getAllSmestaj()");
 		
-		/*
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent/e/"+email, Agent.class);
+		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
@@ -56,12 +52,8 @@ public class SmestajController {
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		*/
-		List<Smestaj> smestaji = smestajService.getAll((long)1);//agent.getIdAgenta());
-		
-		//HttpHeaders headers = new HttpHeaders();
-		//long korisniciTotal = smestaji.getTotalElements();
-		//headers.add("X-Total-Count", String.valueOf(korisniciTotal));
+
+		List<Smestaj> smestaji = smestajService.getAll(agent.getIdAgenta());
 
 		List<SmestajDTO> retVal = new ArrayList<SmestajDTO>();
 
@@ -99,14 +91,11 @@ public class SmestajController {
 		return new ResponseEntity<>(new SmestajDTO(smestaj), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<SmestajDTO> create(@RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
+	@RequestMapping(value = "/{email}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SmestajDTO> create(@PathVariable String email, @RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("create()");
-		/*
-		String token = jwtTokenUtils.resolveToken(req);
-		String email = jwtTokenUtils.getUsername(token);
 		
-		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent/e/"+email, Agent.class);
+		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
@@ -151,7 +140,7 @@ public class SmestajController {
 		s.setCenaLeto(smestajDTO.getCenaLeto());
 		s.setCenaJesen(smestajDTO.getCenaJesen());
 		s.setCenaZima(smestajDTO.getCenaZima());
-		s.setVlasnik((long)1);//agent.getIdAgenta());
+		s.setVlasnik(agent.getIdAgenta());
 		s.setListaDodatnihUsluga(smestajDTO.getListaDodatnihUsluga());
 		s.setListaSlika(smestajDTO.getListaSlika());
 

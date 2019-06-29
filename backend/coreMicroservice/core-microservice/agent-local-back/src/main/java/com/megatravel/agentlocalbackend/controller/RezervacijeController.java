@@ -131,7 +131,7 @@ public class RezervacijeController {
 		System.out.println(dateString);
 		//String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/null";// + dateString;
 		
-		String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/1999-01-01-00-00-00";// + dateString;
+		String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/"+ dateString;
 		
 	    try {
 	    	ResponseEntity<List<RezervacijaDTO>> response = restTemplate.exchange(
@@ -167,7 +167,7 @@ public class RezervacijeController {
 	public ResponseEntity<List<LokalneRezervacijeDTO>> sendRezervacijeUpdate(HttpServletRequest req) {
 		System.out.println("sendRezervacijeUpdate()");
 		
-		String url = "https://reservation-service/agent/update"; 
+		String url = "https://reservation-service/reservation-service/agent/update"; 
 		//RestTemplate restTemplate = config.createRestTemplate();
 		
 		List<LokalneRezervacijeDTO> send = new ArrayList<>();
