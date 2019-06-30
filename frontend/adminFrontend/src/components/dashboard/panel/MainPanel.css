@@ -1,0 +1,24 @@
+.side
+{
+    display:flex; flex-direction:row; max-width: 1100px;
+}
+
+.stranica
+{
+    max-width: 600px;
+}
+
+.kartica
+{
+    min-width: 600px;
+}
+
+.karticamin
+{
+    min-width: 300px;
+}
+
+.tekst
+{
+    min-width: 600px;
+}
