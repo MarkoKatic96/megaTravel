@@ -2,6 +2,7 @@ package com.megatravel.porukeservice.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +28,7 @@ import org.hibernate.annotations.CreationTimestamp;
     "lozinka"
 })
 @XmlRootElement(name = "Agent")
+@Entity
 public class Agent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

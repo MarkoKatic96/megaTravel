@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		//TODO 1: ono cemu neregistrovani korisnik sme da pristupi
-		http.authorizeRequests().antMatchers("/*", "agent/login", "/agent/login", "/agent/signup", "/smestaj-service/smestaj/all" , "/smestaj-service/smestaj-korisnik/*", "/smestaj-service/smestaj-korisnik/all","/smestaj-service/smestaj-korisnik/id/*", "/smestaj-service/smestaj-korisnik/dodaj-uslugu/*/*",
+		http.authorizeRequests().antMatchers("/*", "agent/login", "/agent/login", "/agent/signup",  "/smestaj-service/smestaj/*", "/smestaj-service/smestaj/all", "/smestaj-service/smestaj/all/*" , "/smestaj-service/smestaj-korisnik/*", "/smestaj-service/smestaj-korisnik/all","/smestaj-service/smestaj-korisnik/id/*", "/smestaj-service/smestaj-korisnik/dodaj-uslugu/*/*",
 				"/smestaj-service/smestaj-korisnik/rastojanje/*",  "/smestaj-service/adminrest/*", "/smestaj-service/adminrest/addtype/*", "/smestaj-service/adminrest/updatetype/*", "/smestaj-service/adminrest/deletetype/*",
 				"/smestaj-service/adminrest/addcategory/*", "/smestaj-service/adminrest/updatecategory/*", "/smestaj-service/adminrest/deletecategory/*",
 				"/smestaj-service/adminrest/addservice/*", "/smestaj-service/adminrest/updateservice/*", "/smestaj-service/adminrest/deleteservice/*").permitAll()

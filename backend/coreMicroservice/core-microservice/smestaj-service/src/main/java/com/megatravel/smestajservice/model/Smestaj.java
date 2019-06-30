@@ -119,7 +119,11 @@ public class Smestaj {
 	public void setIdSmestaja(Long idSmestaja) {
 		this.idSmestaja = idSmestaja;
 	}
-	
+	@JsonIgnore
+	public void setKoordinate(TKoordinate koordinate) {
+		this.koordinate = koordinate;
+	}
+
 	@JsonIgnore
 	public TAdresa getAdresa() {
 		return adresa;

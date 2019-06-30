@@ -28,6 +28,7 @@ import com.megatravel.agentlocalbackend.Singleton;
 import com.megatravel.agentlocalbackend.dto.LokalneRezervacijeDTO;
 import com.megatravel.agentlocalbackend.dto.RezervacijaDTO;
 import com.megatravel.agentlocalbackend.dto.SamostalnaRezervacijaDTO;
+import com.megatravel.agentlocalbackend.model.Agent;
 import com.megatravel.agentlocalbackend.model.PotvrdaRezervacije;
 import com.megatravel.agentlocalbackend.model.Rezervacija;
 import com.megatravel.agentlocalbackend.service.AgentService;
@@ -113,9 +114,9 @@ public class RezervacijeController {
 		return new ResponseEntity<>(new RezervacijaDTO(retVal), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/updatedb", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<RezervacijaDTO>> getRezervacijeUpdate(HttpServletRequest req) {
-		System.out.println("getRezervacijeUpdate()");
+	@RequestMapping(value = "/updatedb/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<RezervacijaDTO>> getRezervacijeUpdate(@PathVariable String email, HttpServletRequest req) {
+		System.out.println("getRezervacijeUpdate("+ email + ")");
 		
 		Date oldestDate = rezervacijaService.findOldestDate();
 		
@@ -125,13 +126,13 @@ public class RezervacijeController {
 		}
 		
 		System.out.println("oldestDate(): " + oldestDate.toString());
-		
+		//Agent a = agentService.findByEmail(email);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		String dateString = format.format( oldestDate );
 		System.out.println(dateString);
 		//String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/null";// + dateString;
 		
-		String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/"+ dateString;
+		String getRezervacijeUrl = "http://reservation-service/reservation-service/agent/update/"+ dateString + "/" + email;
 		
 	    try {
 	    	ResponseEntity<List<RezervacijaDTO>> response = restTemplate.exchange(
@@ -141,12 +142,11 @@ public class RezervacijeController {
 	    			  new ParameterizedTypeReference<List<RezervacijaDTO>>(){});
 	        List<RezervacijaDTO> ret = response.getBody();
 	        
-	        if(ret.isEmpty()) {
-	        	return new ResponseEntity<>(HttpStatus.OK);
-	        }
-	        //cuva se promenjene rezervacije ili povlaci Rezervacije u lokalnu bazu. Ako se nesto novo procitalo vraca true sto klijentu
-	        //govori da refresuje view i onda povlaci rezervacije iz lokalne baze
-	        rezervacijaService.saveAll(ret);
+	        if(!ret.isEmpty()) {
+	        	//cuva se promenjene rezervacije ili povlaci Rezervacije u lokalnu bazu. Ako se nesto novo procitalo vraca true sto klijentu
+		        //govori da refresuje view i onda povlaci rezervacije iz lokalne baze
+		        rezervacijaService.saveAll(ret);		        
+	        }	        
 	        
 	        List<RezervacijaDTO> rezList = new ArrayList<>();
 	        List<Rezervacija> rezervacije = rezervacijaService.findAll();

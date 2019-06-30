@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +27,11 @@ import com.megatravel.porukeservice.model.Agent;
 import com.megatravel.porukeservice.model.Poruka;
 import com.megatravel.porukeservice.model.StatusPoruke;
 import com.megatravel.porukeservice.model.TipOsobe;
+import com.megatravel.porukeservice.service.AgentService;
 import com.megatravel.porukeservice.service.PorukeService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/poruke-agent-service/poruke")
 public class PorukeAgentController {
 	
@@ -39,19 +42,22 @@ public class PorukeAgentController {
 	PorukeService porukeService;
 	
 	@Autowired
+	AgentService agentService;
+	
+	@Autowired
 	RestTemplate restTemplate;
 	
 	@RequestMapping(value = "/{userId}/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PorukaDTO>> getPorukeWithKorisnik(@PathVariable Long userId, @PathVariable Long email, Pageable page, HttpServletRequest req) {
+	public ResponseEntity<List<PorukaDTO>> getPorukeWithKorisnik(@PathVariable Long userId, @PathVariable String email, Pageable page, HttpServletRequest req) {
 		System.out.println("getPorukeWithKorisnik()");
 		
-		
+		/*
 		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
-		
-		Agent agent = agentEntity.getBody();
+		*/
+		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
@@ -71,10 +77,10 @@ public class PorukeAgentController {
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/neprocitane", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PorukaDTO>> getNeprocitanePoruke(Pageable page, HttpServletRequest req) {
+	@RequestMapping(value = "/neprocitane/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PorukaDTO>> getNeprocitanePoruke(@PathVariable String email, Pageable page, HttpServletRequest req) {
 		System.out.println("getNeprocitanePoruke()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -82,8 +88,8 @@ public class PorukeAgentController {
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
-		
-		Agent agent = agentEntity.getBody();
+		*/
+		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
@@ -103,10 +109,10 @@ public class PorukeAgentController {
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{userId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> setProcitanePorukeFromUser(@PathVariable Long userId, HttpServletRequest req) {
+	@RequestMapping(value = "/{userId}/{email}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> setProcitanePorukeFromUser(@PathVariable Long userId,@PathVariable String email, HttpServletRequest req) {
 		System.out.println("setProcitanePorukeFromUser()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -114,8 +120,8 @@ public class PorukeAgentController {
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
-		
-		Agent agent = agentEntity.getBody();
+		*/
+		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
@@ -130,10 +136,10 @@ public class PorukeAgentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PorukaDTO> sendPoruka(@RequestBody NovaPorukaDTO novaPoruka, HttpServletRequest req) {
+	@RequestMapping(value = "/{email}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PorukaDTO> sendPoruka(@PathVariable String email, @RequestBody NovaPorukaDTO novaPoruka, HttpServletRequest req) {
 		System.out.println("sendPoruka()");
-		
+		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
 		
@@ -141,8 +147,8 @@ public class PorukeAgentController {
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
-		
-		Agent agent = agentEntity.getBody();
+		*/
+		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}

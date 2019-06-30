@@ -101,6 +101,10 @@ public class SmestajService {
 		return tipSmestajaRepository.findById(id);
 	}
 	
+	public Optional<KategorijaSmestaja> getKategorija(Long id) {
+		return kategorijaSmestajaRepository.findById(id);
+	}
+	
 	public List<KategorijaSmestaja> getAllKategorije() {
 		return kategorijaSmestajaRepository.getAll();
 	}

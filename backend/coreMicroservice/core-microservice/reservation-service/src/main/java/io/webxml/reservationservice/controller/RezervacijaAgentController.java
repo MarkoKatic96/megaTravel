@@ -28,6 +28,7 @@ import io.webxml.reservationservice.model.Agent;
 import io.webxml.reservationservice.model.PotvrdaRezervacije;
 import io.webxml.reservationservice.model.Rezervacija;
 import io.webxml.reservationservice.model.SamostalnaRezervacija;
+import io.webxml.reservationservice.service.AgentService;
 import io.webxml.reservationservice.service.RezervacijaService;
 import io.webxml.reservationservice.service.SamostalnaRezervacijaService;
 
@@ -43,15 +44,45 @@ public class RezervacijaAgentController {
 	RezervacijaService rezervacijaService;
 	
 	@Autowired
+	AgentService agentService;
+	
+	@Autowired
 	RestTemplate restTemplate;
 	
 	@Autowired
 	JwtTokenUtils jwtTokenUtils;
 	
+	@RequestMapping(value = "/all/{email}", method = RequestMethod.GET)
+	public ResponseEntity<List<SamostalnaRezervacijaDTO>> getAllSamostalne(@PathVariable String email, HttpServletRequest req) {
+		System.out.println("getAllSamostalne(" +email +")");
+		/*
+		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
+		if (agentEntity.getStatusCode() != HttpStatus.OK) {
+			return null;
+		}
+		*/
+		
+		Agent agent = agentService.findByEmail(email);
+		if (agent == null) {			
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+	
+		List<SamostalnaRezervacija> rezervacije = samostalnaRezervacijaService.getAll(agent.getIdAgenta());
+
+		List<SamostalnaRezervacijaDTO> retVal = new ArrayList<SamostalnaRezervacijaDTO>();
+
+		for (SamostalnaRezervacija s : rezervacije) {
+			SamostalnaRezervacijaDTO smestajDTO = new SamostalnaRezervacijaDTO(s);
+			retVal.add(smestajDTO);
+		}
+
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/{email}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SamostalnaRezervacijaDTO> createRezervacija(@PathVariable String email,@RequestBody SamostalnaRezervacijaDTO rezDTO, HttpServletRequest req) {
 		System.out.println("createRezervacija()");
-		
+		/*
 		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
@@ -61,7 +92,8 @@ public class RezervacijaAgentController {
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		
+		*/
+		Agent agent = agentService.findByEmail(email);
 		SamostalnaRezervacija s = new SamostalnaRezervacija(null, rezDTO.getSmestajId(), agent.getIdAgenta(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma());
 		if(samostalnaRezervacijaService.konfliktRezervacijaExists(agent.getIdAgenta(), rezDTO.getSmestajId(), rezDTO.getOdDatuma(), rezDTO.getDoDatuma())) {
 			return new ResponseEntity<SamostalnaRezervacijaDTO>(HttpStatus.CONFLICT);
@@ -100,7 +132,7 @@ public class RezervacijaAgentController {
 	@RequestMapping(value = "/potvrdi/{email}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RezervacijaDTO> potvrdiRezervacija(@PathVariable String email, @RequestBody PotvrdaRezervacije potvrda, HttpServletRequest req) {
 		System.out.println("potvrdiRezervacija()");
-		
+		/*
 		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
@@ -110,7 +142,8 @@ public class RezervacijaAgentController {
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		
+		*/
+		Agent agent = agentService.findByEmail(email);
 		Rezervacija rezervacija = rezervacijaService.findOne(potvrda.getRezervacijaId(), agent.getIdAgenta());
 		if (rezervacija==null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -122,25 +155,25 @@ public class RezervacijaAgentController {
 		return new ResponseEntity<>(new RezervacijaDTO(retVal), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/update/{timestamp}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<RezervacijaDTO>> getRezervacijeUpdate(@PathVariable String timestamp, 
+	@RequestMapping(value = "/update/{timestamp}/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<RezervacijaDTO>> getRezervacijeUpdate(@PathVariable String timestamp, @PathVariable String email,
 			HttpServletRequest req) {
-		System.out.println("getRezervacijeUpdate()");
+		System.out.println("getRezervacijeUpdate("+ email + ")");
 		
 		/*
 		String token = jwtTokenUtils.resolveToken(req);
 		String email = jwtTokenUtils.getUsername(token);
-		
-		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent/e/"+email, Agent.class);
+		*/
+		/*ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
-		}
+		}*/
 		
-		Agent agent = agentEntity.getBody();
+		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		*/
+		
 		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		Date date;
@@ -151,7 +184,7 @@ public class RezervacijaAgentController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		} 
 		
-		List<Rezervacija> rezervacije = rezervacijaService.findAllAfter(date, (long)1);//agent.getIdAgenta());
+		List<Rezervacija> rezervacije = rezervacijaService.findAllAfter(date, agent.getIdAgenta());
 		List<RezervacijaDTO> retVal = new ArrayList<>();
 		
 		for (Rezervacija rez : rezervacije) {

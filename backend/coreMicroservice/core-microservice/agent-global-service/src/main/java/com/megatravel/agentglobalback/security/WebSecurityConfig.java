@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		//TODO 1: ono cemu neregistrovani korisnik sme da pristupi
 		http.authorizeRequests()
-		.antMatchers("/*", "agent/login", "/agent/login", "/agent-global-service/agent/signup", "/agent-global-service/admin/*", "/agent-global-service/admin/confirmrequest/*", "/agent-global-service/admin/refuserequest/*").permitAll()
+		.antMatchers("/*", "/**", "agent/login", "/agent/login", "/agent-global-service/agent/register", "/agent-global-service/agent/signup", "/agent-global-service/admin/*", "/agent-global-service/admin/confirmrequest/*", "/agent-global-service/admin/refuserequest/*").permitAll()
 		.antMatchers(HttpMethod.PUT, "/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/ws/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/ws/**").permitAll()

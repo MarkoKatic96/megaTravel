@@ -21,9 +21,15 @@ import org.springframework.web.client.RestTemplate;
 import com.megatravel.smestajservice.dto.SmestajDTO;
 import com.megatravel.smestajservice.jwt.JwtTokenUtils;
 import com.megatravel.smestajservice.model.Agent;
+import com.megatravel.smestajservice.model.KategorijaSmestaja;
 import com.megatravel.smestajservice.model.Smestaj;
+import com.megatravel.smestajservice.model.TAdresa;
+import com.megatravel.smestajservice.model.TKoordinate;
 import com.megatravel.smestajservice.model.TipSmestaja;
+import com.megatravel.smestajservice.service.AgentService;
 import com.megatravel.smestajservice.service.SmestajService;
+import com.megatravel.smestajservice.service.TAdresaService;
+import com.megatravel.smestajservice.service.TKoordinateService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -37,22 +43,32 @@ public class SmestajController {
 	SmestajService smestajService;
 	
 	@Autowired
+	AgentService agentService;
+	
+	@Autowired
+	TAdresaService tAdresaService;
+	
+	@Autowired
+	TKoordinateService tKoordinateService;
+	
+	@Autowired
 	JwtTokenUtils jwtTokenUtils;
 	
 	@RequestMapping(value = "/all/{email}", method = RequestMethod.GET)
 	public ResponseEntity<List<SmestajDTO>> getAllSmestaji(@PathVariable String email, HttpServletRequest req) {
 		System.out.println("getAllSmestaj()");
-		
+		/*
 		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
+		*/
 		
-		Agent agent = agentEntity.getBody();
+		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-
+	
 		List<Smestaj> smestaji = smestajService.getAll(agent.getIdAgenta());
 
 		List<SmestajDTO> retVal = new ArrayList<SmestajDTO>();
@@ -94,13 +110,13 @@ public class SmestajController {
 	@RequestMapping(value = "/{email}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SmestajDTO> create(@PathVariable String email, @RequestBody SmestajDTO smestajDTO, HttpServletRequest req) {
 		System.out.println("create()");
-		
+		/*
 		ResponseEntity<Agent> agentEntity = restTemplate.getForEntity("http://agent-global-service/agent-global-service/agent/e/"+email, Agent.class);
 		if (agentEntity.getStatusCode() != HttpStatus.OK) {
 			return null;
 		}
-		
-		Agent agent = agentEntity.getBody();
+		*/
+		Agent agent = agentService.findByEmail(email);
 		if (agent == null) {			
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
@@ -121,18 +137,35 @@ public class SmestajController {
 		this.vlasnik = vlasnik;
 		this.listaDodatnihUsluga = listaDodatnihUsluga;
 		this.listaSlika = listaSlika;
-		 */
+		
 		Optional<TipSmestaja> tip =smestajService.getTip(smestajDTO.getTipSmestaja().getTipSmestajaId());
 		if(!tip.isPresent()) {
 			return new ResponseEntity<SmestajDTO>(HttpStatus.NOT_FOUND);
 		}
 		
+		Optional<KategorijaSmestaja> kategorija =smestajService.getKategorija(smestajDTO.getKategorijaSmestaja().getId());
+		if(!kategorija.isPresent()) {
+			return new ResponseEntity<SmestajDTO>(HttpStatus.NOT_FOUND);
+		}
+		
+		TKoordinate k = new TKoordinate();
+		k.setLatitude(smestajDTO.getLatitude());
+		k.setLongitude(smestajDTO.getLongitude());
+		
+		TKoordinate ret = tKoordinateService.save(k);
+		
+		TAdresa a = new TAdresa();
+		a.setUlica(smestajDTO.getAdresa().getUlica());
+		a.setGrad(smestajDTO.getAdresa().getGrad());
+		a.setBroj(smestajDTO.getAdresa().getBroj());
+		
+		TAdresa aret = tAdresaService.save(a);
+		
 		Smestaj s = new Smestaj();
-		s.setAdresa(smestajDTO.getAdresa());
-		s.setLatitude(smestajDTO.getLatitude());
-		s.setLongitude(smestajDTO.getLongitude());
+		s.setAdresa(aret);
+		s.setKoordinate(ret);
 		s.setTipSmestaja(tip.get());
-		s.setKategorijaSmestaja(smestajDTO.getKategorijaSmestaja());
+		s.setKategorijaSmestaja(kategorija.get());
 		s.setOpis(smestajDTO.getOpis());
 		s.setMaxOsoba(smestajDTO.getMaxOsoba());
 		s.setMaxDanaZaOtkazivanje(smestajDTO.getMaxDanaZaOtkazivanje());
@@ -141,12 +174,19 @@ public class SmestajController {
 		s.setCenaJesen(smestajDTO.getCenaJesen());
 		s.setCenaZima(smestajDTO.getCenaZima());
 		s.setVlasnik(agent.getIdAgenta());
-		s.setListaDodatnihUsluga(smestajDTO.getListaDodatnihUsluga());
-		s.setListaSlika(smestajDTO.getListaSlika());
+		//s.setListaDodatnihUsluga(smestajDTO.getListaDodatnihUsluga());
+		//s.setListaSlika(smestajDTO.getListaSlika());
 
 		Smestaj retVal = smestajService.save(s);
-
+		aret.setSmestaj(retVal); 
+		tAdresaService.save(a);
+		
+		ret.setSmestaj(retVal); 
+		tKoordinateService.save(k);
+		
 		return new ResponseEntity<>(new SmestajDTO(retVal), HttpStatus.CREATED);
+		 */
+		return null;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)

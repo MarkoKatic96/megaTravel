@@ -1,1 +1,3 @@
-INSERT INTO `poruka` (`id_poruke`,`datum_slanja`,`posiljalac`,`primalac`,`sadrzaj`,`status`,`tip_posiljaoca`,`tip_primaoca`) VALUES (1,'2019-06-29 17:33:45',1,1,'Hello agent 007','POSLATA','KORISNIK','AGENT');
+INSERT INTO `db_xml_wix`.`poruka` (`id_poruke`,`datum_slanja`,`posiljalac`,`primalac`,`sadrzaj`,`status`,`tip_posiljaoca`,`tip_primaoca`) VALUES (1,'2019-06-29 17:33:45',1,1,'Hello agent 007','POSLATA','KORISNIK','AGENT');
+INSERT INTO `db_xml_wix`.`poruka` (`id_poruke`,`datum_slanja`,`posiljalac`,`primalac`,`sadrzaj`,`status`,`tip_posiljaoca`,`tip_primaoca`) VALUES (2,'2019-06-30 01:55:55',1,1,'sadforreal','POSLATA','AGENT','KORISNIK');
+INSERT INTO `db_xml_wix`.`poruka` (`id_poruke`,`datum_slanja`,`posiljalac`,`primalac`,`sadrzaj`,`status`,`tip_posiljaoca`,`tip_primaoca`) VALUES (3,'2019-06-30 01:58:45',1,1,'aj jos jednom','POSLATA','AGENT','KORISNIK');
