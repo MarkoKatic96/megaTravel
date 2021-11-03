@@ -10,7 +10,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-validation": "^3.0.7",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
